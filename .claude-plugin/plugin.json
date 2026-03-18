@@ -1,0 +1,8 @@
+{
+  "name": "asset-generator",
+  "description": "Generate, browse, and manage Blueprint Studio assets from Claude Code",
+  "version": "1.0.0",
+  "author": {
+    "name": "Blueprint Studio"
+  }
+}
