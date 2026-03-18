@@ -12,14 +12,15 @@ Generate, browse, and manage Blueprint Studio assets using MCP tools.
 - User asks to generate an image, icon, illustration, or visual asset
 - User asks to create a placeholder image for a component or page
 - User mentions Blueprint Studio assets
-- User wants to browse, download, or delete generated assets
-- User asks about available styles
+- User wants to browse, download, delete, or favorite generated assets
+- User asks about available styles or prompt suggestions
 
 ## Before You Start
 
 1. **Check for project config:** Read `.blueprint.json` in the project root. If it exists, use its defaults (`outputDir`, `defaultStyleId`, `defaultAspectRatio`, `defaultImageSize`).
-2. **Check for global config:** Read `~/.config/blueprint-studio/config.json`. If it has no `apiKey`, tell the user to run `/asset-generator-setup` first and stop.
-3. **If no `.blueprint.json`:** Use built-in defaults (outputDir: `./assets`, aspectRatio: `1:1`, imageSize: `2K`, no style). Suggest running `/asset-generator-setup` for project-specific config.
+2. **If no `.blueprint.json`:** Use built-in defaults (outputDir: `./assets`, aspectRatio: `1:1`, imageSize: `2K`, no style).
+
+Auth is handled by the MCP protocol — no API key setup is required.
 
 ## Generating Assets
 
@@ -59,13 +60,26 @@ Generate, browse, and manage Blueprint Studio assets using MCP tools.
 - Use `delete_asset` with the asset ID.
 - Confirm with the user before deleting.
 
+## Favoriting Assets
+
+- Use `favorite_asset` to mark an asset as a favorite.
+- Use `remove_background` to remove the background from an asset.
+
+## Sharing Assets
+
+- Use `share_asset` to generate a shareable link for an asset.
+
 ## Listing Styles
 
 - Use `list_styles` to show available styles.
 - Present as a simple list with ID and name.
 
+## Getting Suggestions
+
+- Use `suggest_prompts` to get prompt ideas based on context.
+- Use `generate_ideas` to brainstorm asset concepts for a project.
+
 ## Common Mistakes
 
-- Don't generate assets without checking for config first.
 - Don't use a hardcoded output directory — always read from `.blueprint.json`.
 - Don't skip the download step — `generate_asset` returns a URL, not file data. You need `download_asset` to get the actual image bytes to save locally.

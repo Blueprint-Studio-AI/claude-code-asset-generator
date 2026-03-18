@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "asset-generator": {
+    "blueprint-studio": {
       "type": "http",
       "url": "https://tools.blueprintstudio.ai/api/mcp"
     }
