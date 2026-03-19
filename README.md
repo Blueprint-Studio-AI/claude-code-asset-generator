@@ -1,35 +1,76 @@
-# Blueprint Studio Asset Generator
+# Blueprint Studio — Claude Code Plugin
 
-Generate, browse, and manage Blueprint Studio assets directly from Claude Code.
+Generate assets, manage brands, invite team members, and more — directly from Claude Code.
 
 ## Setup
 
-Run `/asset-generator-setup` in Claude Code to configure your API key and project defaults.
+Add the MCP server URL to your Claude Code config:
+
+```json
+{
+  "mcpServers": {
+    "blueprint-studio": {
+      "url": "https://tools.blueprintstudio.ai/api/mcp"
+    }
+  }
+}
+```
+
+Claude Code will open your browser to sign in with your Blueprint Studio account. No API keys to copy.
 
 ## Usage
 
-Once configured, Claude can generate assets as part of natural conversation:
+Once authenticated, Claude can work with Blueprint Studio as part of natural conversation:
 
-> "Generate a settings icon and save it to public/icons"
+> "Generate a settings icon in my brand style"
+> "Invite brandon@example.com to my brand"
+> "Create a new brand called Acme Design"
+> "List my API keys"
 
-Or use the available MCP tools directly:
+## Available Tools
 
+### Asset Generation
 - `generate_asset` — Generate an image from a prompt
-- `list_assets` — Browse your generated assets
+- `list_assets` — Browse generated assets
 - `get_asset` — Get details for a specific asset
 - `delete_asset` — Delete an asset
 - `download_asset` — Download an asset image
-- `list_styles` — List available generation styles
+- `favorite_asset` — Toggle favorite on an asset
+- `remove_background` — Remove image background
+- `share_asset` — Generate a shareable link
 
-## Configuration
+### Brand Management
+- `create_brand` — Create a new brand/organization
+- `list_brands` — List your brands
+- `get_brand` — Get brand details and settings
+- `update_brand_settings` — Update default style or prompt template
+- `delete_brand` — Delete a brand (owner only)
 
-### Global (`~/.config/blueprint-studio/config.json`)
+### Team Management
+- `invite_member` — Invite someone by email
+- `list_members` — List members and pending invites
+- `update_member_role` — Change a member's role
+- `remove_member` — Remove a member
 
-Stores your API key. Created by `/asset-generator-setup`.
+### Styles
+- `list_styles` — List available styles
+- `create_style` — Create a custom brand style
+- `get_style` — Get style details
+- `update_style` — Update a custom style
+- `delete_style` — Delete a custom style
 
-### Project (`.blueprint.json`)
+### Generation Helpers
+- `suggest_prompts` — Get AI-powered prompt suggestions
+- `generate_ideas` — Brainstorm asset concepts
 
-Optional project-level config. Safe to commit to git.
+### API Keys
+- `create_api_key` — Create a key for automation/CI
+- `list_api_keys` — List your active keys
+- `revoke_api_key` — Revoke a key
+
+## Project Config (`.blueprint.json`)
+
+Optional project-level defaults. Safe to commit to git.
 
 ```json
 {
