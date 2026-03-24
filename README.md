@@ -1,6 +1,7 @@
 # Blueprint Studio — Claude Code Plugin
 
 Generate assets, manage brands, invite team members, and more — directly from Claude Code.
+This Claude plugin is for use with the [Blueprint Studio Asset Generator](https://tools.blueprintstudio.ai/?utm_source=github&utm_medium=readme&utm_campaign=asset_generator_claude_plugin).
 
 ## Setup
 
