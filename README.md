@@ -3,7 +3,22 @@
 Generate assets, manage brands, invite team members, and more — directly from Claude Code.
 This Claude plugin is for use with the [Blueprint Studio Asset Generator](https://tools.blueprintstudio.ai/?utm_source=github&utm_medium=readme&utm_campaign=asset_generator_claude_plugin).
 
-## Setup
+## Installation
+
+### Option A: Via Marketplace (recommended)
+
+```bash
+/plugin marketplace add Blueprint-Studio-AI/claude-code-marketplace
+/plugin install blueprint-studio@blueprint-studio-marketplace
+```
+
+### Option B: Direct from GitHub
+
+```bash
+/plugin install Blueprint-Studio-AI/claude-code-asset-generator
+```
+
+### Option C: Manual MCP config
 
 Add the MCP server URL to your Claude Code config:
 
@@ -17,7 +32,7 @@ Add the MCP server URL to your Claude Code config:
 }
 ```
 
-Claude Code will open your browser to sign in with your Blueprint Studio account. No API keys to copy.
+Claude Code will open your browser to sign in with your Blueprint Studio account. No API keys needed.
 
 ## Usage
 
