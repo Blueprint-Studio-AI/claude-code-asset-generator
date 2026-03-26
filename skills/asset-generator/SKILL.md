@@ -25,21 +25,21 @@ Auth is handled by the MCP protocol — no API key setup is required.
 ## Generating Assets
 
 1. Call the `generate_asset` MCP tool with:
-   - `prompt`: The user's description
-   - `styleId`: From `.blueprint.json` defaultStyleId unless user specifies otherwise
-   - `aspectRatio`: From `.blueprint.json` defaultAspectRatio unless user specifies otherwise
-   - `imageSize`: From `.blueprint.json` defaultImageSize unless user specifies otherwise
-   - `temperature`, `referenceImages`: Only if user provides them
+    - `prompt`: The user's description
+    - `styleId`: From `.blueprint.json` defaultStyleId unless user specifies otherwise
+    - `aspectRatio`: From `.blueprint.json` defaultAspectRatio unless user specifies otherwise
+    - `imageSize`: From `.blueprint.json` defaultImageSize unless user specifies otherwise
+    - `temperature`, `referenceImages`: Only if user provides them
 
 2. After generation succeeds, call `download_asset` with the returned `assetId`.
 
 3. Decode the base64 response and write the file to the `outputDir` from `.blueprint.json`.
 
 4. **File naming:** Derive a descriptive filename from the prompt:
-   - "a blue gradient settings icon" → `blue-gradient-settings-icon.png`
-   - Use kebab-case, lowercase, `.png` extension
-   - If the file already exists, append a numeric suffix: `settings-icon-2.png`
-   - If the user specifies a filename, use that instead
+    - "a blue gradient settings icon" → `blue-gradient-settings-icon.png`
+    - Use kebab-case, lowercase, `.png` extension
+    - If the file already exists, append a numeric suffix: `settings-icon-2.png`
+    - If the user specifies a filename, use that instead
 
 5. Tell the user what was created and where. If they're working on code that references images (e.g., `<img>`, CSS `background-image`, imports), offer to update the reference.
 

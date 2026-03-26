@@ -1,23 +1,23 @@
 {
-  "name": "blueprint-studio",
-  "description": "Generate AI assets, manage brands, invite team members, and customize styles — directly from Claude Code.",
-  "version": "1.0.0",
-  "author": {
-    "name": "Blueprint Studio",
-    "email": "blueprint.dao@gmail.com",
-    "url": "https://blueprintstudio.ai"
-  },
-  "homepage": "https://blueprintstudio.ai",
-  "repository": "https://github.com/Blueprint-Studio-AI/claude-code-asset-generator",
-  "license": "MIT",
-  "keywords": [
-    "ai",
-    "asset-generation",
-    "image-generation",
-    "brand-management",
-    "design",
-    "icons",
-    "illustrations"
-  ],
-  "category": "design"
+    "name": "blueprint-studio",
+    "description": "Generate AI assets, manage brands, invite team members, and customize styles — directly from Claude Code.",
+    "version": "1.0.0",
+    "author": {
+        "name": "Blueprint Studio",
+        "email": "blueprint.dao@gmail.com",
+        "url": "https://blueprintstudio.ai"
+    },
+    "homepage": "https://blueprintstudio.ai",
+    "repository": "https://github.com/Blueprint-Studio-AI/claude-code-asset-generator",
+    "license": "MIT",
+    "keywords": [
+        "ai",
+        "asset-generation",
+        "image-generation",
+        "brand-management",
+        "design",
+        "icons",
+        "illustrations"
+    ],
+    "category": "design"
 }

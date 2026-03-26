@@ -24,11 +24,11 @@ Add the MCP server URL to your Claude Code config:
 
 ```json
 {
-  "mcpServers": {
-    "blueprint-studio": {
-      "url": "https://tools.blueprintstudio.ai/api/mcp"
+    "mcpServers": {
+        "blueprint-studio": {
+            "url": "https://tools.blueprintstudio.ai/api/mcp"
+        }
     }
-  }
 }
 ```
 
@@ -46,6 +46,7 @@ Once authenticated, Claude can work with Blueprint Studio as part of natural con
 ## Available Tools
 
 ### Asset Generation
+
 - `generate_asset` — Generate an image from a prompt
 - `list_assets` — Browse generated assets
 - `get_asset` — Get details for a specific asset
@@ -56,6 +57,7 @@ Once authenticated, Claude can work with Blueprint Studio as part of natural con
 - `share_asset` — Generate a shareable link
 
 ### Brand Management
+
 - `create_brand` — Create a new brand/organization
 - `list_brands` — List your brands
 - `get_brand` — Get brand details and settings
@@ -63,12 +65,14 @@ Once authenticated, Claude can work with Blueprint Studio as part of natural con
 - `delete_brand` — Delete a brand (owner only)
 
 ### Team Management
+
 - `invite_member` — Invite someone by email
 - `list_members` — List members and pending invites
 - `update_member_role` — Change a member's role
 - `remove_member` — Remove a member
 
 ### Styles
+
 - `list_styles` — List available styles
 - `create_style` — Create a custom brand style
 - `get_style` — Get style details
@@ -76,10 +80,12 @@ Once authenticated, Claude can work with Blueprint Studio as part of natural con
 - `delete_style` — Delete a custom style
 
 ### Generation Helpers
+
 - `suggest_prompts` — Get AI-powered prompt suggestions
 - `generate_ideas` — Brainstorm asset concepts
 
 ### API Keys
+
 - `create_api_key` — Create a key for automation/CI
 - `list_api_keys` — List your active keys
 - `revoke_api_key` — Revoke a key
@@ -90,9 +96,9 @@ Optional project-level defaults. Safe to commit to git.
 
 ```json
 {
-  "outputDir": "./public/assets",
-  "defaultStyleId": "your-style-id",
-  "defaultAspectRatio": "1:1",
-  "defaultImageSize": "2K"
+    "outputDir": "./public/assets",
+    "defaultStyleId": "your-style-id",
+    "defaultAspectRatio": "1:1",
+    "defaultImageSize": "2K"
 }
 ```

@@ -2,16 +2,16 @@
 name: brand-manager
 description: Manage Blueprint Studio brands, team members, styles, and API keys
 triggers:
-  - create a brand
-  - invite someone
-  - manage my team
-  - list members
-  - add a member
-  - remove a member
-  - manage styles
-  - create a style
-  - manage api keys
-  - create an api key
+    - create a brand
+    - invite someone
+    - manage my team
+    - list members
+    - add a member
+    - remove a member
+    - manage styles
+    - create a style
+    - manage api keys
+    - create an api key
 ---
 
 # Brand Manager
@@ -21,6 +21,7 @@ Manage Blueprint Studio brands, team members, styles, and API keys through natur
 ## Available Tools
 
 ### Brand Management
+
 - `create_brand` — Create a new brand/organization
 - `list_brands` — List brands you belong to
 - `get_brand` — Get brand details, settings, and member count
@@ -28,12 +29,14 @@ Manage Blueprint Studio brands, team members, styles, and API keys through natur
 - `delete_brand` — Delete a brand (owner only)
 
 ### Team Management
+
 - `invite_member` — Invite a user by email with a role
 - `list_members` — List members and pending invites
 - `update_member_role` — Change a member's role (admin/member)
 - `remove_member` — Remove a member from a brand
 
 ### Style Management
+
 - `list_styles` — List available styles (system + custom)
 - `create_style` — Create a custom brand style
 - `get_style` — Get style details and references
@@ -41,6 +44,7 @@ Manage Blueprint Studio brands, team members, styles, and API keys through natur
 - `delete_style` — Delete a custom style
 
 ### API Key Management
+
 - `create_api_key` — Create a new API key for automation
 - `list_api_keys` — List active keys with usage stats
 - `revoke_api_key` — Permanently revoke an API key
