@@ -1,0 +1,13 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "blueprint-studio",
+  "version": "2.0.0",
+  "description": "Official brand context and Asset Generator tools for Blueprint Studio workspaces.",
+  "author": {
+    "name": "Blueprint Studio",
+    "url": "https://blueprintstudio.ai"
+  },
+  "homepage": "https://blueprintstudio.ai",
+  "repository": "https://github.com/Blueprint-Studio-AI/claude-code-asset-generator",
+  "license": "MIT"
+}

@@ -1,85 +1,36 @@
 ---
 name: asset-generator
-description: Use when the user wants to generate, browse, download, or manage visual assets (icons, illustrations, images, graphics, placeholders) using Blueprint Studio's AI asset generator.
+description: Create, edit, inspect, and download images with Blueprint Studio Asset Generator, using workspace Styles and official brand assets. Use for Blueprint visual production and asset-library tasks.
 ---
 
 # Asset Generator
 
-Generate, browse, and manage Blueprint Studio assets using MCP tools.
+Use the connected Blueprint MCP tools. These are composable suggestions, not a required workflow.
 
-## When to Use
+## Establish context
 
-- User asks to generate an image, icon, illustration, or visual asset
-- User asks to create a placeholder image for a component or page
-- User mentions Blueprint Studio assets
-- User wants to browse, download, delete, or favorite generated assets
-- User asks about available styles or prompt suggestions
+Call `get_workspace_context` and `list_models` when available. Confirm the connected workspace matches the task. Read the returned brand guide when relevant. A project’s `.blueprint.json` can supply output paths and preferred Style/settings, but cannot authorize or switch organizations. User instructions take precedence; otherwise use the model's returned defaults.
 
-## Before You Start
+For older servers without context discovery, use `list_brands`, `list_styles`, and the connection's selected organization. Do not assume naming a brand in the prompt selects it. Do not claim new tools are available until they appear in tool discovery.
 
-1. **Check for project config:** Read `.blueprint.json` in the project root. If it exists, use its defaults (`outputDir`, `defaultStyleId`, `defaultAspectRatio`, `defaultImageSize`).
-2. **If no `.blueprint.json`:** Use built-in defaults (outputDir: `./assets`, aspectRatio: `1:1`, imageSize: `2K`, no style).
+## Create and improve
 
-Auth is handled by the MCP protocol — no API key setup is required.
+- Browse `list_assets` and `list_styles` before generating near-duplicates. Read `get_style` for the selected look.
+- For logos, call `list_brand_assets`; choose the correct brand, mark/lockup, and color. Pass each returned `generationInput` in `generate_asset.inputs`. These handles pin the official version and compile logo guidance. A mention of “logo” in MCP text alone does not attach a file.
+- `inputs` preserves order and supports official brand assets, authorized URL references, and saved receipt inputs. Do not mix it with legacy `referenceImages`. Never substitute a preview screenshot for an official logo.
+- Start with a small useful batch. Set model/size/quality only from supported capabilities; generation incurs workspace-account credits.
+- To edit, call `generate_asset` with the exact `parentAssetId` and edit instructions. Select the ancestor the user means, not the newest image in a thread. It creates a descendant and preserves the source.
+- Download and actually view each output before endorsing it. Check composition, style, lettering, logo fidelity, cropping, and intended placement. Revise one variable at a time when useful.
+- Save `assetId`, `receiptId`, Style ID, and chosen settings alongside accepted work. `get_generation_details` reports captured settings and Style version without exposing protected instructions. Missing receipt fields are not defaults.
 
-## Generating Assets
+## Deliver files
 
-1. Call the `generate_asset` MCP tool with:
-    - `prompt`: The user's description
-    - `styleId`: From `.blueprint.json` defaultStyleId unless user specifies otherwise
-    - `aspectRatio`: From `.blueprint.json` defaultAspectRatio unless user specifies otherwise
-    - `imageSize`: From `.blueprint.json` defaultImageSize unless user specifies otherwise
-    - `temperature`, `referenceImages`: Only if user provides them
+`download_asset` returns image bytes and MIME type; a returned image URL is also usable with the host's download tools. Preserve the actual format (`.jpg`, `.png`, or `.webp`), never just rename JPEG bytes to PNG. Use the requested project location or its `.blueprint.json` outputDir; otherwise choose a conventional asset folder in that project. Update image references in code when part of the task.
 
-2. After generation succeeds, call `download_asset` with the returned `assetId`.
+`remove_background` produces a new transparent cutout asset. Keep its returned asset identity; inspect edges and alpha before using it. Prefer CSS or vector code for simple backgrounds, typography, and existing official logos; generate the imagery that benefits from it.
 
-3. Decode the base64 response and write the file to the `outputDir` from `.blueprint.json`.
+## Recovery
 
-4. **File naming:** Derive a descriptive filename from the prompt:
-    - "a blue gradient settings icon" → `blue-gradient-settings-icon.png`
-    - Use kebab-case, lowercase, `.png` extension
-    - If the file already exists, append a numeric suffix: `settings-icon-2.png`
-    - If the user specifies a filename, use that instead
+Current generation calls are synchronous. If a call times out or disconnects, check recent assets and their details before retrying: the provider may still complete and a blind retry may charge twice. Report uncertainty if completion cannot be established. Authentication and limits are handled by the service; never work around them with another org or a provider key.
 
-5. Tell the user what was created and where. If they're working on code that references images (e.g., `<img>`, CSS `background-image`, imports), offer to update the reference.
-
-## Browsing Assets
-
-- Use `list_assets` to show recent assets. Default limit is 20.
-- Use `get_asset` for details on a specific asset.
-- Present results in a concise table or list format.
-
-## Downloading Assets
-
-- Use `download_asset` to get base64 image data.
-- Write to the `outputDir` from `.blueprint.json` (or the path the user specifies).
-- Use the asset's prompt to generate a descriptive filename.
-
-## Deleting Assets
-
-- Use `delete_asset` with the asset ID.
-- Confirm with the user before deleting.
-
-## Favoriting Assets
-
-- Use `favorite_asset` to mark an asset as a favorite.
-- Use `remove_background` to remove the background from an asset.
-
-## Sharing Assets
-
-- Use `share_asset` to generate a shareable link for an asset.
-
-## Listing Styles
-
-- Use `list_styles` to show available styles.
-- Present as a simple list with ID and name.
-
-## Getting Suggestions
-
-- Use `suggest_prompts` to get prompt ideas based on context.
-- Use `generate_ideas` to brainstorm asset concepts for a project.
-
-## Common Mistakes
-
-- Don't use a hardcoded output directory — always read from `.blueprint.json`.
-- Don't skip the download step — `generate_asset` returns a URL, not file data. You need `download_asset` to get the actual image bytes to save locally.
+Brand/team management is in the optional `brand-manager` skill. For repeatable Style experiments, see `style-gym`.

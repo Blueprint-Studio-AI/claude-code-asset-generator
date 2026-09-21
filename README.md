@@ -1,104 +1,48 @@
-# Blueprint Studio — Claude Code Plugin
+# Blueprint Studio
 
-Generate assets, manage brands, invite team members, and more — directly from Claude Code.
-This Claude plugin is for use with the [Blueprint Studio Asset Generator](https://tools.blueprintstudio.ai/?utm_source=github&utm_medium=readme&utm_campaign=asset_generator_claude_plugin).
+One plugin for official brand context and Asset Generator tools. Useful standalone; Blueprint clients also receive their workspace's published brand-guide links. Workflow skills are optional and tools can be used directly.
 
-## Installation
+This is the existing `blueprint-studio` plugin, upgraded in place. Its historical repository name remains `claude-code-asset-generator` to preserve installs. The public [Blueprint marketplace](https://github.com/Blueprint-Studio-AI/claude-code-marketplace) remains the discovery source. No second plugin or private brand snapshot is required.
 
-### Option A: Via Marketplace (recommended)
+## Install
 
-```bash
+Claude Code:
+
+```text
 /plugin marketplace add Blueprint-Studio-AI/claude-code-marketplace
 /plugin install blueprint-studio@blueprint-studio-marketplace
 ```
 
-### Option B: Direct from GitHub
+For a local branch preview, start Claude Code with `--plugin-dir /absolute/path/to/this/repo`. Avoid adding a second standalone MCP connection if the plugin already supplies `asset-generator`.
 
-```bash
-/plugin install Blueprint-Studio-AI/claude-code-asset-generator
-```
+Codex supports `.codex-plugin/plugin.json`; the same skills and `.mcp.json` are used. A local personal-marketplace installation is available during the pilot. Marketplace publication and ChatGPT/Claude hosted connector review are separate rollout steps, not implied by installing locally.
 
-### Option C: Manual MCP config
+Other skill-compatible hosts can use `skills/` and connect their remote MCP client to `https://tools.blueprintstudio.ai/api/mcp`. `plugin.json` and `mcp.json` provide the portable Agent Plugins manifest. Host transport spellings differ; compatibility manifests are intentionally retained.
 
-Add the MCP server URL to your Claude Code config:
+Sign in through the host's MCP OAuth flow and choose the intended organization. A plugin install does not grant organization membership or change the selected workspace. API keys remain supported for automation; keep them out of checked-in files.
 
-```json
-{
-    "mcpServers": {
-        "blueprint-studio": {
-            "url": "https://tools.blueprintstudio.ai/api/mcp"
-        }
-    }
-}
-```
+## Modules and current limits
 
-Claude Code will open your browser to sign in with your Blueprint Studio account. No API keys needed.
+| Module | Available | Next |
+| --- | --- | --- |
+| Brand | Workspace identity, permissions, published guides, official versioned asset discovery | Brand publishing through domain API |
+| Create | Styles, assets, model catalog, generation, exact-parent edits, ordered official references, public receipt details, downloads, background removal | Durable job tools, reference-based Style authoring and forks |
+| Work | Use existing project brief and connected tools | Portal-backed project/tasks/approvals with project-scoped access |
 
-## Usage
+The new tools require the matching monorepo backend release. Skills tolerate older discovery responses; they do not promise unsupported operations. There is no bundled internal client list, private repository access, or automatic brand-site/database sync.
 
-Once authenticated, Claude can work with Blueprint Studio as part of natural conversation:
+## Skills
 
-> "Generate a settings icon in my brand style"
-> "Invite brandon@example.com to my brand"
-> "Create a new brand called Acme Design"
-> "List my API keys"
+- `asset-generator`: browse, generate, inspect, refine, and deliver assets.
+- `brand-manager`: requested workspace and Style administration.
+- `style-gym`: optional repeatable Style experiments on diverse briefs.
 
-## Available Tools
+Suggested handoff to an existing project agent:
 
-### Asset Generation
+> Use Blueprint Studio for this project's brand context and assets. Check the connected workspace first, read its brand guide, and inspect the available Styles and official logos. Continue the existing brief. Use tools directly or adapt the optional workflows; save selected asset/receipt IDs with the work so another session can resume.
 
-- `generate_asset` — Generate an image from a prompt
-- `list_assets` — Browse generated assets
-- `get_asset` — Get details for a specific asset
-- `delete_asset` — Delete an asset
-- `download_asset` — Download an asset image
-- `favorite_asset` — Toggle favorite on an asset
-- `remove_background` — Remove image background
-- `share_asset` — Generate a shareable link
+A project `.blueprint.json` may set local preferences. It is not an authorization mechanism. Do not duplicate live brand files into this plugin to personalize an installation.
 
-### Brand Management
+## Development
 
-- `create_brand` — Create a new brand/organization
-- `list_brands` — List your brands
-- `get_brand` — Get brand details and settings
-- `update_brand_settings` — Update default style or prompt template
-- `delete_brand` — Delete a brand (owner only)
-
-### Team Management
-
-- `invite_member` — Invite someone by email
-- `list_members` — List members and pending invites
-- `update_member_role` — Change a member's role
-- `remove_member` — Remove a member
-
-### Styles
-
-- `list_styles` — List available styles
-- `create_style` — Create a custom brand style
-- `get_style` — Get style details
-- `update_style` — Update a custom style
-- `delete_style` — Delete a custom style
-
-### Generation Helpers
-
-- `suggest_prompts` — Get AI-powered prompt suggestions
-- `generate_ideas` — Brainstorm asset concepts
-
-### API Keys
-
-- `create_api_key` — Create a key for automation/CI
-- `list_api_keys` — List your active keys
-- `revoke_api_key` — Revoke a key
-
-## Project Config (`.blueprint.json`)
-
-Optional project-level defaults. Safe to commit to git.
-
-```json
-{
-    "outputDir": "./public/assets",
-    "defaultStyleId": "your-style-id",
-    "defaultAspectRatio": "1:1",
-    "defaultImageSize": "2K"
-}
-```
+Backend and permission services live in the private monorepo; this public repository contains packaging and optional guidance only. Do not add tokens, production fixtures, client-private notes, or internal source links. Validate compatibility manifests and each skill before release. Public directory submission needs its own OAuth, metadata, and tool-annotation review.
