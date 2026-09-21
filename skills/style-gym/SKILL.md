@@ -7,6 +7,8 @@ description: Develop and evaluate reusable Blueprint Studio generation Styles ag
 
 An optional experiment loop using the existing Style and generation tools, not a separate model-training system. Adapt it to the task.
 
+For hero images, CTA backgrounds, cards, or other imagery that must work inside an interface, read [Placement composition](references/placement-composition.md). It covers separating reusable treatment from layout, art-directed mobile images, and reviewing the result with real copy.
+
 1. Read the current brand guide and nearby Styles. Inspect the actual reference assets. Define the visual traits to keep and what must vary between generations.
 2. Choose a small set of different briefs before optimizing: one close to the reference and at least one new subject or composition. Keep model, quality, dimensions, and reference order fixed for comparisons.
 3. Draft a compact reusable Style prompt. Put scene-specific instructions in the generation prompt. Keep official logos in versioned brand inputs rather than describing a substitute.
