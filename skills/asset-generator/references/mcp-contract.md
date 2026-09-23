@@ -4,7 +4,7 @@ These are tool contract requirements; the surrounding creative workflow is optio
 
 ## Workspace per call
 
-OAuth grants account-wide access. `list_brands` returns the organizations the account can access. Pass the intended `brandId` explicitly on every workspace call, including reads, generation, polling, Style changes, and downloads. With account OAuth, `brandId: null` or omission means personal scope; there is no sticky active workspace. A brand name in a prompt or a local `.blueprint.json` preference does not select or authorize an organization. Legacy scoped credentials remain bound to their workspace and cannot switch; reconnect with account OAuth when necessary. Never route around denied access or limits with another workspace or an inference provider API key.
+OAuth grants account-wide access. `list_brands` returns the organizations the account can access. Pass the intended `brandId` explicitly on every workspace call, including reads, generation, polling, Style changes, and downloads. With account OAuth, `brandId: null` or omission means personal scope; there is no sticky active workspace. A brand name in a prompt or a local `.blueprint.json` preference does not select or authorize an organization. Legacy scoped credentials remain bound to their workspace and cannot switch. If expected workspaces are missing, renew the existing OAuth authorization and refresh the client before proposing a separate API key. Do not silently widen old credentials. Never route around denied access or limits with another workspace or an inference provider API key.
 
 ## Durable generation (live)
 
@@ -15,9 +15,9 @@ OAuth grants account-wide access. `list_brands` returns the organizations the ac
 - An error may still return a `jobId` (for example `ADMISSION_OUTCOME_UNKNOWN`); poll it. Unknown outcomes, lost connections, poll timeouts, and unavailable status are never proof of failed generation or refunded credits. Do not automatically regenerate. If the session cannot keep polling, hand off the IDs, exact arguments, last known status, and next poll action as unresolved.
 - On `completed`, inspect the returned result. Use its actual `assetId`, `receiptId`, `styleId`, and image URL when present; a terminal job without a saved image is not a successful asset delivery. Missing receipt data stays unknown. On `failed`, report the service error; make no unsupported refund claim. A new attempt is a separate intended generation within the user's scope.
 
-## Discovery additions (pending backend rollout)
+## Context and reference discovery
 
-Use these only when tool discovery exposes both the tool and the needed input fields. Durable generation above is already live and does not depend on these additions.
+The current Blueprint backend exposes these capabilities. Check tool/field discovery when connecting to an older deployment.
 
 - `get_workspace_context`: read identity, permissions, and published guide links for the explicit workspace. Read relevant guides as context, not as access grants.
 - `list_models`: discover supported settings, defaults, and public credit costs. The service rechecks entitlement at generation time; do not invent model IDs or prices.

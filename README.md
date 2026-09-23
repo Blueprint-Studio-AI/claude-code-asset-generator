@@ -19,20 +19,20 @@ Codex supports `.codex-plugin/plugin.json`; the same skills and `.mcp.json` are 
 
 Other skill-compatible hosts can use `skills/` and connect their remote MCP client to `https://tools.blueprintstudio.ai/api/mcp`. `plugin.json` and `mcp.json` provide the portable Agent Plugins manifest. Host transport spellings differ; compatibility manifests are intentionally retained.
 
-Sign in through the host's MCP OAuth flow for account-wide access. Call `list_brands` to discover accessible organizations, then pass explicit `brandId` on every workspace call. Null/omitted selects personal scope, not the last-used brand. Legacy scoped credentials cannot switch workspaces. A plugin install grants no membership. Service API keys remain available for scoped automation; inference provider keys are not needed and credentials never belong in checked-in files.
+Sign in through the host's MCP OAuth flow for account-wide access. Call `list_brands` to discover accessible organizations, then pass explicit `brandId` on every workspace call. Null/omitted selects personal scope, not the last-used brand. Legacy scoped credentials cannot switch workspaces. A plugin install grants no membership. If an existing connection only lists one workspace despite broader account access, renew its OAuth authorization and start a fresh client/thread. Older workspace-only grants are not silently expanded; a new API key is not the repair. Service API keys remain available for scoped automation; inference provider keys are not needed and credentials never belong in checked-in files.
 
-## Tool contract and rollout
+## Tool contract
 
 `generate_asset` already returns a durable `jobId` immediately. Use a fresh UUID `requestId` for each intended generation; reuse the same ID with identical arguments only for transport retries. Poll `get_generation_status` in the same `brandId` until `completed` or `failed`. Unknown outcomes and polling timeouts never establish failed generation or refunded credits. Preserve returned asset, receipt, and Style IDs. See [the MCP contract](skills/asset-generator/references/mcp-contract.md) for recovery and handoff details.
 
-| Available now | Pending backend rollout; use only when discovered |
+| Core tools | Context and references |
 | --- | --- |
 | Account OAuth and per-call workspace selection | `get_workspace_context` and published guide discovery |
 | Styles, categories, generated examples, Style thumbnails | `list_models` capability and cost catalog |
 | Durable generation/status, asset reads/downloads, background removal | `list_brand_assets` with version-pinned `generationInput` for ordered `inputs` |
 | Brand/member administration within permissions | Exact `parentAssetId` edits and `get_generation_details` |
 
-The plugin does not enable pending backend tools. Check live discovery for both tools and fields before using them. Reference-set Style authoring, tracked forks, and Portal-backed tasks/approvals are not bundled features. There is no internal client list, private repository access, or automatic brand-site/database sync.
+These capabilities require the current Blueprint server. Check live discovery for both tools and fields when connecting to an older deployment. Reference-set Style authoring, tracked forks, and Portal-backed tasks/approvals are not bundled features. There is no internal client list, private repository access, or automatic brand-site/database sync.
 
 ## Optional skills and agents
 

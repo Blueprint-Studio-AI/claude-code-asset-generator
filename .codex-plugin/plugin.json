@@ -1,6 +1,6 @@
 {
   "name": "blueprint-studio",
-  "version": "2.0.0",
+  "version": "2.0.0+codex.20260923115701",
   "description": "Official brand context and Asset Generator tools for Blueprint Studio workspaces.",
   "author": {
     "name": "Blueprint Studio",
