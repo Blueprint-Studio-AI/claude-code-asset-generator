@@ -1,0 +1,28 @@
+{
+  "name": "blueprint-studio",
+  "version": "2.0.0+codex.20260923115701",
+  "description": "Official brand context and Asset Generator tools for Blueprint Studio workspaces.",
+  "author": {
+    "name": "Blueprint Studio",
+    "url": "https://blueprintstudio.ai"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Blueprint Studio",
+    "shortDescription": "Create with your brand and shared asset library.",
+    "longDescription": "Create and inspect assets with workspace Styles and durable generation jobs. Discover additional brand context when the connected server supports it. Optional skills support creation, administration, and Style experiments.",
+    "developerName": "Blueprint Studio",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Help me create assets for my Blueprint Studio workspace."
+    ]
+  },
+  "homepage": "https://blueprintstudio.ai",
+  "repository": "https://github.com/Blueprint-Studio-AI/claude-code-asset-generator",
+  "license": "MIT",
+  "mcpServers": "./.mcp.json"
+}

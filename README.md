@@ -1,104 +1,55 @@
-# Blueprint Studio — Claude Code Plugin
+# Blueprint Studio
 
-Generate assets, manage brands, invite team members, and more — directly from Claude Code.
-This Claude plugin is for use with the [Blueprint Studio Asset Generator](https://tools.blueprintstudio.ai/?utm_source=github&utm_medium=readme&utm_campaign=asset_generator_claude_plugin).
+One plugin for Blueprint Studio Styles, assets, and durable image generation. Additional brand-context tools expose published guides and official assets when enabled on the connected server. Workflow skills and agents are optional; tools can be used directly.
 
-## Installation
+This is the existing `blueprint-studio` plugin, upgraded in place. Its historical repository name remains `claude-code-asset-generator` to preserve installs. The public [Blueprint marketplace](https://github.com/Blueprint-Studio-AI/claude-code-marketplace) remains the discovery source. No second plugin or private brand snapshot is required.
 
-### Option A: Via Marketplace (recommended)
+## Install
 
-```bash
+Claude Code:
+
+```text
 /plugin marketplace add Blueprint-Studio-AI/claude-code-marketplace
 /plugin install blueprint-studio@blueprint-studio-marketplace
 ```
 
-### Option B: Direct from GitHub
+For a local branch preview, start Claude Code with `--plugin-dir /absolute/path/to/this/repo`. Avoid adding a second standalone MCP connection if the plugin already supplies `asset-generator`.
 
-```bash
-/plugin install Blueprint-Studio-AI/claude-code-asset-generator
-```
+Codex supports `.codex-plugin/plugin.json`; the same skills and `.mcp.json` are used. A local personal-marketplace installation is available during the pilot. Marketplace publication and ChatGPT/Claude hosted connector review are separate rollout steps, not implied by installing locally.
 
-### Option C: Manual MCP config
+Other skill-compatible hosts can use `skills/` and connect their remote MCP client to `https://tools.blueprintstudio.ai/api/mcp`. `plugin.json` and `mcp.json` provide the portable Agent Plugins manifest. Host transport spellings differ; compatibility manifests are intentionally retained.
 
-Add the MCP server URL to your Claude Code config:
+Sign in through the host's MCP OAuth flow for account-wide access. Call `list_brands` to discover accessible organizations, then pass explicit `brandId` on every workspace call. Null/omitted selects personal scope, not the last-used brand. Legacy scoped credentials cannot switch workspaces. A plugin install grants no membership. If an existing connection only lists one workspace despite broader account access, renew its OAuth authorization and start a fresh client/thread. Older workspace-only grants are not silently expanded; a new API key is not the repair. Service API keys remain available for scoped automation; inference provider keys are not needed and credentials never belong in checked-in files.
 
-```json
-{
-    "mcpServers": {
-        "blueprint-studio": {
-            "url": "https://tools.blueprintstudio.ai/api/mcp"
-        }
-    }
-}
-```
+## Tool contract
 
-Claude Code will open your browser to sign in with your Blueprint Studio account. No API keys needed.
+`generate_asset` already returns a durable `jobId` immediately. Use a fresh UUID `requestId` for each intended generation; reuse the same ID with identical arguments only for transport retries. Poll `get_generation_status` in the same `brandId` until `completed` or `failed`. Unknown outcomes and polling timeouts never establish failed generation or refunded credits. Preserve returned asset, receipt, and Style IDs. See [the MCP contract](skills/asset-generator/references/mcp-contract.md) for recovery and handoff details.
 
-## Usage
+| Core tools | Context and references |
+| --- | --- |
+| Account OAuth and per-call workspace selection | `get_workspace_context` and published guide discovery |
+| Styles, categories, generated examples, Style thumbnails | `list_models` capability and cost catalog |
+| Durable generation/status, asset reads/downloads, background removal | `list_brand_assets` with version-pinned `generationInput` for ordered `inputs` |
+| Brand/member administration within permissions | Exact `parentAssetId` edits and `get_generation_details` |
 
-Once authenticated, Claude can work with Blueprint Studio as part of natural conversation:
+These capabilities require the current Blueprint server. Check live discovery for both tools and fields when connecting to an older deployment. Reference-set Style authoring, tracked forks, and Portal-backed tasks/approvals are not bundled features. There is no internal client list, private repository access, or automatic brand-site/database sync.
 
-> "Generate a settings icon in my brand style"
-> "Invite brandon@example.com to my brand"
-> "Create a new brand called Acme Design"
-> "List my API keys"
+## Optional skills and agents
 
-## Available Tools
+- `asset-generator`: browse, generate, inspect, refine, and deliver assets.
+- `brand-manager`: requested workspace and Style administration.
+- `style-gym`: optional repeatable Style experiments on diverse briefs.
 
-### Asset Generation
+Claude Code also discovers two agents from `agents/`: `blueprint-studio:asset-creator` for a bounded production brief and `blueprint-studio:style-evaluator` for requested Style comparisons. They inherit host tools and permissions, use the same `asset-generator` MCP connection, and add no mandatory routing. Other hosts can use the skills directly; agent auto-discovery is host-specific. See the [Claude Code plugin agent format](https://code.claude.com/docs/en/plugins-reference#agents).
 
-- `generate_asset` — Generate an image from a prompt
-- `list_assets` — Browse generated assets
-- `get_asset` — Get details for a specific asset
-- `delete_asset` — Delete an asset
-- `download_asset` — Download an asset image
-- `favorite_asset` — Toggle favorite on an asset
-- `remove_background` — Remove image background
-- `share_asset` — Generate a shareable link
+Suggested handoff to an existing project agent:
 
-### Brand Management
+> Use Blueprint Studio for this project's brand context and assets. Select the intended brand from list_brands and pass its brandId on each call. Inspect available Styles and any discovered brand guides/official assets. Continue the existing brief. Use tools directly or adapt the optional workflows; save selected asset/receipt/Style IDs and any unresolved job/request IDs with the work so another session can resume.
 
-- `create_brand` — Create a new brand/organization
-- `list_brands` — List your brands
-- `get_brand` — Get brand details and settings
-- `update_brand_settings` — Update default style or prompt template
-- `delete_brand` — Delete a brand (owner only)
+A project `.blueprint.json` may set local preferences. It is not an authorization mechanism. Do not duplicate live brand files into this plugin to personalize an installation.
 
-### Team Management
+## Development
 
-- `invite_member` — Invite someone by email
-- `list_members` — List members and pending invites
-- `update_member_role` — Change a member's role
-- `remove_member` — Remove a member
+Backend and permission services live in the private monorepo; this public repository contains packaging and optional guidance only. Do not add tokens, production fixtures, client-private notes, or internal source links. Validate compatibility manifests and each skill before release. Public directory submission needs its own OAuth, metadata, and tool-annotation review.
 
-### Styles
-
-- `list_styles` — List available styles
-- `create_style` — Create a custom brand style
-- `get_style` — Get style details
-- `update_style` — Update a custom style
-- `delete_style` — Delete a custom style
-
-### Generation Helpers
-
-- `suggest_prompts` — Get AI-powered prompt suggestions
-- `generate_ideas` — Brainstorm asset concepts
-
-### API Keys
-
-- `create_api_key` — Create a key for automation/CI
-- `list_api_keys` — List your active keys
-- `revoke_api_key` — Revoke a key
-
-## Project Config (`.blueprint.json`)
-
-Optional project-level defaults. Safe to commit to git.
-
-```json
-{
-    "outputDir": "./public/assets",
-    "defaultStyleId": "your-style-id",
-    "defaultAspectRatio": "1:1",
-    "defaultImageSize": "2K"
-}
-```
+Installation, cachebusting, and marketplace rollout are separate release steps. For local validation, run `claude plugin validate .`, the plugin-creator `validate_plugin.py` on this directory, and skill-creator `quick_validate.py` on each `skills/*` directory. Validation requires no generation calls or credentials.

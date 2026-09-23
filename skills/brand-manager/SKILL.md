@@ -1,59 +1,16 @@
 ---
 name: brand-manager
-description: Manage Blueprint Studio brands, team members, styles, and API keys
-triggers:
-    - create a brand
-    - invite someone
-    - manage my team
-    - list members
-    - add a member
-    - remove a member
-    - manage styles
-    - create a style
-    - manage api keys
-    - create an api key
+description: Manage Blueprint Studio brands, members, official asset discovery, and Styles when the user requests workspace administration or Style authoring.
 ---
 
 # Brand Manager
 
-Manage Blueprint Studio brands, team members, styles, and API keys through natural conversation.
+Use the live tool schemas and current permissions. Read [the MCP contract](../asset-generator/references/mcp-contract.md) before workspace calls. Account OAuth uses `list_brands` to discover accessible organizations and explicit `brandId` on each call; null/omitted means personal. Legacy scoped credentials cannot switch. Read the relevant brand or Style before changing it; `get_workspace_context` supplies additional context when exposed.
 
-## Available Tools
+When available, `list_brand_assets` discovers versioned official files; generation attaches the returned `generationInput` through supported ordered `inputs`. Upload/replacement of official files lives in the web app's brand asset manager. Brand-guide pages and official files are separate sources; do not claim automatic sync.
 
-### Brand Management
+`create_style` creates a text-based Style; `get_style` supplies only instructions the caller may see. Get category labels from `list_styles` and reuse a fitting one unless the user requests another. `update_style` changes an existing Style; creation is not a tracked fork. Do not recover protected instructions from images. For authorized examples, follow the durable generation contract with the returned `styleId`, then set a representative thumbnail using `set_style_thumbnail` with `assetId` and `expectedUpdatedAt` from the Style's current `updatedAt`. Verify the library entry. Never relabel earlier Freestyle outputs as Style-generated examples. See `style-gym` for optional experiments.
 
-- `create_brand` — Create a new brand/organization
-- `list_brands` — List brands you belong to
-- `get_brand` — Get brand details, settings, and member count
-- `update_brand_settings` — Update default style or prompt template
-- `delete_brand` — Delete a brand (owner only)
+For requested administration, use existing brand, member, and API-key tools. Apply the user's authorized scope; clarify ambiguous destructive targets or unrequested changes. Do not create keys or invite members as automatic onboarding, and never save credentials in project config or reports. Inference provider keys are not needed.
 
-### Team Management
-
-- `invite_member` — Invite a user by email with a role
-- `list_members` — List members and pending invites
-- `update_member_role` — Change a member's role (admin/member)
-- `remove_member` — Remove a member from a brand
-
-### Style Management
-
-- `list_styles` — List available styles (system + custom)
-- `create_style` — Create a custom brand style
-- `get_style` — Get style details and references
-- `update_style` — Update a custom style
-- `delete_style` — Delete a custom style
-
-### API Key Management
-
-- `create_api_key` — Create a new API key for automation
-- `list_api_keys` — List active keys with usage stats
-- `revoke_api_key` — Permanently revoke an API key
-
-## Behavior
-
-When the user asks to manage brands, members, styles, or API keys:
-
-1. Use the appropriate tool from the list above
-2. For destructive actions (delete brand, remove member, revoke key), confirm with the user before proceeding
-3. When creating a brand, offer to set up default style and invite members
-4. When inviting members, share the invite URL with the user
+Portal tasks, approvals, private project knowledge, and internal Linear/Figma/GitHub data are not automatically exposed by Asset Generator membership. Use connected domain tools and their permissions; a guide link is context, not an access grant.
