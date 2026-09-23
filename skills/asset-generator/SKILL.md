@@ -15,7 +15,7 @@ For older servers without context discovery, use `list_brands`, `list_styles`, a
 
 ## Create and improve
 
-- Browse `list_assets` and `list_styles` before generating near-duplicates. Read `get_style` for the selected look.
+- Browse `list_assets` and `list_styles` before generating near-duplicates. Use returned category and thumbnail metadata to understand the workspace library; read `get_style` for the selected look. When using a saved Style, pass its actual `styleId` to generation so images appear in that Style's UI library. Naming or describing it in the prompt is not an association.
 - For logos, call `list_brand_assets`; choose the correct brand, mark/lockup, and color. Pass each returned `generationInput` in `generate_asset.inputs`. These handles pin the official version and compile logo guidance. A mention of “logo” in MCP text alone does not attach a file.
 - `inputs` preserves order and supports official brand assets, authorized URL references, and saved receipt inputs. Do not mix it with legacy `referenceImages`. Never substitute a preview screenshot for an official logo.
 - Start with a small useful batch. Set model/size/quality only from supported capabilities; generation incurs workspace-account credits.
@@ -34,3 +34,5 @@ For older servers without context discovery, use `list_brands`, `list_styles`, a
 Current generation calls are synchronous. If a call times out or disconnects, check recent assets and their details before retrying: the provider may still complete and a blind retry may charge twice. Report uncertainty if completion cannot be established. Authentication and limits are handled by the service; never work around them with another org or a provider key.
 
 Brand/team management is in the optional `brand-manager` skill. For repeatable Style experiments, see `style-gym`.
+
+When creating a shared Style, complete its library presentation as well: reuse the appropriate existing category, generate examples with its returned ID, set a representative example with `set_style_thumbnail` when available, and verify the examples with a Style-filtered `list_assets` call. Keep local exploration, a saved Style, and a published webpage distinct in the handoff.
