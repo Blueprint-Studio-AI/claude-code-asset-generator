@@ -5,34 +5,26 @@ description: Create, edit, inspect, and download images with Blueprint Studio As
 
 # Asset Generator
 
-Use the connected Blueprint MCP tools. These are composable suggestions, not a required workflow.
+Use the connected Blueprint MCP tools directly or adapt these optional workflows. Before workspace calls or generation, read [the MCP contract](references/mcp-contract.md) for account OAuth, explicit per-call `brandId`, durable jobs, and discovery-gated additions. `generate_asset` returns a job immediately: use a fresh UUID `requestId` per intended generation, reuse it only with identical arguments for transport retries, and poll the returned job in the same workspace until terminal. A timeout never proves failure or a refund.
 
-## Establish context
+## Context and creation
 
-Call `get_workspace_context` and `list_models` when available. Confirm the connected workspace matches the task. Read the returned brand guide when relevant. A project’s `.blueprint.json` can supply output paths and preferred Style/settings, but cannot authorize or switch organizations. User instructions take precedence; otherwise use the model's returned defaults.
+- Select the intended workspace from `list_brands`. When available, use `get_workspace_context` and read the relevant published guide. A project's `.blueprint.json` can supply preferred output paths and settings, but grants no access. User instructions take precedence.
+- Browse `list_assets` when reuse would help and `list_styles` to choose a look. Read `get_style` as needed. Pass the actual `styleId` when using a saved Style; describing its name in a prompt does not associate the image with it.
+- When exposed, use `list_models` for capabilities/defaults and `list_brand_assets` for official version-pinned `generationInput` handles. Preserve their order in `inputs`. Select the exact `parentAssetId` for edits when the schema supports it. See the contract for rollout limits and retries.
+- Keep the batch proportional to the brief and any stated budget. Each intended generation can consume credits. Use only supported model/settings, then download and actually view saved outputs before endorsing them. Check composition, lettering, logo fidelity, cropping, and intended placement; revise meaningful variables when useful.
+- Keep returned asset, receipt, and Style IDs with accepted work. Use `get_generation_details` when available to inspect captured settings; report missing information as unknown.
 
-For older servers without context discovery, use `list_brands`, `list_styles`, and the connection's selected organization. Do not assume naming a brand in the prompt selects it. Do not claim new tools are available until they appear in tool discovery.
+## Shared Styles
 
-## Create and improve
+Get existing categories from `list_styles` before creating a Style. Reuse a fitting category unless the user requests another. Create the Style before generating its saved examples, and pass its returned `styleId` with the intended `brandId` on those generations. Freestyle exploration remains Freestyle; never retroactively label it as a saved Style's output.
 
-- Browse `list_assets` and `list_styles` before generating near-duplicates. Use returned category and thumbnail metadata to understand the workspace library; read `get_style` for the selected look. When using a saved Style, pass its actual `styleId` to generation so images appear in that Style's UI library. Naming or describing it in the prompt is not an association.
-- For logos, call `list_brand_assets`; choose the correct brand, mark/lockup, and color. Pass each returned `generationInput` in `generate_asset.inputs`. These handles pin the official version and compile logo guidance. A mention of “logo” in MCP text alone does not attach a file.
-- `inputs` preserves order and supports official brand assets, authorized URL references, and saved receipt inputs. Do not mix it with legacy `referenceImages`. Never substitute a preview screenshot for an official logo.
-- Start with a small useful batch. Set model/size/quality only from supported capabilities; generation incurs workspace-account credits.
-- To edit, call `generate_asset` with the exact `parentAssetId` and edit instructions. Select the ancestor the user means, not the newest image in a thread. It creates a descendant and preserves the source.
-- Download and actually view each output before endorsing it. Check composition, style, lettering, logo fidelity, cropping, and intended placement. Revise one variable at a time when useful.
-- Save `assetId`, `receiptId`, Style ID, and chosen settings alongside accepted work. `get_generation_details` reports captured settings and Style version without exposing protected instructions. Missing receipt fields are not defaults.
+Finish the library entry with a representative saved example: read the Style's `updatedAt` using `get_style`, then call `set_style_thumbnail` with the example's `assetId` and `expectedUpdatedAt` in that workspace. Refresh on a conflict rather than blindly retrying. Verify category/thumbnail with `get_style` and examples with Style-filtered `list_assets`. The thumbnail changes display metadata, not generation references. If a required tool is absent, report the unfinished portion.
 
-## Deliver files
+## Delivery
 
-`download_asset` returns image bytes and MIME type; a returned image URL is also usable with the host's download tools. Preserve the actual format (`.jpg`, `.png`, or `.webp`), never just rename JPEG bytes to PNG. Use the requested project location or its `.blueprint.json` outputDir; otherwise choose a conventional asset folder in that project. Update image references in code when part of the task.
+`download_asset` returns image bytes and MIME type; a returned image URL also works with host download tools. Preserve the actual format rather than renaming JPEG bytes to PNG. Use the requested project location or its `.blueprint.json` outputDir; otherwise choose a conventional project asset folder. Update code references when part of the task.
 
-`remove_background` produces a new transparent cutout asset. Keep its returned asset identity; inspect edges and alpha before using it. Prefer CSS or vector code for simple backgrounds, typography, and existing official logos; generate the imagery that benefits from it.
+`remove_background` saves a new cutout. If its schema exposes `operationId`, retain the same ID and source asset for recovery and honor processing responses. Keep its returned asset identity and inspect edges/alpha. Prefer CSS or vector code for simple backgrounds, typography, and existing official logos.
 
-## Recovery
-
-Current generation calls are synchronous. If a call times out or disconnects, check recent assets and their details before retrying: the provider may still complete and a blind retry may charge twice. Report uncertainty if completion cannot be established. Authentication and limits are handled by the service; never work around them with another org or a provider key.
-
-Brand/team management is in the optional `brand-manager` skill. For repeatable Style experiments, see `style-gym`.
-
-When creating a shared Style, complete its library presentation as well: reuse the appropriate existing category, generate examples with its returned ID, set a representative example with `set_style_thumbnail` when available, and verify the examples with a Style-filtered `list_assets` call. Keep local exploration, a saved Style, and a published webpage distinct in the handoff.
+Hand off files and returned IDs, plus unresolved job handles if any. A saved asset is not automatically a published webpage. For requested administration see `brand-manager`; for reusable Style experiments see `style-gym`.
