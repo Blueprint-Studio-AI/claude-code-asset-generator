@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.blueprint-studio-ai/blueprint-studio",
+  "name": "io.github.Blueprint-Studio-AI/blueprint-studio",
   "title": "Blueprint Studio",
   "description": "Brand context, Styles, official assets, and image generation for Blueprint Studio workspaces.",
   "version": "2.0.0",
