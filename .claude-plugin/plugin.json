@@ -1,7 +1,7 @@
 {
   "name": "blueprint-studio",
+  "version": "2.0.1",
   "description": "Official brand context and Asset Generator tools for Blueprint Studio workspaces.",
-  "version": "2.0.0",
   "author": {
     "name": "Blueprint Studio",
     "email": "blueprint.dao@gmail.com",
