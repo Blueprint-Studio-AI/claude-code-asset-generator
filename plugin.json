@@ -1,13 +1,44 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "blueprint-studio",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Official brand context and Asset Generator tools for Blueprint Studio workspaces.",
   "author": {
     "name": "Blueprint Studio",
+    "email": "blueprint.dao@gmail.com",
     "url": "https://blueprintstudio.ai"
   },
   "homepage": "https://blueprintstudio.ai",
   "repository": "https://github.com/Blueprint-Studio-AI/claude-code-asset-generator",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "asset-generation",
+    "image-generation",
+    "brand-management",
+    "design",
+    "icons",
+    "illustrations"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Blueprint Studio",
+        "shortDescription": "Create with your brand and shared asset library.",
+        "longDescription": "Create and inspect assets with workspace Styles and durable generation jobs. Discover additional brand context when the connected server supports it. Optional skills support creation, administration, and Style experiments.",
+        "developerName": "Blueprint Studio",
+        "category": "Productivity",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "defaultPrompt": [
+          "Help me create assets for my Blueprint Studio workspace."
+        ],
+        "websiteURL": "https://blueprintstudio.ai",
+        "privacyPolicyURL": "https://blueprintstudio.ai/privacy-policy",
+        "termsOfServiceURL": "https://blueprintstudio.ai/terms"
+      }
+    }
+  }
 }

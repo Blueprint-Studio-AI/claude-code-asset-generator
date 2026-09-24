@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Blueprint-Studio-AI/blueprint-studio",
   "title": "Blueprint Studio",
-  "description": "Brand context, Styles, official assets, and image generation for Blueprint Studio workspaces.",
-  "version": "2.0.0",
+  "description": "Official brand context and Asset Generator tools for Blueprint Studio workspaces.",
+  "version": "2.0.1",
   "repository": {
     "url": "https://github.com/Blueprint-Studio-AI/claude-code-asset-generator",
     "source": "github"
