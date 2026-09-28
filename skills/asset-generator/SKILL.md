@@ -9,7 +9,7 @@ Use the connected Blueprint MCP tools directly or adapt these optional workflows
 
 ## First run
 
-Start with `get_workspace_context`. It returns the plan, credits left, what a default image costs, the account's brands and, for a new account, a `gettingStarted` block. A new account needs no brand or Style: omit `brandId` to create in the personal library with the defaults. When `gettingStarted` is present and the user wants an image, make one promptly (at most one short question), leaving `modelId`, `imageSize` and `quality` unset. Show the finished image, then offer variations and, after the first image, brand setup.
+Start with `get_workspace_context`. It returns the plan, credits left, what a default image costs, the account's brands and, for a new account, a `gettingStarted` block. A new account needs no brand or Style: omit `brandId` to create in the personal library with the defaults. When `gettingStarted` is present and the user wants an image, make one promptly (at most one short question), leaving `modelId`, `imageSize` and `quality` unset. Show the finished image, then offer variations and, after the first image, brand setup. For a guided welcome (what Blueprint does, the real allowance, three starters), use the `start` skill.
 
 ## Context and creation
 

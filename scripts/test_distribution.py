@@ -1,5 +1,6 @@
 import copy
 import json
+import re
 from pathlib import Path
 import tempfile
 import unittest
@@ -74,6 +75,53 @@ class DistributionTests(unittest.TestCase):
                        {"repository": "https://example.com/org/repo"}]:
             with self.subTest(change=change), self.assertRaises(ValueError):
                 render({**self.plugin, **change}, self.mcp)
+
+    def test_codex_starters_fit_the_composer(self):
+        # Codex shows at most 3 starters and truncates each after 128 characters.
+        starters = self.plugin["extensions"]["com.openai"]["interface"]["defaultPrompt"]
+        self.assertTrue(1 <= len(starters) <= 3)
+        for starter in starters:
+            with self.subTest(starter=starter):
+                self.assertIsInstance(starter, str)
+                self.assertTrue(0 < len(starter.strip()) <= 128)
+
+
+SKILL_KEYS = {"name", "description", "license", "allowed-tools", "metadata"}
+LINK = re.compile(r"\]\(([^)#\s]+)(?:#[^)]*)?\)")
+
+
+def frontmatter(text):
+    lines = text.split("\n")
+    if lines[0] != "---" or "---" not in lines[1:]:
+        return None
+    end = lines.index("---", 1)
+    return dict(line.split(": ", 1) for line in lines[1:end] if line.strip())
+
+
+class SkillTests(unittest.TestCase):
+    def test_every_skill_has_valid_frontmatter(self):
+        skills = sorted((ROOT / "skills").glob("*/SKILL.md"))
+        self.assertIn("start", [path.parent.name for path in skills])
+        for path in skills:
+            with self.subTest(skill=path.parent.name):
+                meta = frontmatter(path.read_text())
+                self.assertIsNotNone(meta)
+                self.assertLessEqual(set(meta), SKILL_KEYS)
+                self.assertEqual(meta["name"], path.parent.name)
+                self.assertRegex(meta["name"], r"^[a-z0-9]+(-[a-z0-9]+)*$")
+                description = meta["description"].strip()
+                self.assertTrue(0 < len(description) <= 1024)
+                self.assertNotRegex(description, "[<>]")
+
+    def test_relative_links_resolve(self):
+        docs = [ROOT / "README.md", *sorted((ROOT / "skills").rglob("*.md")),
+                *sorted((ROOT / "agents").glob("*.md"))]
+        for doc in docs:
+            for target in LINK.findall(doc.read_text()):
+                if "://" in target or target.startswith("mailto:"):
+                    continue
+                with self.subTest(doc=doc.relative_to(ROOT).as_posix(), target=target):
+                    self.assertTrue((doc.parent / target).exists())
 
 
 if __name__ == "__main__":
