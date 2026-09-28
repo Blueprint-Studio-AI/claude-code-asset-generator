@@ -27,7 +27,13 @@ Finish the library entry with a representative saved example: read the Style's `
 
 ## Delivery
 
-`download_asset` returns image bytes and MIME type; a returned image URL also works with host download tools. Preserve the actual format rather than renaming JPEG bytes to PNG. Use the requested project location or its `.blueprint.json` outputDir; otherwise choose a conventional project asset folder. Update code references when part of the task.
+A completed `get_generation_status`, and `download_asset`, return a small preview image you can see plus `webUrl` (the image in the user's Blueprint Studio library), `libraryUrl`, a full-resolution `downloadUrl`, and `suggestedFilename`. Older servers return only `imageUrl`; use it as the download URL. After each image the user keeps:
+
+1. **Save it into the project** unless the user said not to: the requested location, else `.blueprint.json` `outputDir`, else `./assets/`. Name it from `suggestedFilename` or a short slug of the brief, and keep its real extension (never rename JPEG bytes to PNG). With shell access: `mkdir -p assets && curl -fsSL -o "assets/<file>" "<downloadUrl>"`; otherwise use the host's download tool. `download_asset` inlines base64 only with `includeBase64`, for hosts without network access; never paste base64 into files by hand.
+2. **Show where it is.** Give the saved path and always the `webUrl`, so the user can open it in Blueprint Studio; give `libraryUrl` the first time, for everything they have made.
+3. **Offer to open it** on their machine: `open <path>` on macOS, `xdg-open <path>` on Linux, `start "" <path>` on Windows. Open it when the user agrees or asked to see it, not in headless or CI sessions.
+
+Update code references when part of the task.
 
 `remove_background` saves a new cutout. If its schema exposes `operationId`, retain the same ID and source asset for recovery and honor processing responses. Keep its returned asset identity and inspect edges/alpha. Prefer CSS or vector code for simple backgrounds, typography, and existing official logos.
 
