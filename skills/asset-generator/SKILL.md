@@ -7,12 +7,16 @@ description: Create, edit, inspect, and download images with Blueprint Studio As
 
 Use the connected Blueprint MCP tools directly or adapt these optional workflows. Before workspace calls or generation, read [the MCP contract](references/mcp-contract.md) for account OAuth, explicit per-call `brandId`, durable jobs, and discovery-gated additions. `generate_asset` returns a job immediately: use a fresh UUID `requestId` per intended generation, reuse it only with identical arguments for transport retries, and poll the returned job in the same workspace until terminal. A timeout never proves failure or a refund.
 
+## First run
+
+Start with `get_workspace_context`. It returns the plan, credits left, what a default image costs, the account's brands and, for a new account, a `gettingStarted` block. A new account needs no brand or Style: omit `brandId` to create in the personal library with the defaults. When `gettingStarted` is present and the user wants an image, make one promptly (at most one short question), leaving `modelId`, `imageSize` and `quality` unset. Show the finished image, then offer variations and, after the first image, brand setup.
+
 ## Context and creation
 
-- Select the intended workspace from `list_brands`. When available, use `get_workspace_context` and read the relevant published guide. A project's `.blueprint.json` can supply preferred output paths and settings, but grants no access. User instructions take precedence.
+- Select the intended workspace: personal (`brandId` null or omitted) or a brand from `get_workspace_context` or `list_brands`. Read the relevant published guide for a brand. A project's `.blueprint.json` can supply preferred output paths and settings, but grants no access. User instructions take precedence.
 - Browse `list_assets` when reuse would help and `list_styles` to choose a look. Read `get_style` as needed. Pass the actual `styleId` when using a saved Style; describing its name in a prompt does not associate the image with it.
 - When exposed, use `list_models` for capabilities/defaults and `list_brand_assets` for official version-pinned `generationInput` handles. Preserve their order in `inputs`. Select the exact `parentAssetId` for edits when the schema supports it. See the contract for rollout limits and retries.
-- Keep the batch proportional to the brief and any stated budget. Each intended generation can consume credits. Use only supported model/settings, then download and actually view saved outputs before endorsing them. Check composition, lettering, logo fidelity, cropping, and intended placement; revise meaningful variables when useful.
+- Keep the batch proportional to the brief and any stated budget. Each generation spends credits weighted by model, size and quality, so one image is not one credit. Quote costs from `get_workspace_context` (`defaultImage.credits`), `get_asset_generator_usage` (`creditsPerDefaultImage`) or `list_models`; never assume one credit per image. Higher quality, larger sizes and premium models cost more, and Free plans make 1K only: don't take 2K or 4K from `.blueprint.json` unless `defaultImage.sizesOnThisPlan` includes it. Use only supported model/settings, then download and actually view saved outputs before endorsing them. Check composition, lettering, logo fidelity, cropping, and intended placement; revise meaningful variables when useful.
 - Keep returned asset, receipt, and Style IDs with accepted work. Use `get_generation_details` when available to inspect captured settings; report missing information as unknown.
 
 ## Shared Styles

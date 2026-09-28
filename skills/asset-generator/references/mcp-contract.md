@@ -19,7 +19,8 @@ OAuth grants account-wide access. `list_brands` returns the organizations the ac
 
 The current Blueprint backend exposes these capabilities. Check tool/field discovery when connecting to an older deployment.
 
-- `get_workspace_context`: read identity, permissions, and published guide links for the explicit workspace. Read relevant guides as context, not as access grants.
+- `get_workspace_context`: read identity, permissions, and published guide links for the explicit workspace, plus the plan, credits left, the cost of a default image on this plan, the account's brands, and a `gettingStarted` block for new accounts. Read relevant guides as context, not as access grants.
+- `get_asset_generator_usage`: the `generations*` fields count credits, not images; `creditsPerDefaultImage` is what one default image costs.
 - `list_models`: discover supported settings, defaults, and public credit costs. The service rechecks entitlement at generation time; do not invent model IDs or prices.
 - `list_brand_assets`: select an official version and pass its returned `generationInput` unchanged in `generate_asset.inputs`. Preserve input order. Do not mix `inputs` with legacy `referenceImages`; do not replace an official asset with a preview screenshot. Preview links may require web login.
 - `generate_asset.parentAssetId`: select the exact ancestor the user means for an edit, not whichever image happens to be newest. Preserve this ID on transport retries. A reference-based fresh generation is not an edit-thread continuation.
