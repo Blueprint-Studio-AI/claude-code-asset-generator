@@ -24,6 +24,12 @@ codex plugin add blueprint-studio@blueprint-studio-marketplace
 
 Complete the host's MCP OAuth flow when prompted. Official ChatGPT/Codex and Claude directory reviews remain separate from direct installation.
 
+## First image
+
+In Claude Code, run `/blueprint-studio:start` (or ask what Blueprint Studio can do). It reads the account, says what Blueprint does and the real free allowance, offers three starters, then makes the image from one pick, saves it into the project and links it in Blueprint Studio. No brand or setup is needed.
+
+The server also offers these starters as MCP prompts: `first_image`, `app_icon`, `social_post` and `brand_from_website`. Claude Code lists them as slash commands, e.g. `/mcp__plugin_blueprint-studio_asset-generator__first_image` with this plugin. Claude Code passes only the first word of a prompt argument, so the image starters ask for one line instead of taking one; `brand_from_website` takes a website. Codex doesn't show MCP prompts; its plugin card offers the same starters (`defaultPrompt`).
+
 Other skill-compatible hosts can use `skills/` and connect their remote MCP client to `https://tools.blueprintstudio.ai/api/mcp`. `plugin.json` and `mcp.json` provide the portable Agent Plugins manifest. Host transport spellings differ; compatibility manifests are intentionally retained.
 
 Sign in through the host's MCP OAuth flow for account-wide access. Start with `get_workspace_context`: it returns the plan, credits left, what a default image costs, accessible brands and, for new accounts, a getting-started plan. A new account needs no brand: null/omitted `brandId` creates in the personal library. To work in a brand, pass explicit `brandId` on every workspace call; null/omitted selects personal scope, not the last-used brand. Legacy scoped credentials cannot switch workspaces. A plugin install grants no membership. If an existing connection only lists one workspace despite broader account access, renew its OAuth authorization and start a fresh client/thread. Older workspace-only grants are not silently expanded; a new API key is not the repair. Service API keys remain available for scoped automation; inference provider keys are not needed and credentials never belong in checked-in files.
@@ -43,6 +49,7 @@ These capabilities require the current Blueprint server. Check live discovery fo
 
 ## Optional skills and agents
 
+- `start`: guided first run; three starters, then a first image saved into the project.
 - `asset-generator`: browse, generate, inspect, refine, and deliver assets.
 - `brand-manager`: requested workspace and Style administration.
 - `style-gym`: optional repeatable Style experiments on diverse briefs.

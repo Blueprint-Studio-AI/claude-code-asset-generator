@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "blueprint-studio",
-  "version": "2.1.0",
-  "description": "Official brand context and Asset Generator tools for Blueprint Studio workspaces.",
+  "version": "2.2.0",
+  "description": "On-brand images for your product or brand, made from your AI app. Free to start.",
   "author": {
     "name": "Blueprint Studio",
     "email": "blueprint.dao@gmail.com",
@@ -24,8 +24,8 @@
     "com.openai": {
       "interface": {
         "displayName": "Blueprint Studio",
-        "shortDescription": "Create with your brand and shared asset library.",
-        "longDescription": "Create and inspect assets with workspace Styles and durable generation jobs. Discover additional brand context when the connected server supports it. Optional skills support creation, administration, and Style experiments.",
+        "shortDescription": "On-brand images for your product or brand. Free to start.",
+        "longDescription": "Make hero images, app icons, social posts and more for your product or brand, and save them to your Blueprint Studio library. Start free with no brand or setup, then add your brand from your website so later images match it. Optional skills cover a guided first image, creation, brand administration and Style experiments.",
         "developerName": "Blueprint Studio",
         "category": "Productivity",
         "capabilities": [
@@ -33,7 +33,9 @@
           "Write"
         ],
         "defaultPrompt": [
-          "Help me create assets for my Blueprint Studio workspace."
+          "Make my first image with Blueprint Studio",
+          "Design an app icon for my app with Blueprint Studio",
+          "Set up my brand from my website in Blueprint Studio"
         ],
         "websiteURL": "https://blueprintstudio.ai",
         "privacyPolicyURL": "https://blueprintstudio.ai/privacy-policy",
