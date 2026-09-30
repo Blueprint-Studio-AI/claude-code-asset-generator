@@ -1,7 +1,7 @@
 {
   "name": "blueprint-studio",
-  "version": "2.3.0",
-  "description": "On-brand images and visual assets in Claude Code and Codex, from Blueprint Studio, a design and development studio. Studio clients get their official logos, brand guides and Styles built in.",
+  "version": "2.3.1",
+  "description": "On-brand images and visual assets in Claude Code and Codex with Blueprint Studio Asset Generator, from Blueprint Studio, a design and development studio. Studio clients get their official logos, brand guides and Styles built in.",
   "author": {
     "name": "Blueprint Studio",
     "email": "blueprint.dao@gmail.com",
@@ -23,7 +23,7 @@
   "interface": {
     "displayName": "Blueprint Studio",
     "shortDescription": "Your brand's Styles, logos and assets in your AI app. Free to start.",
-    "longDescription": "Keep your brand's Styles, official logos and guides, and asset library in Blueprint Studio, shared with your team. Your AI app uses them to make on-brand icons, social graphics, hero images and slides, and saves each one to your library. Start free: set up your brand from your website, or start in your personal library with no setup. Optional skills cover a guided start, asset creation, brand administration and Style experiments.",
+    "longDescription": "Keep your brand's Styles, official logos and guides, and asset library in Blueprint Studio, shared with your team. With Blueprint Studio Asset Generator, your AI app uses them to make on-brand icons, social graphics, hero images and slides, and saves each one to your library. Start free: make a first image in your personal library with no setup, then set up your brand from your website. Optional skills cover a guided start, asset creation, brand administration and Style experiments.",
     "developerName": "Blueprint Studio",
     "category": "Productivity",
     "capabilities": [
@@ -31,9 +31,9 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Set up my brand from my website in Blueprint Studio",
-      "Show my brand's Styles and logos in Blueprint Studio",
-      "Design an app icon for my app with Blueprint Studio"
+      "Use Blueprint Studio Asset Generator to make a hero image for my website",
+      "Set up my brand from my website in Asset Generator",
+      "Show my brand's Styles and logos in Asset Generator"
     ],
     "websiteURL": "https://blueprintstudio.ai",
     "privacyPolicyURL": "https://blueprintstudio.ai/privacy-policy",

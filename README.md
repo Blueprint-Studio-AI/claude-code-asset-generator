@@ -1,8 +1,8 @@
 # Blueprint Studio
 
-Blueprint Studio is a design and development studio. This plugin connects Claude Code and Codex to Blueprint Studio, so anyone can create on-brand images and visual assets with their own brand's Styles and logos. Studio clients also get the brand workspace our team maintains for them (official logos, brand guides and Styles) right inside their coding agent.
+Blueprint Studio is a design and development studio. This plugin connects Claude Code and Codex to Blueprint Studio Asset Generator, so anyone can create on-brand images and visual assets with their own brand's Styles and logos. Studio clients also get the brand workspace our team maintains for them (official logos, brand guides and Styles) right inside their coding agent.
 
-Your brand's Styles, official logos and guides, and asset library live in one place, shared with your team. Your agent uses them to make on-brand icons, social graphics, hero images and slides that match, and saves them to your project and your Blueprint library. Workflow skills and agents are optional; tools can be used directly.
+Your brand's Styles, official logos and guides, and asset library live in one place, shared with your team. Your agent uses them to make on-brand icons, social graphics, hero images and slides that match, and saves them to your project and your Asset Generator library. Workflow skills and agents are optional; tools can be used directly.
 
 Using Claude on the web, desktop or mobile, ChatGPT, Cursor or VS Code instead? See [Connect your AI](https://tools.blueprintstudio.ai/mcp-setup).
 
@@ -17,7 +17,7 @@ Claude Code:
 /plugin install blueprint-studio@blueprint-studio-marketplace
 ```
 
-To connect, run `/mcp`, choose Blueprint Studio and Authenticate; if your browser says it can't connect after you approve, copy the address from the address bar and paste it into Claude Code, or run `/mcp` → Authenticate again.
+To connect, run `/mcp`, choose Blueprint Studio and Authenticate; if your browser can't connect after you approve, copy the link from the Blueprint Studio tab and paste it into Claude Code, or run `/mcp` → Authenticate again.
 
 For a local branch preview, start Claude Code with `--plugin-dir /absolute/path/to/this/repo`. Avoid adding a second standalone MCP connection if the plugin already supplies `asset-generator`.
 
@@ -32,9 +32,17 @@ Complete the host's MCP OAuth flow when prompted. Official ChatGPT/Codex and Cla
 
 ## First image
 
-In Claude Code, run `/blueprint-studio:start` (or ask what Blueprint Studio can do). It reads the account, says what Blueprint does and the real free allowance, offers three starters, then makes the image from one pick, saves it into the project and links it in Blueprint Studio. No brand or setup is needed.
+In Claude Code, run `/blueprint-studio:start` (or ask what Blueprint Studio Asset Generator can do). It reads the account, says what Asset Generator does and the real free allowance, offers three starters, then makes the image from one pick, saves it into the project and links it in Asset Generator. No brand or setup is needed.
 
-The server also offers these starters as MCP prompts: `first_image`, `app_icon`, `social_post` and `brand_from_website`. Claude Code lists them as slash commands, e.g. `/mcp__plugin_blueprint-studio_asset-generator__first_image` with this plugin. Claude Code passes only the first word of a prompt argument, so the image starters ask for one line instead of taking one; `brand_from_website` takes a website. Codex doesn't show MCP prompts; its plugin card offers the same starters (`defaultPrompt`).
+Or ask for one directly, in any host:
+
+> Use Blueprint Studio Asset Generator to make a hero image for my website: a cozy neighborhood coffee shop at sunrise, warm light, 16:9
+
+Then, so later images match your brand:
+
+> Set up my brand from mywebsite.com so my images match it
+
+The server also offers these starters as MCP prompts: `first_image`, `brand_from_website`, `app_icon` and `social_post`. Claude Code lists them as slash commands, e.g. `/mcp__plugin_blueprint-studio_asset-generator__first_image` with this plugin. Claude Code passes only the first word of a prompt argument, so the image starters ask for one line instead of taking one; `brand_from_website` takes a website. Codex doesn't show MCP prompts; its plugin card offers the same starters (`defaultPrompt`).
 
 Other skill-compatible hosts can use `skills/` and connect their remote MCP client to `https://tools.blueprintstudio.ai/api/mcp`. `plugin.json` and `mcp.json` provide the portable Agent Plugins manifest. Host transport spellings differ; compatibility manifests are intentionally retained.
 
@@ -64,7 +72,7 @@ Claude Code also discovers two agents from `agents/`: `blueprint-studio:asset-cr
 
 Suggested handoff to an existing project agent:
 
-> Use Blueprint Studio for this project's brand context and assets. Select the intended brand from list_brands and pass its brandId on each call. Inspect available Styles and any discovered brand guides/official assets. Continue the existing brief. Use tools directly or adapt the optional workflows; save selected asset/receipt/Style IDs and any unresolved job/request IDs with the work so another session can resume.
+> Use Blueprint Studio Asset Generator for this project's brand context and assets. Select the intended brand from list_brands and pass its brandId on each call. Inspect available Styles and any discovered brand guides/official assets. Continue the existing brief. Use tools directly or adapt the optional workflows; save selected asset/receipt/Style IDs and any unresolved job/request IDs with the work so another session can resume.
 
 A project `.blueprint.json` may set local preferences. It is not an authorization mechanism. Do not duplicate live brand files into this plugin to personalize an installation.
 
