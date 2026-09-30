@@ -6,7 +6,7 @@ These are tool contract requirements; the surrounding creative workflow is optio
 
 Use the host's authentication tool when available. If the user asked to connect and browser opening is supported, open the freshly returned authorization URL in the same turn; otherwise give the link promptly. Let the user approve access. Native sign-in attempts are short-lived: when resuming an earlier login request, start a fresh attempt instead of reopening a link from conversation history.
 
-If the browser cannot return to the app, a still-active attempt can use the host's manual callback completion when offered. After a timeout or a “no flow in progress” response, start a new attempt; don't reuse the old callback or modify its destination. Never log callback codes or include them in project files. If authentication tools are unavailable, direct Claude Code users to `/mcp` → Blueprint Studio (`asset-generator`) → Authenticate. Confirm `get_workspace_context` succeeds before saying the tools are connected.
+If the browser cannot return to the app, a still-active attempt can use the host's manual callback completion when offered. After a timeout or a “no flow in progress” response, start a new attempt; don't reuse the old callback or modify its destination. Never log callback codes or include them in project files. If authentication tools are unavailable, direct Claude Code users to `/mcp` → `plugin:blueprint-studio:asset-generator` (Blueprint Studio) → Authenticate. Confirm `get_workspace_context` succeeds before saying the tools are connected.
 
 ## Workspace per call
 
