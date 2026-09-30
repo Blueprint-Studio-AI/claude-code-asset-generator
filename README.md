@@ -17,6 +17,8 @@ Claude Code:
 /plugin install blueprint-studio@blueprint-studio-marketplace
 ```
 
+To connect, run `/mcp`, choose Blueprint Studio and Authenticate; if your browser says it can't connect after you approve, copy the address from the address bar and paste it into Claude Code, or run `/mcp` → Authenticate again.
+
 For a local branch preview, start Claude Code with `--plugin-dir /absolute/path/to/this/repo`. Avoid adding a second standalone MCP connection if the plugin already supplies `asset-generator`.
 
 Codex uses the portable package with `.codex-plugin/plugin.json` retained for older clients. Install the same package through the existing marketplace:
