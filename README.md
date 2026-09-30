@@ -17,7 +17,7 @@ Claude Code:
 /plugin install blueprint-studio@blueprint-studio-marketplace
 ```
 
-To connect, run `/mcp`, choose Blueprint Studio and Authenticate; if your browser can't connect after you approve, copy the link from the Blueprint Studio tab and paste it into Claude Code, or run `/mcp` → Authenticate again.
+To connect, run `/mcp`, select `plugin:blueprint-studio:asset-generator` (Blueprint Studio) and choose Authenticate; if your browser can't connect after you approve, copy the link from the Blueprint Studio tab and paste it into Claude Code, or run `/mcp` → `plugin:blueprint-studio:asset-generator` → Authenticate again.
 
 For a local branch preview, start Claude Code with `--plugin-dir /absolute/path/to/this/repo`. Avoid adding a second standalone MCP connection if the plugin already supplies `asset-generator`.
 
