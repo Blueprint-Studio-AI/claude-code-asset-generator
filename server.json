@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Blueprint-Studio-AI/blueprint-studio",
   "title": "Blueprint Studio",
-  "description": "On-brand images for your product or brand, made from your AI app. Free to start.",
-  "version": "2.2.0",
+  "description": "Your brand's Styles, logos and asset library in your AI app, for on-brand assets that match.",
+  "version": "2.2.1",
   "repository": {
     "url": "https://github.com/Blueprint-Studio-AI/claude-code-asset-generator",
     "source": "github"

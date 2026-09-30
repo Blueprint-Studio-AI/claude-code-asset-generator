@@ -1,6 +1,8 @@
 # Blueprint Studio
 
-One plugin for Blueprint Studio Styles, assets, and durable image generation. Additional brand-context tools expose published guides and official assets when enabled on the connected server. Workflow skills and agents are optional; tools can be used directly.
+Blueprint Studio keeps your brand's Styles, official logos and guides, and asset library in one place, shared with your team. This plugin brings them into Claude Code and Codex, so your agent makes on-brand icons, social graphics, hero images and slides that match, and saves them to your project and your Blueprint library. Workflow skills and agents are optional; tools can be used directly.
+
+Using Claude on the web, desktop or mobile, ChatGPT, Cursor or VS Code instead? See [Connect your AI](https://tools.blueprintstudio.ai/mcp-setup).
 
 This is the existing `blueprint-studio` plugin, upgraded in place. Its historical repository name remains `claude-code-asset-generator` to preserve installs. The public [Blueprint marketplace](https://github.com/Blueprint-Studio-AI/claude-code-marketplace) remains the discovery source. No second plugin or private brand snapshot is required.
 

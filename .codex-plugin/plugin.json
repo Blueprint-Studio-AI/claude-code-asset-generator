@@ -1,7 +1,7 @@
 {
   "name": "blueprint-studio",
-  "version": "2.2.0",
-  "description": "On-brand images for your product or brand, made from your AI app. Free to start.",
+  "version": "2.2.1",
+  "description": "Your brand's Styles, logos and asset library in your AI app, for on-brand assets that match.",
   "author": {
     "name": "Blueprint Studio",
     "email": "blueprint.dao@gmail.com",
@@ -11,19 +11,19 @@
   "repository": "https://github.com/Blueprint-Studio-AI/claude-code-asset-generator",
   "license": "MIT",
   "keywords": [
-    "ai",
-    "asset-generation",
-    "image-generation",
     "brand-management",
+    "brand-assets",
     "design",
+    "styles",
+    "logos",
     "icons",
-    "illustrations"
+    "asset-generation"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Blueprint Studio",
-    "shortDescription": "On-brand images for your product or brand. Free to start.",
-    "longDescription": "Make hero images, app icons, social posts and more for your product or brand, and save them to your Blueprint Studio library. Start free with no brand or setup, then add your brand from your website so later images match it. Optional skills cover a guided first image, creation, brand administration and Style experiments.",
+    "shortDescription": "Your brand's Styles, logos and assets in your AI app. Free to start.",
+    "longDescription": "Keep your brand's Styles, official logos and guides, and asset library in Blueprint Studio, shared with your team. Your AI app uses them to make on-brand icons, social graphics, hero images and slides, and saves each one to your library. Start free: set up your brand from your website, or start in your personal library with no setup. Optional skills cover a guided start, asset creation, brand administration and Style experiments.",
     "developerName": "Blueprint Studio",
     "category": "Productivity",
     "capabilities": [
@@ -31,9 +31,9 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Make my first image with Blueprint Studio",
-      "Design an app icon for my app with Blueprint Studio",
-      "Set up my brand from my website in Blueprint Studio"
+      "Set up my brand from my website in Blueprint Studio",
+      "Show my brand's Styles and logos in Blueprint Studio",
+      "Design an app icon for my app with Blueprint Studio"
     ],
     "websiteURL": "https://blueprintstudio.ai",
     "privacyPolicyURL": "https://blueprintstudio.ai/privacy-policy",
