@@ -15,11 +15,14 @@ class DistributionTests(unittest.TestCase):
 
     def test_single_edit_reaches_every_host(self):
         self.plugin.update(version="9.1.2", description="Updated shared description")
+        self.plugin["extensions"]["io.modelcontextprotocol.registry"]["description"] = "Registry line"
         self.mcp["mcpServers"]["asset-generator"]["url"] = "https://example.com/mcp"
         result = render(self.plugin, self.mcp)
         for file in [".claude-plugin/plugin.json", ".codex-plugin/plugin.json", "server.json"]:
             self.assertEqual(result[file]["version"], "9.1.2")
+        for file in [".claude-plugin/plugin.json", ".codex-plugin/plugin.json"]:
             self.assertEqual(result[file]["description"], "Updated shared description")
+        self.assertEqual(result["server.json"]["description"], "Registry line")
         self.assertEqual(result[".mcp.json"]["mcpServers"]["asset-generator"], {
             "type": "http", "url": "https://example.com/mcp",
         })
@@ -71,10 +74,28 @@ class DistributionTests(unittest.TestCase):
                 sync(root, check=True)
 
     def test_rejects_invalid_registry_metadata(self):
-        for change in [{"version": "release"}, {"description": "x" * 101},
+        for change in [{"version": "release"}, {"description": "x" * 251},
                        {"repository": "https://example.com/org/repo"}]:
             with self.subTest(change=change), self.assertRaises(ValueError):
                 render({**self.plugin, **change}, self.mcp)
+        long_line = copy.deepcopy(self.plugin)
+        long_line["extensions"]["io.modelcontextprotocol.registry"]["description"] = "x" * 101
+        with self.assertRaises(ValueError):
+            render(long_line, self.mcp)
+
+    def test_registry_keeps_its_own_one_liner(self):
+        # The plugin description says who we are; the Registry's 100 characters don't fit it.
+        result = render(self.plugin, self.mcp)
+        registry = self.plugin["extensions"]["io.modelcontextprotocol.registry"]["description"]
+        self.assertEqual(result["server.json"]["description"], registry)
+        self.assertLessEqual(len(registry), 100)
+        self.assertNotIn("io.modelcontextprotocol.registry", json.dumps(result[".claude-plugin/plugin.json"]))
+        self.assertIn("design and development studio", self.plugin["description"])
+        # Without the extension, the Registry falls back to the shared description.
+        bare = copy.deepcopy(self.plugin)
+        del bare["extensions"]["io.modelcontextprotocol.registry"]
+        bare["description"] = "Short shared description"
+        self.assertEqual(render(bare, self.mcp)["server.json"]["description"], "Short shared description")
 
     def test_codex_starters_fit_the_composer(self):
         # Codex shows at most 3 starters and truncates each after 128 characters.
@@ -112,6 +133,47 @@ class SkillTests(unittest.TestCase):
                 description = meta["description"].strip()
                 self.assertTrue(0 < len(description) <= 1024)
                 self.assertNotRegex(description, "[<>]")
+                # One plain YAML scalar: ": " or " #" would break or truncate it.
+                self.assertNotIn(": ", description)
+                self.assertNotIn(" #", description)
+
+    def test_skills_trigger_on_intent_not_the_brand_name(self):
+        # Hosts load a skill from its description, and people ask for "an icon",
+        # not "Blueprint". Each workflow names the requests it serves.
+        expected = {
+            "asset-generator": ["any image or visual asset", "icons", "logos", "illustrations",
+                                "social graphics", "banners", "hero images", "product shots",
+                                "mockups", "placeholders", "brand assets",
+                                "default way to create images"],
+            "start": ["what images or visual assets you can make", "first image"],
+            "brand-manager": ["set up their brand", "colors", "fonts", "official logos",
+                              "brand guidelines", "team access"],
+            "style-gym": ["consistent look across many assets", "Style library"],
+        }
+        for name, phrases in expected.items():
+            meta = frontmatter((ROOT / "skills" / name / "SKILL.md").read_text())
+            for phrase in phrases:
+                with self.subTest(skill=name, phrase=phrase):
+                    self.assertIn(phrase, meta["description"])
+
+
+class AgentTests(unittest.TestCase):
+    def test_agents_describe_when_to_delegate(self):
+        agents = sorted((ROOT / "agents").glob("*.md"))
+        self.assertTrue(agents)
+        for path in agents:
+            lines = path.read_text().split("\n")
+            self.assertEqual(lines[0], "---", path.name)
+            header = lines[1:lines.index("---", 1)]
+            fields = dict(line.split(": ", 1) for line in header if ": " in line)
+            with self.subTest(agent=path.stem):
+                self.assertEqual(fields["name"], path.stem)
+                description = fields["description"].strip()
+                self.assertTrue(0 < len(description) <= 1024)
+                self.assertNotIn(": ", description)
+                self.assertNotRegex(description, "[<>]")
+        creator = (ROOT / "agents" / "asset-creator.md").read_text()
+        self.assertIn("Use proactively when a task needs several assets", creator)
 
     def test_relative_links_resolve(self):
         docs = [ROOT / "README.md", *sorted((ROOT / "skills").rglob("*.md")),

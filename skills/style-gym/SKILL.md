@@ -1,6 +1,6 @@
 ---
 name: style-gym
-description: Develop and evaluate reusable Blueprint Studio generation Styles against real briefs and visual references. Use when experimenting with Style prompts or building a new brand Style library.
+description: Develop and evaluate reusable Blueprint Studio Styles against real briefs and visual references. Use when the user wants a consistent look across many assets (a set of icons, illustrations or campaign visuals that match), wants to build or grow their brand's Style library, or is experimenting with Style prompts.
 ---
 
 # Style gym

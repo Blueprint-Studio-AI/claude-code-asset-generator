@@ -1,6 +1,6 @@
 ---
 name: brand-manager
-description: Manage Blueprint Studio brands, members, official asset discovery, and Styles when the user requests workspace administration or Style authoring.
+description: Set up and manage the user's brand in Blueprint Studio. Use when the user wants to set up their brand (for example from their website), capture or change their brand colors, fonts and tone in a Style, find their official logos or brand guidelines, or manage team access (invite or remove members, change roles, API keys for automation). Official logo files are uploaded in the Blueprint web app.
 ---
 
 # Brand Manager
