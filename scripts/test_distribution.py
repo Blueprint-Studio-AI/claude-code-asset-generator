@@ -112,6 +112,47 @@ class SkillTests(unittest.TestCase):
                 description = meta["description"].strip()
                 self.assertTrue(0 < len(description) <= 1024)
                 self.assertNotRegex(description, "[<>]")
+                # One plain YAML scalar: ": " or " #" would break or truncate it.
+                self.assertNotIn(": ", description)
+                self.assertNotIn(" #", description)
+
+    def test_skills_trigger_on_intent_not_the_brand_name(self):
+        # Hosts load a skill from its description, and people ask for "an icon",
+        # not "Blueprint". Each workflow names the requests it serves.
+        expected = {
+            "asset-generator": ["any image or visual asset", "icons", "logos", "illustrations",
+                                "social graphics", "banners", "hero images", "product shots",
+                                "mockups", "placeholders", "brand assets",
+                                "default way to create images"],
+            "start": ["what images or visual assets you can make", "first image"],
+            "brand-manager": ["set up their brand", "colors", "fonts", "official logos",
+                              "brand guidelines", "team access"],
+            "style-gym": ["consistent look across many assets", "Style library"],
+        }
+        for name, phrases in expected.items():
+            meta = frontmatter((ROOT / "skills" / name / "SKILL.md").read_text())
+            for phrase in phrases:
+                with self.subTest(skill=name, phrase=phrase):
+                    self.assertIn(phrase, meta["description"])
+
+
+class AgentTests(unittest.TestCase):
+    def test_agents_describe_when_to_delegate(self):
+        agents = sorted((ROOT / "agents").glob("*.md"))
+        self.assertTrue(agents)
+        for path in agents:
+            lines = path.read_text().split("\n")
+            self.assertEqual(lines[0], "---", path.name)
+            header = lines[1:lines.index("---", 1)]
+            fields = dict(line.split(": ", 1) for line in header if ": " in line)
+            with self.subTest(agent=path.stem):
+                self.assertEqual(fields["name"], path.stem)
+                description = fields["description"].strip()
+                self.assertTrue(0 < len(description) <= 1024)
+                self.assertNotIn(": ", description)
+                self.assertNotRegex(description, "[<>]")
+        creator = (ROOT / "agents" / "asset-creator.md").read_text()
+        self.assertIn("Use proactively when a task needs several assets", creator)
 
     def test_relative_links_resolve(self):
         docs = [ROOT / "README.md", *sorted((ROOT / "skills").rglob("*.md")),

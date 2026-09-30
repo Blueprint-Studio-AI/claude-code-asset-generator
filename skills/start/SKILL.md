@@ -1,6 +1,6 @@
 ---
 name: start
-description: Guided first run for Blueprint Studio. Says what it does and the user's real free allowance, offers three starters, then makes, saves and links a first image from one pick. Use right after the plugin is installed or connected, when the user runs start, or asks what they can do with Blueprint Studio or how to get started.
+description: Guided first run for Blueprint Studio. Says what it does and the user's real free allowance, offers three starters, then makes, saves and links a first image from one pick. Use right after the plugin is installed or connected, when the user runs start, asks what Blueprint Studio can do or how to get started, asks what images or visual assets you can make for them, or wants a first image and hasn't made one with Blueprint Studio yet.
 ---
 
 # Start

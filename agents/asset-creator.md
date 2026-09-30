@@ -1,6 +1,6 @@
 ---
 name: asset-creator
-description: Create, refine, and deliver Blueprint Studio assets for a delegated production brief, including recovery of existing generation jobs.
+description: Create, refine and deliver a set of images or visual assets with Blueprint Studio for a production brief (icon sets, illustrations, social or campaign graphics, hero images), including recovery of existing generation jobs. Use proactively when a task needs several assets made, checked and saved into the project.
 skills:
   - blueprint-studio:asset-generator
 ---
