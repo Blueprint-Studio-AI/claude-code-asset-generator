@@ -1,6 +1,8 @@
 # Blueprint Studio
 
-Blueprint Studio keeps your brand's Styles, official logos and guides, and asset library in one place, shared with your team. This plugin brings them into Claude Code and Codex, so your agent makes on-brand icons, social graphics, hero images and slides that match, and saves them to your project and your Blueprint library. Workflow skills and agents are optional; tools can be used directly.
+Blueprint Studio is a design and development studio. This plugin connects Claude Code and Codex to Blueprint Studio, so anyone can create on-brand images and visual assets with their own brand's Styles and logos. Studio clients also get the brand workspace our team maintains for them (official logos, brand guides and Styles) right inside their coding agent.
+
+Your brand's Styles, official logos and guides, and asset library live in one place, shared with your team. Your agent uses them to make on-brand icons, social graphics, hero images and slides that match, and saves them to your project and your Blueprint library. Workflow skills and agents are optional; tools can be used directly.
 
 Using Claude on the web, desktop or mobile, ChatGPT, Cursor or VS Code instead? See [Connect your AI](https://tools.blueprintstudio.ai/mcp-setup).
 
@@ -70,7 +72,7 @@ Edit shared content here once. Do not maintain copies of skills or generation lo
 
 | Authored source | Used by |
 | --- | --- |
-| `plugin.json` | Canonical name, release version, license, description, and OpenAI presentation |
+| `plugin.json` | Canonical name, release version, license, description, OpenAI presentation, and the MCP Registry one-liner |
 | `mcp.json` | Canonical remote MCP connection |
 | `skills/`, `agents/` | Shared workflows and optional host-specific agent discovery |
 | Hosted Blueprint API | All tools, permissions, brand data, and generation behavior |

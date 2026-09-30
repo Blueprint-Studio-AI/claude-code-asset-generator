@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "blueprint-studio",
   "version": "2.3.0",
-  "description": "Your brand's Styles, logos and asset library in your AI app, for on-brand assets that match.",
+  "description": "On-brand images and visual assets in Claude Code and Codex, from Blueprint Studio, a design and development studio. Studio clients get their official logos, brand guides and Styles built in.",
   "author": {
     "name": "Blueprint Studio",
     "email": "blueprint.dao@gmail.com",
@@ -41,6 +41,9 @@
         "privacyPolicyURL": "https://blueprintstudio.ai/privacy-policy",
         "termsOfServiceURL": "https://blueprintstudio.ai/terms"
       }
+    },
+    "io.modelcontextprotocol.registry": {
+      "description": "Your brand's Styles, logos and asset library in your AI app, for on-brand assets that match."
     }
   }
 }

@@ -13,6 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 IDENTITY_FIELDS = (
     "name", "version", "description", "author", "homepage", "repository", "license", "keywords"
 )
+# The MCP Registry caps descriptions at 100 characters; plugin manifests can say more.
+REGISTRY_NAMESPACE = "io.modelcontextprotocol.registry"
 
 
 def render(plugin, mcp):
@@ -28,8 +30,13 @@ def render(plugin, mcp):
     if repo.scheme != "https" or repo.netloc != "github.com" or len(repo_parts) != 2 or repo.query or repo.fragment:
         raise ValueError("Registry publication requires a canonical GitHub repository URL")
     description = plugin["description"]
-    if not isinstance(description, str) or not 1 <= len(description) <= 100:
-        raise ValueError("Shared description must fit the MCP Registry's 100-character limit")
+    if not isinstance(description, str) or not 1 <= len(description) <= 250:
+        raise ValueError("Plugin description must be 1-250 characters")
+    registry_description = plugin.get("extensions", {}).get(REGISTRY_NAMESPACE, {}).get(
+        "description", description
+    )
+    if not isinstance(registry_description, str) or not 1 <= len(registry_description) <= 100:
+        raise ValueError("Registry description must fit the MCP Registry's 100-character limit")
     common = {key: copy.deepcopy(plugin[key]) for key in IDENTITY_FIELDS if key in plugin}
     interface = copy.deepcopy(plugin["extensions"]["com.openai"]["interface"])
     servers = mcp["mcpServers"]
@@ -57,7 +64,7 @@ def render(plugin, mcp):
             "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
             "name": f"io.github.{repo_parts[0]}/{name}",
             "title": interface["displayName"],
-            "description": description,
+            "description": registry_description,
             "version": version,
             "repository": {"url": plugin["repository"], "source": "github"},
             "websiteUrl": plugin["homepage"],

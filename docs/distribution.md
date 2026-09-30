@@ -5,7 +5,7 @@ The canonical package is this repository. The historical repository name and mar
 ## Change once
 
 1. Edit `skills/` or `agents/` for workflow changes. Tool implementations live in the hosted service, not in platform adapters.
-2. Bump `version` in root `plugin.json` for every package release. Shared metadata and OpenAI presentation are authored there; connection changes belong in `mcp.json`.
+2. Bump `version` in root `plugin.json` for every package release. Shared metadata and OpenAI presentation are authored there, and the MCP Registry's 100-character one-liner lives under `extensions.io.modelcontextprotocol.registry.description`; connection changes belong in `mcp.json`.
 3. Run `python3 scripts/sync_distribution.py`. Commit the generated compatibility files and registry metadata with the source change.
 4. Run local checks below. Validate real installation/OAuth in each host whose behavior changed. Schema checks do not prove host compatibility.
 5. Merge a reviewed release and update the appropriate vendor listing. An accepted directory submission and a Git merge are different events.
