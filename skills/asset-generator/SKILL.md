@@ -13,10 +13,10 @@ Start with `get_workspace_context`. It returns the plan, credits left, what a de
 
 ## Context and creation
 
-- Select the intended workspace: personal (`brandId` null or omitted) or a brand from `get_workspace_context` or `list_brands`. Read the relevant published guide for a brand. A project's `.blueprint.json` can supply preferred output paths and settings, but grants no access. User instructions take precedence.
+- Select the intended workspace. If `get_workspace_context` returns `library.defaultBrandId` (the user's only brand), use it unless they ask for their personal library. With several brands, use the one they name; otherwise leave `brandId` out for the personal library. Read the relevant published guide for a brand. A project's `.blueprint.json` can supply preferred output paths and settings, but grants no access. User instructions take precedence.
 - Browse `list_assets` when reuse would help and `list_styles` to choose a look. Read `get_style` as needed. Pass the actual `styleId` when using a saved Style; describing its name in a prompt does not associate the image with it.
 - When exposed, use `list_models` for capabilities/defaults and `list_brand_assets` for official version-pinned `generationInput` handles. Preserve their order in `inputs`. Select the exact `parentAssetId` for edits when the schema supports it. See the contract for rollout limits and retries.
-- Keep the batch proportional to the brief and any stated budget. Each generation spends credits weighted by model, size and quality, so one image is not one credit. Quote costs from `get_workspace_context` (`defaultImage.credits`), `get_asset_generator_usage` (`creditsPerDefaultImage`) or `list_models`; never assume one credit per image. Higher quality, larger sizes and premium models cost more, and Free plans make 1K only: don't take 2K or 4K from `.blueprint.json` unless `defaultImage.sizesOnThisPlan` includes it. Use only supported model/settings, then download and actually view saved outputs before endorsing them. Check composition, lettering, logo fidelity, cropping, and intended placement; revise meaningful variables when useful.
+- Keep the batch proportional to the brief and any stated budget. Each generation spends credits weighted by model, size and quality, so one image is not one credit. Quote costs from `get_workspace_context` (`defaultImage.credits`), `get_asset_generator_usage` (`creditsPerDefaultImage`) or `list_models`; never assume one credit per image. Attached logos, product photos, references and an image being edited add no credits. Higher quality, larger sizes and premium models cost more, and Free plans make 1K only: don't take 2K or 4K from `.blueprint.json` unless `defaultImage.sizesOnThisPlan` includes it. Use only supported model/settings, then download and actually view saved outputs before endorsing them. Check composition, lettering, logo fidelity, cropping, and intended placement; revise meaningful variables when useful.
 - Keep returned asset, receipt, and Style IDs with accepted work. Use `get_generation_details` when available to inspect captured settings; report missing information as unknown.
 
 ## Shared Styles
@@ -33,8 +33,10 @@ A completed `get_generation_status`, and `download_asset`, return a small previe
 2. **Show where it is.** Give the saved path and always the `webUrl`, so the user can open it in Asset Generator; give `libraryUrl` the first time, for everything they have made.
 3. **Offer to open it** on their machine: `open <path>` on macOS, `xdg-open <path>` on Linux, `start "" <path>` on Windows. Open it when the user agrees or asked to see it, not in headless or CI sessions.
 
+Make a public link with `share_asset` only when the user asks for one: anyone with the link can see the image. The page hides the prompt, and the user can see or turn off their links in Settings → Shared links.
+
 Update code references when part of the task.
 
-`remove_background` saves a new cutout. If its schema exposes `operationId`, retain the same ID and source asset for recovery and honor processing responses. Keep its returned asset identity and inspect edges/alpha. Prefer CSS or vector code for simple backgrounds, typography, and existing official logos.
+Background removal isn't available on the hosted service, so don't offer cutouts, and don't call `remove_background` unless the server lists it. Prefer CSS or vector code for simple backgrounds, typography, and existing official logos.
 
 Hand off files and returned IDs, plus unresolved job handles if any. A saved asset is not automatically a published webpage. For requested administration see `brand-manager`; for reusable Style experiments see `style-gym`.

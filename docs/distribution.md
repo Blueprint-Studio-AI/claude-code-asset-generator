@@ -2,6 +2,21 @@
 
 The canonical package is this repository. The historical repository name and marketplace URL are retained so existing installations keep working.
 
+## One source for every platform
+
+Edit shared content here once. Do not maintain copies of skills or generation logic for each host.
+
+| Authored source | Used by |
+| --- | --- |
+| `plugin.json` | Canonical name, release version, license, description, OpenAI presentation, and the MCP Registry one-liner |
+| `mcp.json` | Canonical remote MCP connection |
+| `skills/`, `agents/` | Shared workflows and optional host-specific agent discovery |
+| Hosted Blueprint API | All tools, permissions, brand data, and generation behavior |
+
+`scripts/sync_distribution.py` generates `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `.mcp.json`, and `server.json` from these. Commit the generated files so hosts can install directly from Git. OpenAI and Cursor support the root Agent Plugins format; a separate Cursor source copy is unnecessary.
+
+Backend and permission services live in the private monorepo; this public repository contains packaging and optional guidance only. Do not add tokens, production fixtures, client-private notes, or internal source links.
+
 ## Change once
 
 1. Edit `skills/` or `agents/` for workflow changes. Tool implementations live in the hosted service, not in platform adapters.
@@ -35,7 +50,7 @@ claude plugin validate .
 git diff --check
 ```
 
-Run official-schema validation of root `plugin.json`, `mcp.json`, and `server.json`, plus the Codex plugin validator and skill validators, before publication. Keep CI local. The GitHub OIDC workflow is a publication step only; it is not the test runner.
+Run official-schema validation of root `plugin.json`, `mcp.json`, and `server.json`, plus the Codex plugin-creator `validate_plugin.py` and skill-creator `quick_validate.py` on each `skills/*` directory when available, before publication. Validation requires no generation calls or credentials. Keep CI local. The GitHub OIDC workflow is a publication step only; it is not the test runner.
 
 The sync checker fails on metadata drift, license mismatch, unsupported transports, or credential-bearing connection configuration. It performs no network calls, installs nothing, and changes no host settings.
 
