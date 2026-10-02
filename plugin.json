@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "blueprint-studio",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "On-brand images and visual assets in Claude Code and Codex with Blueprint Studio Asset Generator, from Blueprint Studio, a design and development studio. Studio clients get their official logos, brand guides and Styles built in.",
   "author": {
     "name": "Blueprint Studio",
@@ -24,8 +24,8 @@
     "com.openai": {
       "interface": {
         "displayName": "Blueprint Studio",
-        "shortDescription": "Your brand's Styles, logos and assets in your AI app. Free to start.",
-        "longDescription": "Keep your brand's Styles, official logos and guides, and asset library in Blueprint Studio, shared with your team. With Blueprint Studio Asset Generator, your AI app uses them to make on-brand icons, social graphics, hero images and slides, and saves each one to your library. Start free: make a first image in your personal library with no setup, then set up your brand from your website. Optional skills cover a guided start, asset creation, brand administration and Style experiments.",
+        "shortDescription": "Your brand's Styles, logos and assets in your AI app.",
+        "longDescription": "Keep your brand's Styles, official logos and guides, and asset library in Blueprint Studio, shared with your team. With Blueprint Studio Asset Generator, your AI app uses them to make on-brand icons, social graphics, hero images and slides, and saves each one to your library. Make a first image in your personal library with no setup, then set up your brand from your website. Optional skills cover a guided start, asset creation, brand administration and Style experiments.",
         "developerName": "Blueprint Studio",
         "category": "Productivity",
         "capabilities": [

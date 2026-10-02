@@ -6,7 +6,7 @@ Your brand's Styles, official logos and guides, and asset library live in one pl
 
 Using Claude on the web, desktop or mobile, ChatGPT, Cursor or VS Code instead? See [Connect your AI](https://tools.blueprintstudio.ai/mcp-setup).
 
-This is the existing `blueprint-studio` plugin, upgraded in place. Its historical repository name remains `claude-code-asset-generator` to preserve installs. The public [Blueprint marketplace](https://github.com/Blueprint-Studio-AI/claude-code-marketplace) remains the discovery source. No second plugin or private brand snapshot is required.
+Install it from the [Blueprint marketplace](https://github.com/Blueprint-Studio-AI/claude-code-marketplace) below. This repository keeps the name `claude-code-asset-generator` so existing installs keep working.
 
 ## Install
 
@@ -21,14 +21,14 @@ To connect, run `/mcp`, select `plugin:blueprint-studio:asset-generator` (Bluepr
 
 For a local branch preview, start Claude Code with `--plugin-dir /absolute/path/to/this/repo`. Avoid adding a second standalone MCP connection if the plugin already supplies `asset-generator`.
 
-Codex uses the portable package with `.codex-plugin/plugin.json` retained for older clients. Install the same package through the existing marketplace:
+Codex installs the same plugin from the same marketplace:
 
 ```text
 codex plugin marketplace add https://github.com/Blueprint-Studio-AI/claude-code-marketplace.git
 codex plugin add blueprint-studio@blueprint-studio-marketplace
 ```
 
-Complete the host's MCP OAuth flow when prompted. Official ChatGPT/Codex and Claude directory reviews remain separate from direct installation.
+Your browser opens so you can approve in the Blueprint Studio window. Then start a new Codex session. Want the tools without the plugin? Run `codex mcp add blueprint-studio --url https://tools.blueprintstudio.ai/api/mcp` instead. Use one or the other, not both.
 
 ## First image
 
@@ -44,9 +44,9 @@ Then, so later images match your brand:
 
 The server also offers these starters as MCP prompts: `first_image`, `brand_from_website`, `app_icon` and `social_post`. Claude Code lists them as slash commands, e.g. `/mcp__plugin_blueprint-studio_asset-generator__first_image` with this plugin. Claude Code passes only the first word of a prompt argument, so the image starters ask for one line instead of taking one; `brand_from_website` takes a website. Codex doesn't show MCP prompts; its plugin card offers the same starters (`defaultPrompt`).
 
-Other skill-compatible hosts can use `skills/` and connect their remote MCP client to `https://tools.blueprintstudio.ai/api/mcp`. `plugin.json` and `mcp.json` provide the portable Agent Plugins manifest. Host transport spellings differ; compatibility manifests are intentionally retained.
+Using another AI app? Connect it to `https://tools.blueprintstudio.ai/api/mcp` with the steps in [Connect your AI](https://tools.blueprintstudio.ai/mcp-setup). Apps that support skills can also use `skills/`.
 
-Sign in through the host's MCP OAuth flow for account-wide access. Start with `get_workspace_context`: it returns the plan, credits left, what a default image costs, accessible brands and, for new accounts, a getting-started plan. A new account needs no brand: null/omitted `brandId` creates in the personal library. To work in a brand, pass explicit `brandId` on every workspace call; null/omitted selects personal scope, not the last-used brand. Legacy scoped credentials cannot switch workspaces. A plugin install grants no membership. If an existing connection only lists one workspace despite broader account access, renew its OAuth authorization and start a fresh client/thread. Older workspace-only grants are not silently expanded; a new API key is not the repair. Service API keys remain available for scoped automation; inference provider keys are not needed and credentials never belong in checked-in files.
+Sign in when your app asks. One connection covers your personal library and every brand you belong to. Start with `get_workspace_context`: it returns your plan, credits left, what a default image costs, your brands and, for new accounts, a getting-started plan. No brand is needed; leave `brandId` out to work in your personal library. If you have exactly one brand, the agent works in it unless you ask for your personal library; with several, it passes the `brandId` of the one you name on every call. Installing the plugin doesn't add you to a brand, so accept your brand invitation first. If an older connection sees only one brand, disconnect it in Settings and connect again. API keys are only for scripts and automations, you don't need an OpenAI or Google key, and keys never go in project files.
 
 ## Tool contract
 
@@ -56,10 +56,10 @@ Sign in through the host's MCP OAuth flow for account-wide access. Start with `g
 | --- | --- |
 | Account OAuth and per-call workspace selection | `get_workspace_context` and published guide discovery |
 | Styles, categories, generated examples, Style thumbnails | `list_models` capability and cost catalog |
-| Durable generation/status, asset reads/downloads, background removal | `list_brand_assets` with version-pinned `generationInput` for ordered `inputs` |
+| Generation and status, asset reads, downloads and share links | `list_brand_assets` with version-pinned `generationInput` for ordered `inputs` |
 | Brand/member administration within permissions | Exact `parentAssetId` edits and `get_generation_details` |
 
-These capabilities require the current Blueprint server. Check live discovery for both tools and fields when connecting to an older deployment. Reference-set Style authoring, tracked forks, and Portal-backed tasks/approvals are not bundled features. There is no internal client list, private repository access, or automatic brand-site/database sync.
+The plugin doesn't include Style editing from reference images, client project tasks or approvals, or access to private repositories. Brand setup reads your website once when you ask; it doesn't keep your brand in sync with the site.
 
 ## Optional skills and agents
 
@@ -76,34 +76,9 @@ Suggested handoff to an existing project agent:
 
 A project `.blueprint.json` may set local preferences. It is not an authorization mechanism. Do not duplicate live brand files into this plugin to personalize an installation.
 
-## One source for every platform
+## Maintainers
 
-Edit shared content here once. Do not maintain copies of skills or generation logic for each host.
-
-| Authored source | Used by |
-| --- | --- |
-| `plugin.json` | Canonical name, release version, license, description, OpenAI presentation, and the MCP Registry one-liner |
-| `mcp.json` | Canonical remote MCP connection |
-| `skills/`, `agents/` | Shared workflows and optional host-specific agent discovery |
-| Hosted Blueprint API | All tools, permissions, brand data, and generation behavior |
-
-Run `python3 scripts/sync_distribution.py` after changing metadata. It generates `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `.mcp.json`, and `server.json`. Commit the generated files so hosts can install directly from Git. OpenAI and Cursor support the root Agent Plugins format; a separate Cursor source copy is unnecessary.
-
-The historical marketplace repository is a stable discovery pointer, not another copy of the toolkit. Plugin releases take their version and metadata from this repository. See [distribution and release instructions](docs/distribution.md) for local checks and official review boundaries.
-
-## Development
-
-Backend and permission services live in the private monorepo; this public repository contains packaging and optional guidance only. Do not add tokens, production fixtures, client-private notes, or internal source links. Validate compatibility manifests and each skill before release. Public directory submission needs its own OAuth, metadata, and tool-annotation review.
-
-Run the dependency-free checks locally:
-
-```sh
-python3 scripts/sync_distribution.py --check
-python3 -m unittest discover -s scripts -p 'test_*.py'
-claude plugin validate .
-```
-
-Also run the Codex plugin-creator `validate_plugin.py` and skill-creator `quick_validate.py` on each `skills/*` directory when available. Validation requires no generation calls or credentials. Installation, local cachebusting, and official directory release are distinct steps; bump the canonical release version rather than independently editing compatibility versions.
+See [distribution and release instructions](docs/distribution.md).
 
 ## License
 
