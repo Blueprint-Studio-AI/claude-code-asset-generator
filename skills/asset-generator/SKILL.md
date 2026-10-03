@@ -37,6 +37,6 @@ Make a public link with `share_asset` only when the user asks for one: anyone wi
 
 Update code references when part of the task.
 
-Background removal isn't available on the hosted service, so don't offer cutouts, and don't call `remove_background` unless the server lists it. Prefer CSS or vector code for simple backgrounds, typography, and existing official logos.
+For an image with a transparent background (sprites, icons, logos, stickers, product cutouts), pass `background: "transparent"` to `generate_asset`: GPT Image 2.5 makes it natively at no extra cost, other models remove the background after generation for 1 more credit, and the result's `background` field says how it was done. To cut out an image already in the library, call `remove_background` with its `assetId` and a fresh UUID `operationId` (1 credit, refunded if it fails; reuse the same `operationId` only to retry or poll). Use them only when the server lists them. Prefer CSS or vector code for simple backgrounds, typography, and existing official logos.
 
 Hand off files and returned IDs, plus unresolved job handles if any. A saved asset is not automatically a published webpage. For requested administration see `brand-manager`; for reusable Style experiments see `style-gym`.

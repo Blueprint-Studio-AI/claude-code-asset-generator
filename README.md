@@ -56,7 +56,7 @@ Sign in when your app asks. One connection covers your personal library and ever
 | --- | --- |
 | Account OAuth and per-call workspace selection | `get_workspace_context` and published guide discovery |
 | Styles, categories, generated examples, Style thumbnails | `list_models` capability and cost catalog |
-| Generation and status, asset reads, downloads and share links | `list_brand_assets` with version-pinned `generationInput` for ordered `inputs` |
+| Generation and status (including transparent backgrounds), background removal, asset reads, downloads and share links | `list_brand_assets` with version-pinned `generationInput` for ordered `inputs` |
 | Brand/member administration within permissions | Exact `parentAssetId` edits and `get_generation_details` |
 
 The plugin doesn't include Style editing from reference images, client project tasks or approvals, or access to private repositories. Brand setup reads your website once when you ask; it doesn't keep your brand in sync with the site.
