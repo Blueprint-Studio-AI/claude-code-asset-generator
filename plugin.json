@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "blueprint-studio",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "On-brand images and visual assets in Claude Code and Codex with Blueprint Studio Asset Generator, from Blueprint Studio, a design and development studio. Studio clients get their official logos, brand guides and Styles built in.",
   "author": {
     "name": "Blueprint Studio",
