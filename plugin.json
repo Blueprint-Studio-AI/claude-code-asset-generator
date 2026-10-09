@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "blueprint-studio",
-  "version": "2.7.3",
+  "version": "2.7.4",
   "description": "Your brand's Styles, official logos, guides and asset library in your agent, for on-brand icons, social graphics, hero images and slides. From Blueprint Studio, a design and development studio. Studio clients get theirs built in.",
   "author": {
     "name": "Blueprint Studio",
@@ -38,7 +38,7 @@
           "Show my brand's Styles and logos in Asset Generator"
         ],
         "websiteURL": "https://blueprintstudio.ai",
-        "privacyPolicyURL": "https://blueprintstudio.ai/privacy-policy",
+        "privacyPolicyURL": "https://tools.blueprintstudio.ai/privacy",
         "termsOfServiceURL": "https://blueprintstudio.ai/terms"
       }
     },

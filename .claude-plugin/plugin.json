@@ -1,6 +1,6 @@
 {
   "name": "blueprint-studio",
-  "version": "2.7.3",
+  "version": "2.7.4",
   "description": "Your brand's Styles, official logos, guides and asset library in your agent, for on-brand icons, social graphics, hero images and slides. From Blueprint Studio, a design and development studio. Studio clients get theirs built in.",
   "author": {
     "name": "Blueprint Studio",
@@ -19,7 +19,7 @@
     "icons",
     "asset-generation"
   ],
-  "privacyPolicyUrl": "https://blueprintstudio.ai/privacy-policy",
+  "privacyPolicyUrl": "https://tools.blueprintstudio.ai/privacy",
   "termsOfServiceUrl": "https://blueprintstudio.ai/terms",
   "supportUrl": "https://tools.blueprintstudio.ai/help",
   "documentationUrl": "https://tools.blueprintstudio.ai/mcp-setup",
