@@ -54,7 +54,10 @@ def render(plugin, mcp):
         legacy_servers[key] = {"type": "http", "url": server["url"]}
         remotes.append(copy.deepcopy(server))
     return {
-        ".claude-plugin/plugin.json": {**common, "mcpServers": "./.mcp.json"},
+        # Claude's directory reads the privacy policy from the Claude manifest; one URL is authored.
+        ".claude-plugin/plugin.json": {
+            **common, "privacyPolicyUrl": interface["privacyPolicyURL"], "mcpServers": "./.mcp.json",
+        },
         ".codex-plugin/plugin.json": {
             **common, "skills": "./skills/", "interface": interface,
             "mcpServers": "./.mcp.json",

@@ -38,6 +38,11 @@ class DistributionTests(unittest.TestCase):
                          self.plugin["extensions"]["com.openai"]["interface"])
         self.assertNotIn("extensions", result[".claude-plugin/plugin.json"])
 
+    def test_claude_manifest_carries_the_one_privacy_policy(self):
+        self.plugin["extensions"]["com.openai"]["interface"]["privacyPolicyURL"] = "https://example.com/privacy"
+        result = render(self.plugin, self.mcp)
+        self.assertEqual(result[".claude-plugin/plugin.json"]["privacyPolicyUrl"], "https://example.com/privacy")
+
     def test_drift_check_does_not_write_and_sync_is_idempotent(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
