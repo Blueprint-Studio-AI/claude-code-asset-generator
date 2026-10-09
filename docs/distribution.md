@@ -10,7 +10,7 @@ Edit shared content here once. Do not maintain copies of skills or generation lo
 | --- | --- |
 | `plugin.json` | Canonical name, release version, license, description, OpenAI presentation, and the MCP Registry one-liner |
 | `mcp.json` | Canonical remote MCP connection |
-| `skills/`, `agents/` | Shared workflows and optional host-specific agent discovery |
+| `skills/`, `agents/` | Shared workflows and optional host-specific agent discovery; the hosted server also returns them as how-to guides (`get_guide` and MCP resources) for hosts without the plugin |
 | Hosted Blueprint API | All tools, permissions, brand data, and generation behavior |
 
 `scripts/sync_distribution.py` generates `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `.mcp.json`, and `server.json` from these. Commit the generated files so hosts can install directly from Git. OpenAI and Cursor support the root Agent Plugins format; a separate Cursor source copy is unnecessary.
@@ -24,6 +24,7 @@ Backend and permission services live in the private monorepo; this public reposi
 3. Run `python3 scripts/sync_distribution.py`. Commit the generated compatibility files and registry metadata with the source change.
 4. Run local checks below. Validate real installation/OAuth in each host whose behavior changed. Schema checks do not prove host compatibility.
 5. Merge a reviewed release and update the appropriate vendor listing. An accepted directory submission and a Git merge are different events.
+6. If `skills/` or `agents/` changed, the hosted server's guides change only when its copy is regenerated from the released commit and deployed; until then `get_guide` serves the previous release's text.
 
 The old `claude-code-marketplace` repository only needs changes when adding/removing a plugin or changing where it lives. Its Blueprint entry does not pin a release version. Its separate Conch entry is unrelated and must be preserved. Neither a skills change nor a new Blueprint release should require editing that catalog.
 
