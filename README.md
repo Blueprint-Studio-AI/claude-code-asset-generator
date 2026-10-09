@@ -77,6 +77,10 @@ Suggested handoff to an existing project agent:
 
 A project `.blueprint.json` may set local preferences. It is not an authorization mechanism. Do not duplicate live brand files into this plugin to personalize an installation.
 
+## What the plugin connects to
+
+The plugin has no hooks or local programs. It adds one remote MCP server, Blueprint Studio's hosted service at `https://tools.blueprintstudio.ai/api/mcp`, which you sign in to with OAuth. When your agent calls a tool, what that tool needs goes to the service: your prompts and settings, brand details, and any images, files or links you pass as inputs. Images are made with AI model providers and saved to your Blueprint Studio library. Brand setup reads the website you name, once, when you ask. See the [privacy policy](https://blueprintstudio.ai/privacy-policy).
+
 ## Maintainers
 
 See [distribution and release instructions](docs/distribution.md).
