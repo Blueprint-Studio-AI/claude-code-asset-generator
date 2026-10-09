@@ -42,6 +42,11 @@ class DistributionTests(unittest.TestCase):
         self.plugin["extensions"]["com.openai"]["interface"]["privacyPolicyURL"] = "https://example.com/privacy"
         result = render(self.plugin, self.mcp)
         self.assertEqual(result[".claude-plugin/plugin.json"]["privacyPolicyUrl"], "https://example.com/privacy")
+        self.assertEqual(result[".claude-plugin/plugin.json"]["termsOfServiceUrl"],
+                         self.plugin["extensions"]["com.openai"]["interface"]["termsOfServiceURL"])
+        self.assertEqual(result[".claude-plugin/plugin.json"]["supportUrl"],
+                         self.plugin["extensions"]["com.anthropic.claude"]["supportUrl"])
+        self.assertNotIn("com.anthropic.claude", json.dumps(result[".codex-plugin/plugin.json"]))
 
     def test_drift_check_does_not_write_and_sync_is_idempotent(self):
         with tempfile.TemporaryDirectory() as tmp:
