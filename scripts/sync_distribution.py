@@ -54,9 +54,14 @@ def render(plugin, mcp):
         legacy_servers[key] = {"type": "http", "url": server["url"]}
         remotes.append(copy.deepcopy(server))
     return {
-        # Claude's directory reads the privacy policy from the Claude manifest; one URL is authored.
+        # Claude's directory reads its listing links from the Claude manifest. Legal URLs are
+        # authored once (with OpenAI's presentation); support and docs links under com.anthropic.claude.
         ".claude-plugin/plugin.json": {
-            **common, "privacyPolicyUrl": interface["privacyPolicyURL"], "mcpServers": "./.mcp.json",
+            **common,
+            "privacyPolicyUrl": interface["privacyPolicyURL"],
+            "termsOfServiceUrl": interface["termsOfServiceURL"],
+            **copy.deepcopy(plugin["extensions"].get("com.anthropic.claude", {})),
+            "mcpServers": "./.mcp.json",
         },
         ".codex-plugin/plugin.json": {
             **common, "skills": "./skills/", "interface": interface,
