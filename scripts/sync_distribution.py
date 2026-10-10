@@ -15,6 +15,28 @@ IDENTITY_FIELDS = (
 )
 # The MCP Registry caps descriptions at 100 characters; plugin manifests can say more.
 REGISTRY_NAMESPACE = "io.modelcontextprotocol.registry"
+# The one header a connection may carry: this package's name and release (for example
+# blueprint-studio/2.10.0), so the hosted service can tell a user when a newer plugin is out.
+# It is generated from plugin.json, never authored, and is not a credential.
+VERSION_HEADER = "X-Blueprint-Plugin"
+# Header names that carry credentials. They are refused by name, before the allowlist, so a
+# token can never reach a public package even under a new header name.
+CREDENTIAL_HEADER = re.compile(
+    r"(?i)auth|cookie|token|secret|passw|credential|session|bearer|signature|api[-_]?key|(^|[-_])key($|[-_])"
+)
+
+
+def version_headers(server, name, version):
+    """The generated version header, after refusing anything credential-like or unknown."""
+    headers = server.get("headers", {})
+    if not isinstance(headers, dict):
+        raise ValueError("MCP headers must be an object")
+    for header in headers:
+        if not isinstance(header, str) or CREDENTIAL_HEADER.search(header):
+            raise ValueError(f"MCP headers must not carry credentials: {header!r}")
+        if header.lower() != VERSION_HEADER.lower():
+            raise ValueError(f"The only MCP header is the generated {VERSION_HEADER} version header")
+    return {VERSION_HEADER: f"{name}/{version}"}
 
 
 def render(plugin, mcp):
@@ -42,17 +64,21 @@ def render(plugin, mcp):
     servers = mcp["mcpServers"]
     if not servers:
         raise ValueError("At least one remote MCP connection is required")
+    portable_servers = {}
     legacy_servers = {}
     remotes = []
     for key, server in servers.items():
         # Refuse to publish secrets or silently drop fields when the contract changes.
-        if set(server) != {"type", "url"} or server["type"] != "streamable-http":
-            raise ValueError("Only remote Streamable HTTP connections with type/url are supported")
+        if not {"type", "url"} <= set(server) <= {"type", "url", "headers"} or server["type"] != "streamable-http":
+            raise ValueError("Only remote Streamable HTTP connections with type/url (and the version header) are supported")
         endpoint = urlsplit(server["url"])
         if endpoint.scheme != "https" or not endpoint.hostname or endpoint.username or endpoint.password or endpoint.query or endpoint.fragment:
             raise ValueError("MCP endpoint must be HTTPS without credentials, query, or fragment")
-        legacy_servers[key] = {"type": "http", "url": server["url"]}
-        remotes.append(copy.deepcopy(server))
+        headers = version_headers(server, name, version)
+        portable_servers[key] = {"type": "streamable-http", "url": server["url"], "headers": headers}
+        legacy_servers[key] = {"type": "http", "url": server["url"], "headers": dict(headers)}
+        # The Registry lists the server for every client, not this plugin: no plugin header.
+        remotes.append({"type": "streamable-http", "url": server["url"]})
     return {
         # Claude's directory reads its listing links from the Claude manifest. Legal URLs are
         # authored once (with OpenAI's presentation); support and docs links under com.anthropic.claude.
@@ -67,6 +93,10 @@ def render(plugin, mcp):
             **common, "skills": "./skills/", "interface": interface,
             "mcpServers": "./.mcp.json",
         },
+        # Agent Plugins hosts (current Codex, Cursor) read mcp.json; Claude Code reads .mcp.json.
+        # Both send the generated version header; the authored connection stays type and url.
+        "mcp.json": {**{k: copy.deepcopy(v) for k, v in mcp.items() if k != "mcpServers"},
+                     "mcpServers": portable_servers},
         ".mcp.json": {"mcpServers": legacy_servers},
         "server.json": {
             "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",

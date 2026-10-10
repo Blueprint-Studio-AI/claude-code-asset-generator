@@ -2,7 +2,10 @@
   "mcpServers": {
     "asset-generator": {
       "type": "http",
-      "url": "https://tools.blueprintstudio.ai/api/mcp"
+      "url": "https://tools.blueprintstudio.ai/api/mcp",
+      "headers": {
+        "X-Blueprint-Plugin": "blueprint-studio/2.10.0"
+      }
     }
   }
 }

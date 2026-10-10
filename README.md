@@ -32,6 +32,26 @@ codex plugin add blueprint-studio@blueprint-studio-marketplace
 
 Your browser opens so you can approve in the Blueprint Studio window. Then start a new Codex session. Want the tools without the plugin? Run `codex mcp add blueprint-studio --url https://tools.blueprintstudio.ai/api/mcp` instead. Use one or the other, not both.
 
+## Update
+
+The tools come from the hosted service, so they're always current. The skills and agents update with the plugin. When a newer plugin is out, `get_workspace_context` says so once per session (`pluginUpdate`), and your agent tells you how to update.
+
+Claude Code: run `/plugin`, open **Installed**, select `blueprint-studio` and choose **Update now**, then run `/reload-plugins`. From a terminal:
+
+```text
+claude plugin update blueprint-studio@blueprint-studio-marketplace
+```
+
+To get new versions automatically, run `/plugin`, open **Marketplaces**, select `blueprint-studio-marketplace` and turn on auto-update. If you added Blueprint Studio from Claude's Directory, Claude Code updates it when it starts, once the Directory has the new version.
+
+Codex:
+
+```text
+codex plugin marketplace upgrade blueprint-studio-marketplace
+```
+
+Then start a new Codex session.
+
 ## First image
 
 In Claude Code, run `/blueprint-studio:start` (or ask what Blueprint Studio Asset Generator can do). It reads the account, says what Asset Generator does and the real free allowance, offers three starters, then makes the image from one pick, saves it into the project and links it in Asset Generator. No brand or setup is needed.
@@ -82,7 +102,7 @@ A project `.blueprint.json` may set local preferences. It is not an authorizatio
 
 ## What the plugin connects to
 
-The plugin has no hooks or local programs. It adds one remote MCP server, Blueprint Studio's hosted service at `https://tools.blueprintstudio.ai/api/mcp`, which you sign in to with OAuth. When your agent calls a tool, what that tool needs goes to the service: your prompts and settings, brand details, and any images, files or links you pass as inputs. Images are made with AI model providers and saved to your Blueprint Studio library. Brand setup reads the website you name, once, when you ask. With shell access, the skills also use `curl` for two things: saving a finished image from the `downloadUrl` the service returns, and sending a local file to the single-use upload link `create_upload_link` returns. Both links point at Blueprint Studio's own file storage (hosted on Supabase). See the [privacy policy](https://tools.blueprintstudio.ai/privacy).
+The plugin has no hooks or local programs. It adds one remote MCP server, Blueprint Studio's hosted service at `https://tools.blueprintstudio.ai/api/mcp`, which you sign in to with OAuth. Each request to it carries an `X-Blueprint-Plugin` header with the plugin's name and version (for example `blueprint-studio/2.10.0`), so the service can tell you when a newer plugin is out; it holds nothing else. When your agent calls a tool, what that tool needs goes to the service: your prompts and settings, brand details, and any images, files or links you pass as inputs. Images are made with AI model providers and saved to your Blueprint Studio library. Brand setup reads the website you name, once, when you ask. With shell access, the skills also use `curl` for two things: saving a finished image from the `downloadUrl` the service returns, and sending a local file to the single-use upload link `create_upload_link` returns. Both links point at Blueprint Studio's own file storage (hosted on Supabase). See the [privacy policy](https://tools.blueprintstudio.ai/privacy).
 
 ## Maintainers
 
