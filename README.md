@@ -44,7 +44,7 @@ Then, so later images match your brand:
 
 The server also offers these starters as MCP prompts: `first_image`, `brand_from_website`, `app_icon` and `social_post`. Claude Code lists them as slash commands, e.g. `/mcp__plugin_blueprint-studio_asset-generator__first_image` with this plugin. Claude Code passes only the first word of a prompt argument, so the image starters ask for one line instead of taking one; `brand_from_website` takes a website. Codex doesn't show MCP prompts; its plugin card offers the same starters (`defaultPrompt`).
 
-Using another AI app? Connect it to `https://tools.blueprintstudio.ai/api/mcp` with the steps in [Connect your AI](https://tools.blueprintstudio.ai/mcp-setup). Apps that support skills can also use `skills/`.
+Using another AI app? Connect it to `https://tools.blueprintstudio.ai/api/mcp` with the steps in [Connect your AI](https://tools.blueprintstudio.ai/mcp-setup). Without this plugin, `get_guide` gives your agent the same skills as how-to guides. Apps that support skills can also use `skills/`.
 
 Sign in when your app asks. One connection covers your personal library and every brand you belong to. Start with `get_workspace_context`: it returns your plan, credits left, what a default image costs, your brands and, for new accounts, a getting-started plan. No brand is needed; leave `brandId` out to work in your personal library. If you have exactly one brand, the agent works in it unless you ask for your personal library; with several, it passes the `brandId` of the one you name on every call. Installing the plugin doesn't add you to a brand, so accept your brand invitation first. If an older connection sees only one brand, disconnect it in Settings and connect again. API keys are only for scripts and automations, you don't need an OpenAI or Google key, and keys never go in project files.
 
@@ -59,6 +59,7 @@ Sign in when your app asks. One connection covers your personal library and ever
 | Generation and status (including transparent backgrounds), background removal, asset reads, downloads and share links | `list_brand_assets` with version-pinned `generationInput` for ordered `inputs`, and `add_brand_asset` to add official logos |
 | Upload links for files attached in a chat or saved locally (`create_upload_link`) | Uploads as generation `inputs` (`{kind: "upload", uploadId}`) |
 | Brand/member administration within permissions | Exact `parentAssetId` edits and `get_generation_details` |
+| Starter prompts (see First image) | `get_guide`: the skills and agents below as how-to guides, for hosts without this plugin (also listed as MCP resources) |
 
 The plugin doesn't include Style editing from reference images, client project tasks or approvals, or access to private repositories. Brand setup reads your website once when you ask; it doesn't keep your brand in sync with the site.
 
@@ -69,7 +70,7 @@ The plugin doesn't include Style editing from reference images, client project t
 - `brand-manager`: requested workspace and Style administration.
 - `style-gym`: optional repeatable Style experiments on diverse briefs.
 
-Claude Code also discovers two agents from `agents/`: `blueprint-studio:asset-creator` for a bounded production brief and `blueprint-studio:style-evaluator` for requested Style comparisons. They inherit host tools and permissions, use the same `asset-generator` MCP connection, and add no mandatory routing. Other hosts can use the skills directly; agent auto-discovery is host-specific. See the [Claude Code plugin agent format](https://code.claude.com/docs/en/plugins-reference#agents).
+Claude Code also discovers two agents from `agents/`: `blueprint-studio:asset-creator` for a bounded production brief and `blueprint-studio:style-evaluator` for requested Style comparisons. They inherit host tools and permissions, use the same `asset-generator` MCP connection, and add no mandatory routing. Other hosts can use the skills directly; agent auto-discovery is host-specific. Hosts without the plugin get the same text from the server: `get_guide` with `topic` `start`, `assets` (`asset-generator`), `brand` (`brand-manager`), `styles` (`style-gym`, its placement reference and `style-evaluator`), `contract` (the MCP contract) or `asset_set` (`asset-creator` with `asset-generator`). With the plugin installed you already have it. See the [Claude Code plugin agent format](https://code.claude.com/docs/en/plugins-reference#agents).
 
 Suggested handoff to an existing project agent:
 
