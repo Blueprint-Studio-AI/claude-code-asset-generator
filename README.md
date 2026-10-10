@@ -19,6 +19,8 @@ Claude Code:
 
 To connect, run `/mcp`, select `plugin:blueprint-studio:asset-generator` (Blueprint Studio) and choose Authenticate; if your browser can't connect after you approve, copy the link from the Blueprint Studio tab and paste it into Claude Code, or run `/mcp` → `plugin:blueprint-studio:asset-generator` → Authenticate again.
 
+Claude Code asks you to approve each Blueprint Studio step. To allow them all, run `/permissions` and add the allow rule `mcp__plugin_blueprint-studio_asset-generator` (it covers this plugin's tools only, deletions included); remove it there at any time.
+
 For a local branch preview, start Claude Code with `--plugin-dir /absolute/path/to/this/repo`. Avoid adding a second standalone MCP connection if the plugin already supplies `asset-generator`.
 
 Codex installs the same plugin from the same marketplace:
@@ -46,11 +48,11 @@ The server also offers these starters as MCP prompts: `first_image`, `brand_from
 
 Using another AI app? Connect it to `https://tools.blueprintstudio.ai/api/mcp` with the steps in [Connect your AI](https://tools.blueprintstudio.ai/mcp-setup). Without this plugin, `get_guide` gives your agent the same skills as how-to guides. Apps that support skills can also use `skills/`.
 
-Sign in when your app asks. One connection covers your personal library and every brand you belong to. Start with `get_workspace_context`: it returns your plan, credits left, what a default image costs, your brands and, for new accounts, a getting-started plan. No brand is needed; leave `brandId` out to work in your personal library. If you have exactly one brand, the agent works in it unless you ask for your personal library; with several, it passes the `brandId` of the one you name on every call. Installing the plugin doesn't add you to a brand, so accept your brand invitation first. If an older connection sees only one brand, disconnect it in Settings and connect again. API keys are only for scripts and automations, you don't need an OpenAI or Google key, and keys never go in project files.
+Sign in when your app asks. One connection covers your personal library and every brand you belong to. Start with `get_workspace_context`: it returns your plan, credits left, what a default image costs, your brands with their guides and what your role allows and, for new accounts, a getting-started plan. No brand is needed; leave `brandId` out to work in your personal library. If you have exactly one brand, the agent works in it unless you ask for your personal library; with several, it passes the `brandId` of the one you name on every call. Installing the plugin doesn't add you to a brand, so accept your brand invitation first. If an older connection sees only one brand, disconnect it in Settings and connect again. API keys are only for scripts and automations, you don't need an OpenAI or Google key, and keys never go in project files.
 
 ## Tool contract
 
-`generate_asset` already returns a durable `jobId` immediately. Use a fresh UUID `requestId` for each intended generation; reuse the same ID with identical arguments only for transport retries. Poll `get_generation_status` in the same `brandId` until `completed` or `failed`. Unknown outcomes and polling timeouts never establish failed generation or refunded credits. Preserve returned asset, receipt, and Style IDs. See [the MCP contract](skills/asset-generator/references/mcp-contract.md) for recovery and handoff details.
+`generate_asset` already returns a durable `jobId` immediately. Use a fresh UUID `requestId` for each intended generation; reuse the same ID with identical arguments only for transport retries. Poll `get_generation_status` in the same `brandId` until `completed` or `failed`; pass `waitSeconds` (up to 25) so one call waits for the image. With no `styleId` a new image gets no Style, and with no `imageSize` it is 2K where the plan or brand includes it (1K otherwise). Unknown outcomes and polling timeouts never establish failed generation or refunded credits. Preserve returned asset, receipt, and Style IDs. See [the MCP contract](skills/asset-generator/references/mcp-contract.md) for recovery and handoff details.
 
 | Core tools | Context and references |
 | --- | --- |
