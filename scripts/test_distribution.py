@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from sync_distribution import ROOT, render, sync
+from sync_distribution import ROOT, VERSION_HEADER, render, sync
 
 
 class DistributionTests(unittest.TestCase):
@@ -25,6 +25,11 @@ class DistributionTests(unittest.TestCase):
         self.assertEqual(result["server.json"]["description"], "Registry line")
         self.assertEqual(result[".mcp.json"]["mcpServers"]["asset-generator"], {
             "type": "http", "url": "https://example.com/mcp",
+            "headers": {"X-Blueprint-Plugin": "blueprint-studio/9.1.2"},
+        })
+        self.assertEqual(result["mcp.json"]["mcpServers"]["asset-generator"], {
+            "type": "streamable-http", "url": "https://example.com/mcp",
+            "headers": {"X-Blueprint-Plugin": "blueprint-studio/9.1.2"},
         })
         self.assertEqual(result["server.json"]["remotes"], [{
             "type": "streamable-http", "url": "https://example.com/mcp",
@@ -54,7 +59,8 @@ class DistributionTests(unittest.TestCase):
             for name, data in [("plugin.json", self.plugin), ("mcp.json", self.mcp)]:
                 (root / name).write_text(json.dumps(data))
             (root / "LICENSE").write_text((ROOT / "LICENSE").read_text())
-            self.assertEqual(len(sync(root, check=True)), 4)
+            # mcp.json too: its version header is generated from plugin.json.
+            self.assertEqual(len(sync(root, check=True)), 5)
             self.assertFalse((root / "server.json").exists())
             sync(root)
             self.assertEqual(sync(root), [])
@@ -65,6 +71,18 @@ class DistributionTests(unittest.TestCase):
 
     def test_refuses_secret_bearing_or_unsupported_connections(self):
         for change in [{"headers": {"Authorization": "Bearer test"}},
+                       {"headers": {"authorization": "Bearer test"}},
+                       {"headers": {"Proxy-Authorization": "Basic dGVzdA=="}},
+                       {"headers": {"X-API-Key": "test"}},
+                       {"headers": {"X-Api_Key": "test"}},
+                       {"headers": {"Cookie": "session=test"}},
+                       {"headers": {"X-Auth-Token": "test"}},
+                       {"headers": {"X-Client-Secret": "test"}},
+                       {"headers": {"Key": "test"}},
+                       # An unknown name, even a harmless-looking one, is refused too.
+                       {"headers": {"X-Blueprint-Plugin": "blueprint-studio/1.0.0", "X-Extra": "1"}},
+                       {"headers": "X-Blueprint-Plugin: blueprint-studio/1.0.0"},
+                       {"headersHelper": "./print-headers.sh"},
                        {"type": "stdio"}, {"url": "http://example.com/mcp"},
                        {"url": "https://user:pass@example.com/mcp"},
                        {"url": "https://example.com/mcp?token=test"}]:
@@ -73,6 +91,34 @@ class DistributionTests(unittest.TestCase):
                 mcp["mcpServers"]["asset-generator"].update(change)
                 with self.assertRaises(ValueError):
                     render(self.plugin, mcp)
+
+    def test_version_header_is_generated_from_plugin_json(self):
+        # Hosts send it on every request, so the service can say when a newer plugin is out.
+        self.assertEqual(VERSION_HEADER, "X-Blueprint-Plugin")
+        for authored in [None, {}, {"X-Blueprint-Plugin": "blueprint-studio/0.0.1"},
+                         {"x-blueprint-plugin": "anything else"}]:
+            with self.subTest(authored=authored):
+                mcp = copy.deepcopy(self.mcp)
+                server = mcp["mcpServers"]["asset-generator"]
+                server.pop("headers", None)
+                if authored is not None:
+                    server["headers"] = authored
+                result = render({**self.plugin, "version": "3.4.5"}, mcp)
+                expected = {"X-Blueprint-Plugin": "blueprint-studio/3.4.5"}
+                self.assertEqual(result["mcp.json"]["mcpServers"]["asset-generator"]["headers"], expected)
+                self.assertEqual(result[".mcp.json"]["mcpServers"]["asset-generator"]["headers"], expected)
+                # The Registry lists the server for every client, not just this plugin.
+                self.assertNotIn("headers", json.dumps(result["server.json"]))
+
+    def test_committed_connection_files_carry_the_current_version(self):
+        version = self.plugin["version"]
+        for name in ["mcp.json", ".mcp.json"]:
+            with self.subTest(file=name):
+                server = json.loads((ROOT / name).read_text())["mcpServers"]["asset-generator"]
+                self.assertEqual(server["headers"], {"X-Blueprint-Plugin": f"blueprint-studio/{version}"})
+                self.assertEqual(set(server), {"type", "url", "headers"})
+        self.assertEqual(json.loads((ROOT / "mcp.json").read_text())["$schema"],
+                         "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json")
 
     def test_prevents_license_mismatch(self):
         with tempfile.TemporaryDirectory() as tmp:
