@@ -23,7 +23,7 @@ Or from a terminal, in one line:
 claude plugin marketplace add Blueprint-Studio-AI/claude-code-marketplace && claude plugin install blueprint-studio@blueprint-studio-marketplace
 ```
 
-To connect, run `/mcp`, select `plugin:blueprint-studio:asset-generator` (Blueprint Studio) and choose Authenticate; if your browser can't connect after you click Connect, copy the link from the Blueprint Studio tab and paste it into Claude Code, or run `/mcp` → `plugin:blueprint-studio:asset-generator` → Authenticate again.
+To connect, run `/mcp`, select `plugin:blueprint-studio:asset-generator` (Blueprint Studio) and choose Authenticate; if Claude Code doesn't pick up the sign-in after you click Connect, copy the link from the Blueprint Studio tab and paste it into Claude Code, or run `/mcp` → `plugin:blueprint-studio:asset-generator` → Authenticate again.
 
 Claude Code asks you to approve each Blueprint Studio step. To allow them all, run `/permissions` and add the allow rule `mcp__plugin_blueprint-studio_asset-generator` (it covers this plugin's tools only, deletions included); remove it there at any time.
 
