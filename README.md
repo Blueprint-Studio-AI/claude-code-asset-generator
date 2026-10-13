@@ -17,7 +17,13 @@ Claude Code:
 /plugin install blueprint-studio@blueprint-studio-marketplace
 ```
 
-To connect, run `/mcp`, select `plugin:blueprint-studio:asset-generator` (Blueprint Studio) and choose Authenticate; if your browser can't connect after you approve, copy the link from the Blueprint Studio tab and paste it into Claude Code, or run `/mcp` → `plugin:blueprint-studio:asset-generator` → Authenticate again.
+Or from a terminal, in one line:
+
+```text
+claude plugin marketplace add Blueprint-Studio-AI/claude-code-marketplace && claude plugin install blueprint-studio@blueprint-studio-marketplace
+```
+
+To connect, run `/mcp`, select `plugin:blueprint-studio:asset-generator` (Blueprint Studio) and choose Authenticate; if your browser can't connect after you click Connect, copy the link from the Blueprint Studio tab and paste it into Claude Code, or run `/mcp` → `plugin:blueprint-studio:asset-generator` → Authenticate again.
 
 Claude Code asks you to approve each Blueprint Studio step. To allow them all, run `/permissions` and add the allow rule `mcp__plugin_blueprint-studio_asset-generator` (it covers this plugin's tools only, deletions included); remove it there at any time.
 
@@ -30,7 +36,13 @@ codex plugin marketplace add https://github.com/Blueprint-Studio-AI/claude-code-
 codex plugin add blueprint-studio@blueprint-studio-marketplace
 ```
 
-Your browser opens so you can approve in the Blueprint Studio window. Then start a new Codex session. Want the tools without the plugin? Run `codex mcp add blueprint-studio --url https://tools.blueprintstudio.ai/api/mcp` instead. Use one or the other, not both.
+Or in one line, which also signs you in:
+
+```text
+codex plugin marketplace add Blueprint-Studio-AI/claude-code-marketplace && codex plugin add blueprint-studio@blueprint-studio-marketplace && codex mcp login asset-generator
+```
+
+Your browser opens so you can click Connect in the Blueprint Studio window. Then start a new Codex session. Want the tools without the plugin? Run `codex mcp add blueprint-studio --url https://tools.blueprintstudio.ai/api/mcp` instead. Use one or the other, not both.
 
 ## Update
 
@@ -102,7 +114,7 @@ A project `.blueprint.json` may set local preferences. It is not an authorizatio
 
 ## What the plugin connects to
 
-The plugin has no hooks or local programs. It adds one remote MCP server, Blueprint Studio's hosted service at `https://tools.blueprintstudio.ai/api/mcp`, which you sign in to with OAuth. Each request to it carries an `X-Blueprint-Plugin` header with the plugin's name and version (for example `blueprint-studio/2.10.0`), so the service can tell you when a newer plugin is out; it holds nothing else. When your agent calls a tool, what that tool needs goes to the service: your prompts and settings, brand details, and any images, files or links you pass as inputs. Images are made with AI model providers and saved to your Blueprint Studio library. Brand setup reads the website you name, once, when you ask. With shell access, the skills also use `curl` for two things: saving a finished image from the `downloadUrl` the service returns, and sending a local file to the single-use upload link `create_upload_link` returns. Both links point at Blueprint Studio's own file storage (hosted on Supabase). See the [privacy policy](https://tools.blueprintstudio.ai/privacy).
+The plugin has no hooks or local programs. It adds one remote MCP server, Blueprint Studio's hosted service at `https://tools.blueprintstudio.ai/api/mcp`, which you sign in to with OAuth. Each request to it carries an `X-Blueprint-Plugin` header with the plugin's name and version (for example `blueprint-studio/2.10.1`), so the service can tell you when a newer plugin is out; it holds nothing else. When your agent calls a tool, what that tool needs goes to the service: your prompts and settings, brand details, and any images, files or links you pass as inputs. Images are made with AI model providers and saved to your Blueprint Studio library. Brand setup reads the website you name, once, when you ask. With shell access, the skills also use `curl` for two things: saving a finished image from the `downloadUrl` the service returns, and sending a local file to the single-use upload link `create_upload_link` returns. Both links point at Blueprint Studio's own file storage (hosted on Supabase). See the [privacy policy](https://tools.blueprintstudio.ai/privacy).
 
 ## Maintainers
 
