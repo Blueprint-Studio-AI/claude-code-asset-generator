@@ -17,8 +17,17 @@ IDENTITY_FIELDS = (
 REGISTRY_NAMESPACE = "io.modelcontextprotocol.registry"
 # The one header a connection may carry: this package's name and release (for example
 # blueprint-studio/2.10.0), so the hosted service can tell a user when a newer plugin is out.
-# It is generated from plugin.json, never authored, and is not a credential.
+# It is generated from plugin.json, never authored, and is not a credential. Only mcp.json
+# (current Codex and other Agent Plugins hosts) sends it: Codex keys each sign-in on the
+# server's name and URL alone (codex-rs/rmcp-client compute_store_key), so a header that
+# changes per release keeps users signed in there. Claude Code's .mcp.json never carries it;
+# see claude_code_connection.
 VERSION_HEADER = "X-Blueprint-Plugin"
+# The skills agents load first ask them to pass this release to get_workspace_context, which is
+# how a Claude Code connection, with no header, says which release it runs. The version in
+# that one sentence is generated from plugin.json too.
+VERSIONED_SKILLS = ("skills/start/SKILL.md", "skills/asset-generator/SKILL.md")
+SKILL_VERSION = re.compile(r'`pluginVersion: "[^"`]*"`')
 # Header names that carry credentials. They are refused by name, before the allowlist, so a
 # token can never reach a public package even under a new header name.
 CREDENTIAL_HEADER = re.compile(
@@ -37,6 +46,26 @@ def version_headers(server, name, version):
         if header.lower() != VERSION_HEADER.lower():
             raise ValueError(f"The only MCP header is the generated {VERSION_HEADER} version header")
     return {VERSION_HEADER: f"{name}/{version}"}
+
+
+def claude_code_connection(server):
+    """Claude Code's connection: type and URL only, the same in every release.
+
+    Claude Code stores each MCP sign-in under "<server name>|" plus the first 16 hex characters
+    of sha256(JSON of the server's type, url and headers). Anything here that changes per
+    release is a new key, so every Claude Code user is signed out by the update: 2.10.0 and
+    2.10.1 sent the version header and did exactly that. This stays byte-for-byte the pre-2.10
+    shape, so 2.10.2 and later find the sign-in made before 2.10.0 again and never lose it.
+    """
+    return {"type": "http", "url": server["url"]}
+
+
+def versioned_skill(text, version, relative="skill"):
+    """A skill's text with its one pluginVersion sentence set to this release."""
+    found = SKILL_VERSION.findall(text)
+    if len(found) != 1:
+        raise ValueError(f'{relative} must say `pluginVersion: "<version>"` exactly once')
+    return SKILL_VERSION.sub(f'`pluginVersion: "{version}"`', text)
 
 
 def render(plugin, mcp):
@@ -76,7 +105,7 @@ def render(plugin, mcp):
             raise ValueError("MCP endpoint must be HTTPS without credentials, query, or fragment")
         headers = version_headers(server, name, version)
         portable_servers[key] = {"type": "streamable-http", "url": server["url"], "headers": headers}
-        legacy_servers[key] = {"type": "http", "url": server["url"], "headers": dict(headers)}
+        legacy_servers[key] = claude_code_connection(server)
         # The Registry lists the server for every client, not this plugin: no plugin header.
         remotes.append({"type": "streamable-http", "url": server["url"]})
     return {
@@ -93,8 +122,9 @@ def render(plugin, mcp):
             **common, "skills": "./skills/", "interface": interface,
             "mcpServers": "./.mcp.json",
         },
-        # Agent Plugins hosts (current Codex, Cursor) read mcp.json; Claude Code reads .mcp.json.
-        # Both send the generated version header; the authored connection stays type and url.
+        # Agent Plugins hosts (current Codex, Cursor) read mcp.json and send the generated version
+        # header. Claude Code (and older Codex) read .mcp.json, which never changes between
+        # releases: Claude Code keys sign-ins on it (claude_code_connection).
         "mcp.json": {**{k: copy.deepcopy(v) for k, v in mcp.items() if k != "mcpServers"},
                      "mcpServers": portable_servers},
         ".mcp.json": {"mcpServers": legacy_servers},
@@ -116,9 +146,12 @@ def sync(root, check=False):
     mcp = json.loads((root / "mcp.json").read_text())
     if plugin.get("license") != "MIT" or not (root / "LICENSE").read_text().startswith("MIT License\n"):
         raise ValueError("Manifest and public package LICENSE must both declare MIT")
+    outputs = {relative: json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+               for relative, data in render(plugin, mcp).items()}
+    for relative in VERSIONED_SKILLS:
+        outputs[relative] = versioned_skill((root / relative).read_text(), plugin["version"], relative)
     stale = []
-    for relative, data in render(plugin, mcp).items():
-        expected = json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+    for relative, expected in outputs.items():
         path = root / relative
         if not path.exists() or path.read_text() != expected:
             stale.append(relative)
