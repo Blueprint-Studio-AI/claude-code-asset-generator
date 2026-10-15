@@ -1,11 +1,30 @@
 import copy
+import hashlib
 import json
 import re
 from pathlib import Path
 import tempfile
 import unittest
 
-from sync_distribution import ROOT, VERSION_HEADER, render, sync
+from sync_distribution import ROOT, VERSION_HEADER, VERSIONED_SKILLS, render, sync
+
+# Claude Code 2.10.1 and earlier: the exact .mcp.json from before 2.10.0, whose sign-ins
+# Claude Code users still have.
+PRE_2_10_CLAUDE_CODE_MCP = """{
+  "mcpServers": {
+    "asset-generator": {
+      "type": "http",
+      "url": "https://tools.blueprintstudio.ai/api/mcp"
+    }
+  }
+}
+"""
+
+
+def claude_code_sign_in_key(server):
+    """The hash in Claude Code's sign-in key for a server config: "<name>|<this>"."""
+    config = {"type": server.get("type"), "url": server.get("url"), "headers": server.get("headers") or {}}
+    return hashlib.sha256(json.dumps(config, separators=(",", ":")).encode()).hexdigest()[:16]
 
 
 class DistributionTests(unittest.TestCase):
@@ -25,7 +44,6 @@ class DistributionTests(unittest.TestCase):
         self.assertEqual(result["server.json"]["description"], "Registry line")
         self.assertEqual(result[".mcp.json"]["mcpServers"]["asset-generator"], {
             "type": "http", "url": "https://example.com/mcp",
-            "headers": {"X-Blueprint-Plugin": "blueprint-studio/9.1.2"},
         })
         self.assertEqual(result["mcp.json"]["mcpServers"]["asset-generator"], {
             "type": "streamable-http", "url": "https://example.com/mcp",
@@ -59,6 +77,9 @@ class DistributionTests(unittest.TestCase):
             for name, data in [("plugin.json", self.plugin), ("mcp.json", self.mcp)]:
                 (root / name).write_text(json.dumps(data))
             (root / "LICENSE").write_text((ROOT / "LICENSE").read_text())
+            for skill in VERSIONED_SKILLS:
+                (root / skill).parent.mkdir(parents=True)
+                (root / skill).write_text((ROOT / skill).read_text())
             # mcp.json too: its version header is generated from plugin.json.
             self.assertEqual(len(sync(root, check=True)), 5)
             self.assertFalse((root / "server.json").exists())
@@ -93,7 +114,8 @@ class DistributionTests(unittest.TestCase):
                     render(self.plugin, mcp)
 
     def test_version_header_is_generated_from_plugin_json(self):
-        # Hosts send it on every request, so the service can say when a newer plugin is out.
+        # Codex and other Agent Plugins hosts send it on every request, so the service can say
+        # when a newer plugin is out. Codex keys sign-ins on server name and URL, not headers.
         self.assertEqual(VERSION_HEADER, "X-Blueprint-Plugin")
         for authored in [None, {}, {"X-Blueprint-Plugin": "blueprint-studio/0.0.1"},
                          {"x-blueprint-plugin": "anything else"}]:
@@ -106,19 +128,71 @@ class DistributionTests(unittest.TestCase):
                 result = render({**self.plugin, "version": "3.4.5"}, mcp)
                 expected = {"X-Blueprint-Plugin": "blueprint-studio/3.4.5"}
                 self.assertEqual(result["mcp.json"]["mcpServers"]["asset-generator"]["headers"], expected)
-                self.assertEqual(result[".mcp.json"]["mcpServers"]["asset-generator"]["headers"], expected)
+                # Never in Claude Code's connection, whatever mcp.json authors.
+                self.assertNotIn("headers", result[".mcp.json"]["mcpServers"]["asset-generator"])
                 # The Registry lists the server for every client, not just this plugin.
                 self.assertNotIn("headers", json.dumps(result["server.json"]))
 
     def test_committed_connection_files_carry_the_current_version(self):
         version = self.plugin["version"]
-        for name in ["mcp.json", ".mcp.json"]:
-            with self.subTest(file=name):
-                server = json.loads((ROOT / name).read_text())["mcpServers"]["asset-generator"]
-                self.assertEqual(server["headers"], {"X-Blueprint-Plugin": f"blueprint-studio/{version}"})
-                self.assertEqual(set(server), {"type", "url", "headers"})
+        server = json.loads((ROOT / "mcp.json").read_text())["mcpServers"]["asset-generator"]
+        self.assertEqual(server["headers"], {"X-Blueprint-Plugin": f"blueprint-studio/{version}"})
+        self.assertEqual(set(server), {"type", "url", "headers"})
         self.assertEqual(json.loads((ROOT / "mcp.json").read_text())["$schema"],
                          "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json")
+
+    def test_claude_code_connection_never_changes_between_releases(self):
+        # Claude Code keeps each MCP sign-in under "<server name>|" plus the first 16 hex
+        # characters of sha256(JSON of the server config's type, url and headers). Anything in
+        # .mcp.json that changes per release (a version, a header carrying one) is a new key,
+        # so every Claude Code user has to sign in again after updating: 2.10.0 and 2.10.1
+        # sent X-Blueprint-Plugin: blueprint-studio/<version> here and did exactly that.
+        releases = [render({**self.plugin, "version": version}, self.mcp)[".mcp.json"]
+                    for version in ["2.10.2", "2.10.3", "3.0.0-beta.1", "10.0.0"]]
+        self.assertTrue(all(release == releases[0] for release in releases))
+        committed = (ROOT / ".mcp.json").read_text()
+        self.assertNotIn(self.plugin["version"], committed)
+        self.assertNotRegex(committed, r"\d+\.\d+\.\d+")
+        self.assertNotIn(VERSION_HEADER.lower(), committed.lower())
+        for server in json.loads(committed)["mcpServers"].values():
+            self.assertEqual(set(server), {"type", "url"})
+        # Byte for byte the pre-2.10 file, so updating finds the sign-in made before 2.10.0
+        # (Claude Code's key plugin:blueprint-studio:asset-generator|de48b78f50b233db) again.
+        self.assertEqual(committed, PRE_2_10_CLAUDE_CODE_MCP)
+        server = json.loads(committed)["mcpServers"]["asset-generator"]
+        self.assertEqual(claude_code_sign_in_key(server), "de48b78f50b233db")
+        # The 2.10.0 config's key, as Claude Code stored it, for the record.
+        self.assertEqual(claude_code_sign_in_key(
+            {**server, "headers": {"X-Blueprint-Plugin": "blueprint-studio/2.10.0"}}), "2a5622c5373a95c2")
+
+    def test_skills_ask_agents_to_pass_the_current_version(self):
+        # Without a header, a Claude Code connection says its release to get_workspace_context
+        # as pluginVersion, from this sentence in the skills agents load first.
+        version = self.plugin["version"]
+        for skill in VERSIONED_SKILLS:
+            with self.subTest(skill=skill):
+                text = (ROOT / skill).read_text()
+                self.assertEqual(text.count("`pluginVersion: "), 1)
+                self.assertIn(f'Pass `pluginVersion: "{version}"` (this plugin\'s release)', text)
+                self.assertIn("get_workspace_context", text)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            plugin = {**self.plugin, "version": "9.8.7"}
+            for name, data in [("plugin.json", plugin), ("mcp.json", self.mcp)]:
+                (root / name).write_text(json.dumps(data))
+            (root / "LICENSE").write_text((ROOT / "LICENSE").read_text())
+            for skill in VERSIONED_SKILLS:
+                (root / skill).parent.mkdir(parents=True)
+                (root / skill).write_text((ROOT / skill).read_text())
+            self.assertLessEqual(set(VERSIONED_SKILLS), set(sync(root, check=True)))
+            sync(root)
+            for skill in VERSIONED_SKILLS:
+                self.assertIn('`pluginVersion: "9.8.7"`', (root / skill).read_text())
+            self.assertEqual(sync(root, check=True), [])
+            # The sentence must be there, once.
+            (root / VERSIONED_SKILLS[0]).write_text("No version here.\n")
+            with self.assertRaises(ValueError):
+                sync(root, check=True)
 
     def test_prevents_license_mismatch(self):
         with tempfile.TemporaryDirectory() as tmp:
