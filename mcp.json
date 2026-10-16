@@ -5,7 +5,7 @@
       "type": "streamable-http",
       "url": "https://tools.blueprintstudio.ai/api/mcp",
       "headers": {
-        "X-Blueprint-Plugin": "blueprint-studio/2.10.2"
+        "X-Blueprint-Plugin": "blueprint-studio/2.10.3"
       }
     }
   }
