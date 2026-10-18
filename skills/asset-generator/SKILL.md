@@ -44,7 +44,7 @@ With opening and sharing: [Delivery in detail](references/delivery.md).
 
 - **Polling at zero wait:** one image in 13 calls. Pass `waitSeconds: 20` on every check.
 - **Regenerating after a timeout.** A timed-out request or check doesn't mean the job failed, and a new request is a second, separately charged image. Check the same `jobId` again. Reuse a `requestId` only to resend the identical request.
-- **The upload dance:** three upload links before one image. Make one link. With a shell and the file on disk, pass `direct: true` and run its `upload.curl`; the upload returns the `uploadId`.
+- **The upload dance:** three upload links before one image. Make one link. With a shell and the file on disk, pass `direct: true`, run its `upload.curl`, and use its `upload.uploadId`; no `get_upload_link` needed.
 - **Asking for base64 to show an image.** On Claude.ai, 62 of 76 `download_asset` calls asked for it (28 Sep to 16 Oct). `imageUrl` already shows it.
 - **Bad reference links** were the most common external error: `INVALID_REFERENCE_IMAGE` and `REFERENCE_URL_UNREACHABLE`. Links must be public https PNG, JPEG or WebP. Upload anything else.
 - **Safety filter refusals.** The job fails and is refunded; `nextStep` says how to reword. Retry with a new `requestId`.

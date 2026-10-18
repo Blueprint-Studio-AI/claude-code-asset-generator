@@ -6,7 +6,8 @@ Inviting people to a brand, changing roles, and API keys for scripts. Do these o
 
 - **Owner:** everything, including changing roles.
 - **Admin:** invite and remove members, add and label official logos, change brand settings.
-- **Member:** make images and Styles in the brand.
+- **Member:** make images and Styles in the brand, and edit the Styles they made.
+- **View-only member:** see the brand's images, Styles and logos, but not make images or Styles there. The owner can give create access with `update_member_role`.
 
 `get_workspace_context` with the `brandId` returns the user's role (`brand.roleHelp`, `brand.canManage`). Offer only what that role allows. When a member asks for something an admin must do, the refusal names who can (`askOneOf`): suggest asking one of them.
 
@@ -21,7 +22,8 @@ Inviting people to a brand, changing roles, and API keys for scripts. Do these o
 
 ## API keys
 
-- API keys are for scripts and automations, and are on Pro and Max. Signing in to the MCP works on every plan. On Free, `create_api_key` answers `PLAN_REQUIRED`: show its `nextStep` and `checkoutUrl` (or `plansUrl`).
+- API keys are for scripts and automations. They need Pro or Max, or Pro access from extra credits or the brand. Signing in to the MCP works on every plan. On Free, `create_api_key` answers `PLAN_REQUIRED`: show its `nextStep` and `checkoutUrl` (or `plansUrl`).
 - `create_api_key` binds the key to that call's `brandId` (personal when left out). A key works only in its own workspace and can't create keys for another.
+- A key made here stops working when the AI app that made it is disconnected. For a key that lasts, the user creates one under API Keys in Settings.
 - `list_api_keys` and `revoke_api_key` manage them.
 - Never save a key in project files, config or reports. No OpenAI or Google key is needed.

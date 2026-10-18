@@ -40,5 +40,5 @@ For hero images, cards and anything that must sit inside a page: [Placement comp
 ## Limits
 
 - `create_style` saves text: the prompt, palette and mood. It doesn't save reference images. A Style with reference images comes from the `brand-setup` skill.
-- Members and above can create Styles in a brand. Changing a brand's default Style is for owners and admins.
+- Members with create access can make Styles in a brand; view-only members can't. Changing a brand's default Style is for owners and admins.
 - Making the full matching set is the `asset-sets` skill.

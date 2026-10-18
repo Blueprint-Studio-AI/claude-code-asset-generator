@@ -24,7 +24,7 @@ Measured on Blueprint Studio's MCP server.
 3. **Show it and ask.** The name, the logo found on the site, the palette with where each color came from, the fonts, the descriptors and the previews. Ask one question: what should change?
 4. **Save what they approved.** `save_brand_setup` with the `setupId` and only the edits they asked for: `brandName`, `styleName`, `palette`, `fonts`, `descriptors`, `referenceIndexes`. Pass `logo: false` if the logo it found is wrong. Saving again returns the first save.
 5. **Use it.** Every later image passes the returned `brandId` and `styleId`. Offer one image in the new Style straight away.
-6. **Offer the rest of the logos.** Setup saves one logo from the site. White versions, wordmarks and marks go in with the `official-logos` skill.
+6. **Offer the rest of the logos.** Setup saves the logo it found on the site (a brand that already has logos keeps them). White versions, wordmarks and marks go in with the `official-logos` skill, or on the web.
 
 ## Known failures
 

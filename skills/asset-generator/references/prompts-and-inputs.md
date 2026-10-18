@@ -31,11 +31,11 @@ Leave `modelId` out: the default suits most images. Agents sent `modelId` on 96%
 
 ## Transparent backgrounds
 
-For sprites, icons, stickers and product cut-outs, pass `background: "transparent"`. The result's `background` field says how it was made. To cut out an image already in the library, call `remove_background` with its `assetId` and a fresh UUID `operationId`; reuse that `operationId` only to retry or check the same removal. `ALREADY_TRANSPARENT`, `NOTHING_TO_REMOVE` and `NO_SUBJECT_FOUND` mean use the image as it is.
+For sprites, icons, stickers and product cut-outs, pass `background: "transparent"`. The result's `background` field says how it was made. To cut out an image already in the library, call `remove_background` with its `assetId` and a fresh UUID `operationId`; reuse that `operationId` only to retry or check the same removal. `ALREADY_TRANSPARENT` and `NOTHING_TO_REMOVE` mean use the image as it is. `NO_SUBJECT_FOUND` means try an image with one clear subject, or generate one with `background: "transparent"`; the credit comes back.
 
 ## Inputs
 
-`inputs` is an ordered list. Put the most important reference first.
+`inputs` is an ordered list. Keep the order you mean, and the same order on a retry.
 
 | You have | Pass |
 |---|---|

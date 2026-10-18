@@ -33,8 +33,8 @@ If the user asks for Blueprint Studio or Asset Generator by name, use it for tha
 
 1. **Read the account.** Call `get_workspace_context` once, without `brandId`. Pass `pluginVersion: "2.11.0"` (this plugin's release) so it can say when a newer plugin is out. If the tools aren't signed in, use the host's sign-in for Blueprint Studio. In Claude Code, run `/mcp`, pick `plugin:blueprint-studio:asset-generator` and choose Authenticate. Carry on once `get_workspace_context` answers.
 2. **Two lines, real numbers.** Line one: Asset Generator makes images for their product or brand (hero images, icons, social posts) and saves each one to their library. Line two: their plan and balance, from `account.creditSummary` and `defaultImage`. For example: "You're on Free with 50 welcome credits (one-time, until 15 Nov), and a default image costs 5." Quote only numbers the call returned. Credits are weighted, so never say one image is one credit.
-3. **Three starters, one pick.** Offer exactly three, plus "or describe yours in one line". Use `gettingStarted.suggestedUserPrompts` when present. Otherwise offer a hero image for their website, an app icon and a social post, naming the product when the project's README makes it obvious. Ask once, with the host's question tool if it has one.
-4. **Make it.** Call `generate_asset` with the pick as `prompt`, a fresh UUID `requestId`, and `aspectRatio` only when the starter implies one (16:9 for a hero, 1:1 for an icon or post). Leave `modelId`, `imageSize` and `quality` out. If `library.defaultBrandId` is set (their only brand), pass it as `brandId`, with the `styleId` from `list_styles` that fits. Then call `get_generation_status` with the `jobId` and `waitSeconds: 20` until it is `completed` or `failed`.
+3. **Three starters, one pick.** Offer exactly three, plus "or describe yours in one line". Use `gettingStarted.suggestedUserPrompts` when present; if they pick the brand one, follow the `brand-setup` skill and offer a first image in the new brand after. Otherwise offer a hero image for their website, an app icon and a social post, naming the product when the project's README makes it obvious. Ask once, with the host's question tool if it has one.
+4. **Make it.** Call `generate_asset` with the pick as `prompt` (drop a lead-in like "Use Blueprint Studio Asset Generator to"), a fresh UUID `requestId`, and `aspectRatio` only when the starter implies one (16:9 for a hero, 1:1 for an icon or post). Leave `modelId`, `imageSize` and `quality` out: a first image is the 2K default, even a hero. If `library.defaultBrandId` is set (their only brand), pass it as `brandId`, with the `styleId` from `list_styles` that fits. Then call `get_generation_status` with the `jobId` and `waitSeconds: 20` until it is `completed` or `failed`.
 5. **Deliver it** as the `asset-generator` skill's Delivery section says: show it, save it into the project, give the path and the `webUrl`, and say what it cost.
 6. **One next step.** Offer a variation, or setting up their brand from their website so later images match.
 
@@ -48,5 +48,5 @@ If the user asks for Blueprint Studio or Asset Generator by name, use it for tha
 ## Limits
 
 - It makes one first image. A set goes to the `asset-sets` skill.
-- It doesn't save a brand. That is the `brand-setup` skill, offered after the first image.
+- It doesn't save a brand itself; the `brand-setup` skill does, when they pick it or after the first image.
 - It is a welcome, not a tour: no feature lists.
