@@ -271,43 +271,83 @@ class SkillTests(unittest.TestCase):
         # Hosts load a skill from its description, and people ask for "an icon",
         # not "Blueprint". Each workflow names the requests it serves.
         expected = {
-            "asset-generator": ["any image or visual asset", "icons", "logos", "illustrations",
-                                "social graphics", "banners", "hero images", "product shots",
-                                "mockups", "placeholders", "brand assets",
-                                "default way to create images"],
-            "start": ["what images or visual assets you can make", "first image"],
-            "brand-manager": ["set up their brand", "colors", "fonts", "official logos",
-                              "brand guidelines", "team access"],
-            "style-gym": ["consistent look across many assets", "Style library"],
+            "start": ["first run", "what Blueprint Studio can do", "first image"],
+            "asset-generator": ["icon", "illustration", "banner", "social post", "hero",
+                                "mockup", "placeholder", "edit or reuse a saved image"],
+            "asset-sets": ["icon set", "several sizes", "one for each", "several images in one look"],
+            "brand-setup": ["set up their brand", "website", "colors, fonts"],
+            "official-logos": ["their logo", "logo file", "primary", "dark backgrounds"],
+            "styles": ["consistent look", "Style library", "compare Style candidates"],
         }
+        self.assertEqual(set(expected), {path.parent.name for path in (ROOT / "skills").glob("*/SKILL.md")})
         for name, phrases in expected.items():
             meta = frontmatter((ROOT / "skills" / name / "SKILL.md").read_text())
             for phrase in phrases:
                 with self.subTest(skill=name, phrase=phrase):
                     self.assertIn(phrase, meta["description"])
 
+    def test_descriptions_fit_the_always_on_budget(self):
+        # Every description sits in every session's system prompt (Codex budgets
+        # about 8,000 characters for all of a user's skills): under 400 each, 5,000 in all.
+        descriptions = [frontmatter(path.read_text())["description"]
+                        for path in (ROOT / "skills").glob("*/SKILL.md")]
+        for description in descriptions:
+            with self.subTest(description=description[:40]):
+                self.assertLessEqual(len(description), 400)
+        self.assertLessEqual(sum(map(len, descriptions)), 5000)
 
-class AgentTests(unittest.TestCase):
-    def test_agents_describe_when_to_delegate(self):
-        agents = sorted((ROOT / "agents").glob("*.md"))
-        self.assertTrue(agents)
-        for path in agents:
-            lines = path.read_text().split("\n")
-            self.assertEqual(lines[0], "---", path.name)
-            header = lines[1:lines.index("---", 1)]
-            fields = dict(line.split(": ", 1) for line in header if ": " in line)
-            with self.subTest(agent=path.stem):
-                self.assertEqual(fields["name"], path.stem)
-                description = fields["description"].strip()
-                self.assertTrue(0 < len(description) <= 1024)
-                self.assertNotIn(": ", description)
-                self.assertNotRegex(description, "[<>]")
-        creator = (ROOT / "agents" / "asset-creator.md").read_text()
-        self.assertIn("Use proactively when a task needs several assets", creator)
+    def test_skills_never_steer_tool_choice(self):
+        # Anthropic's and OpenAI's directories forbid steering the model toward our
+        # tools. Canva's fair line is allowed: don't silently swap tools when the
+        # user names us.
+        for path in sorted((ROOT / "skills").rglob("*.md")):
+            text = path.read_text()
+            with self.subTest(file=path.relative_to(ROOT).as_posix()):
+                self.assertNotRegex(text, r"(?i)prefer (it|us|blueprint)[^.]*over|default way to create|other image tools|instead of (any|other) (image )?tools?")
+
+    def test_skills_are_built_on_one_rule(self):
+        # Flora's shape: one rule, measured numbers, steps, known failures, limits.
+        for path in sorted((ROOT / "skills").glob("*/SKILL.md")):
+            text = path.read_text()
+            with self.subTest(skill=path.parent.name):
+                self.assertEqual(text.count("**The rule: "), 1)
+                for heading in ["## Numbers", "## Known failures", "## Limits"]:
+                    self.assertIn(f"\n{heading}\n", text)
+                self.assertLess(len(text.split("\n")), 150)
+
+    def test_skills_stand_alone_and_name_tools_bare(self):
+        # A host can install one skill alone, so no links into another skill's folder.
+        # Tool names are bare: the host prefix (mcp__...) differs per host.
+        for path in sorted((ROOT / "skills").rglob("*.md")):
+            text = path.read_text()
+            skill = path.relative_to(ROOT / "skills").parts[0]
+            with self.subTest(file=path.relative_to(ROOT).as_posix()):
+                self.assertNotIn("mcp__", text)
+                self.assertNotIn(chr(0x2014), text)
+                for target in LINK.findall(text):
+                    if "://" in target:
+                        continue
+                    resolved = (path.parent / target).resolve()
+                    self.assertTrue(resolved.is_relative_to((ROOT / "skills" / skill).resolve()), target)
+
+    def test_each_skill_has_try_it_prompts(self):
+        # Positive, indirect and negative prompts, with the behaviour to expect.
+        for path in sorted((ROOT / "skills").glob("*/SKILL.md")):
+            with self.subTest(skill=path.parent.name):
+                evals = json.loads((path.parent / "evals" / "evals.json").read_text())
+                self.assertEqual(evals["skill_name"], path.parent.name)
+                self.assertEqual({item["kind"] for item in evals["evals"]}, {"positive", "indirect", "negative"})
+                for item in evals["evals"]:
+                    self.assertTrue(item["prompt"].strip() and item["expected_output"].strip())
+
+
+class PackageTests(unittest.TestCase):
+    def test_no_agents(self):
+        # Agents load only in Claude Code; their content lives in skill references.
+        self.assertFalse((ROOT / "agents").exists())
 
     def test_relative_links_resolve(self):
-        docs = [ROOT / "README.md", *sorted((ROOT / "skills").rglob("*.md")),
-                *sorted((ROOT / "agents").glob("*.md"))]
+        docs = [ROOT / "README.md", *sorted((ROOT / "skills").rglob("*.md"))]
         for doc in docs:
             for target in LINK.findall(doc.read_text()):
                 if "://" in target or target.startswith("mailto:"):

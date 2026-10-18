@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "blueprint-studio",
-  "version": "2.10.4",
+  "version": "2.11.0",
   "description": "Your brand's Styles, official logos, guides and asset library in your agent, for on-brand icons, social graphics, hero images and slides. From Blueprint Studio, a design and development studio. Studio clients get theirs built in.",
   "author": {
     "name": "Blueprint Studio",
@@ -25,7 +25,7 @@
       "interface": {
         "displayName": "Blueprint Studio",
         "shortDescription": "Your brand's Styles, logos and assets in your AI app.",
-        "longDescription": "Keep your brand's Styles, official logos and guides, and asset library in Blueprint Studio, shared with your team. With Blueprint Studio Asset Generator, your AI app uses them to make on-brand icons, social graphics, hero images and slides, and saves each one to your library. Make a first image in your personal library with no setup, then set up your brand from your website. Optional skills cover a guided start, asset creation, brand administration and Style experiments.",
+        "longDescription": "Keep your brand's Styles, official logos and guides, and asset library in Blueprint Studio, shared with your team. With Blueprint Studio Asset Generator, your AI app uses them to make on-brand icons, social graphics, hero images and slides, and saves each one to your library. Make a first image in your personal library with no setup, then set up your brand from your website. Skills cover a guided start, single images, matching sets, brand setup, official logos and Styles.",
         "developerName": "Blueprint Studio",
         "category": "Productivity",
         "capabilities": [

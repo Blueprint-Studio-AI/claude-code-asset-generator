@@ -1,17 +1,52 @@
 ---
 name: start
-description: Guided first run for Blueprint Studio Asset Generator. Says what it does and the user's real free allowance, offers three starters, then makes, saves and links a first image from one pick. Use right after the plugin is installed or connected, when the user runs start, asks what Blueprint Studio or Asset Generator can do or how to get started, asks what images or visual assets you can make for them, or wants a first image and hasn't made one with Asset Generator yet.
+description: Router and guided first run for Blueprint Studio Asset Generator. Use right after install or connecting, when the user runs start, asks what Blueprint Studio can do or how to get started, asks what images you can make, or wants a first image and has none yet. Routes other jobs to asset-generator, asset-sets, brand-setup, official-logos or styles.
 ---
 
 # Start
 
-Take a new user from "just installed" to a first image with one pick. This is a welcome, not a tour: keep every step short.
+Take a new user from "just connected" to a first image, and send every other job to the right place.
 
-1. **Read the account.** Call `get_workspace_context` first, once, without `brandId`. Pass `pluginVersion: "2.10.4"` (this plugin's release) so it can say when a newer plugin is out. If the Asset Generator connection isn't signed in yet, follow the connecting-account guidance in [the MCP contract](../asset-generator/references/mcp-contract.md), then resume here when it succeeds.
-2. **Two lines, real numbers.** First line: Blueprint Studio Asset Generator makes images for their product or brand (hero images, icons, social posts) and saves each one to their Asset Generator library. Second line: their plan and balance from `account` and `defaultImage`, welcome credits included, for example "You're on Free with 50 welcome credits (one-time, until 15 Nov), and a default image costs 5." Quote only returned numbers; `account.creditSummary` says the balance in one line. Credits are weighted, so never say one image is one credit. If `gettingStarted.nextStep` says a default image isn't affordable, show `nextStep` and `plansUrl`, and stop.
-3. **Three starters, one pick.** Offer exactly three, plus "or describe yours in one line". Use `gettingStarted.suggestedUserPrompts` when present: they are Asset Generator's own starters, the same ones as its setup page, led by a first image. Otherwise offer a hero image for their website, an app icon and a social post, naming the product when this project's README or package manifest makes it obvious. Ask one multiple-choice question with the host's question tool when it has one; otherwise print a numbered list and wait.
-4. **Make it now.** After the pick, ask nothing else. Call `generate_asset` with the starter (or their line) as `prompt`, a fresh UUID `requestId`, and `aspectRatio` only when the starter implies one (16:9 for a hero, 1:1 for an icon or post). Leave `modelId`, `imageSize` and `quality` unset. If `library.defaultBrandId` is set (their only brand), pass it as `brandId` and pass the `styleId` from `list_styles` that fits the starter (the one marked `isBrandDefault` unless another fits better): with no `styleId` the image gets no Style. Otherwise leave `brandId` and `styleId` unset for their personal library. Call `get_generation_status` with the returned `jobId` and `waitSeconds: 20` until `completed` or `failed`. If they picked brand setup, follow the brand-setup steps in `gettingStarted` and the `brand-manager` skill instead, then offer a first image with the new brand.
-5. **Deliver it** as the `asset-generator` skill's Delivery section says: look at the preview, save the file into the project (the requested path, `.blueprint.json` `outputDir`, else `./assets/`), give the saved path, the `webUrl` and the `libraryUrl`, say what it cost, and offer to open it.
-6. **One next step.** Offer a variation, or setting up their brand from their website so later images match it.
+**The rule: one question at most, then make something.**
 
-On `GENERATION_LIMIT`, `MODEL_NOT_ENTITLED`, `API_REQUEST_LIMIT` or `canAffordImage` false, show `nextStep`. When the answer has `checkoutUrl` (a one-step Stripe checkout for Pro on the user's own account, no sign-in), show it with `plansUrl` to compare plans, and offer to open it in their browser (`open <url>` on macOS, `xdg-open <url>` on Linux, `start <url>` on Windows); run that only if they say yes. Otherwise show `plansUrl`. Keep the request and pause until the plan or credits change. Check again with `get_asset_generator_usage` instead of retrying (see [the MCP contract](../asset-generator/references/mcp-contract.md)). Never start another generation because a request or a poll timed out.
+## Numbers
+
+Measured on Blueprint Studio's MCP server, 28 Sep to 18 Oct 2026.
+
+- About one session in six read the account and ended with no image tried (16%, 3 to 16 Oct). A short welcome with three starters is what this file is for.
+- A first image takes about 20 seconds once started: median 20 s, 90th percentile 41 s.
+- Three in four sessions start by reading the account. That one call has everything a welcome needs.
+
+## Route by what the user wants
+
+| The user wants | Use |
+|---|---|
+| One image, an edit, or a real image for a page | the `asset-generator` skill |
+| Several images that match: an icon set, a series, one campaign in several sizes | the `asset-sets` skill |
+| Their brand saved from their website or a few images | the `brand-setup` skill |
+| Their logo in an image, or logos added or labelled | the `official-logos` skill |
+| A look they can reuse across many images | the `styles` skill |
+
+If the user asks for Blueprint Studio or Asset Generator by name, use it for that request. Don't silently swap in another tool.
+
+## First run
+
+1. **Read the account.** Call `get_workspace_context` once, without `brandId`. Pass `pluginVersion: "2.11.0"` (this plugin's release) so it can say when a newer plugin is out. If the tools aren't signed in, use the host's sign-in for Blueprint Studio. In Claude Code, run `/mcp`, pick `plugin:blueprint-studio:asset-generator` and choose Authenticate. Carry on once `get_workspace_context` answers.
+2. **Two lines, real numbers.** Line one: Asset Generator makes images for their product or brand (hero images, icons, social posts) and saves each one to their library. Line two: their plan and balance, from `account.creditSummary` and `defaultImage`. For example: "You're on Free with 50 welcome credits (one-time, until 15 Nov), and a default image costs 5." Quote only numbers the call returned. Credits are weighted, so never say one image is one credit.
+3. **Three starters, one pick.** Offer exactly three, plus "or describe yours in one line". Use `gettingStarted.suggestedUserPrompts` when present. Otherwise offer a hero image for their website, an app icon and a social post, naming the product when the project's README makes it obvious. Ask once, with the host's question tool if it has one.
+4. **Make it.** Call `generate_asset` with the pick as `prompt`, a fresh UUID `requestId`, and `aspectRatio` only when the starter implies one (16:9 for a hero, 1:1 for an icon or post). Leave `modelId`, `imageSize` and `quality` out. If `library.defaultBrandId` is set (their only brand), pass it as `brandId`, with the `styleId` from `list_styles` that fits. Then call `get_generation_status` with the `jobId` and `waitSeconds: 20` until it is `completed` or `failed`.
+5. **Deliver it** as the `asset-generator` skill's Delivery section says: show it, save it into the project, give the path and the `webUrl`, and say what it cost.
+6. **One next step.** Offer a variation, or setting up their brand from their website so later images match.
+
+## Known failures
+
+- **Reading and leaving.** The account call alone isn't a welcome. Offer the starters in the same turn.
+- **Can't afford a first image.** When `gettingStarted.nextStep` or `canAffordImage` says so, show `nextStep` and hand the person `checkoutUrl` (or `plansUrl` when there's no `checkoutUrl`). Offer to open it in their browser and open it only if they say yes. Then stop. Don't retry.
+- **A timed-out check.** It doesn't mean the image failed. Call `get_generation_status` again with the same `jobId`. Never start another generation because a request or a check timed out: that charges twice.
+- **A newer plugin.** If the answer has `pluginUpdate`, tell the user once, in one sentence, with its `nextStep`, then carry on.
+
+## Limits
+
+- It makes one first image. A set goes to the `asset-sets` skill.
+- It doesn't save a brand. That is the `brand-setup` skill, offered after the first image.
+- It is a welcome, not a tour: no feature lists.

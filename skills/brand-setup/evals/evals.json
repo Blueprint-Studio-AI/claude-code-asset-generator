@@ -1,0 +1,26 @@
+{
+  "skill_name": "brand-setup",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "positive",
+      "prompt": "Use Blueprint Studio to set up my brand from acme.com so my images match it.",
+      "expected_output": "setup_brand with the website, get_brand_setup with waitSeconds 20 until ready, shows the draft and previews and asks what to change, saves only after the user agrees, then passes the new brandId and styleId on the next image.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "kind": "indirect",
+      "prompt": "Here's our Instagram. Can you make images that look like our brand?",
+      "expected_output": "Says social pages can't be read and asks for 2 or 3 images to pass as imageUrls.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "kind": "negative",
+      "prompt": "Make an image in my brand's Style.",
+      "expected_output": "Uses the saved brand and Style with the asset-generator steps. No new setup.",
+      "files": []
+    }
+  ]
+}
