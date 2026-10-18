@@ -38,7 +38,7 @@ Measured on Blueprint Studio's MCP server, 28 Sep to 18 Oct 2026.
 - **Save it into the project** unless the user said not to: their path, else `.blueprint.json` `outputDir`, else `./assets/`, with the real file extension.
 - **Say where it is and what it cost:** the saved path, the `webUrl`, and the credits used. Name the logo in `officialAssetsUsed` if there was one.
 
-In detail, with opening and sharing: [Delivery](references/delivery.md).
+With opening and sharing: [Delivery in detail](references/delivery.md).
 
 ## Known failures
 

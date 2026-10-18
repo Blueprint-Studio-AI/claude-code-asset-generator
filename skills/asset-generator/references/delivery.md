@@ -1,4 +1,4 @@
-# Delivery
+# Delivery in detail
 
 What to do with each image the user keeps.
 

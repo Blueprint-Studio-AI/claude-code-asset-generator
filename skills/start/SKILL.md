@@ -13,7 +13,7 @@ Take a new user from "just connected" to a first image, and send every other job
 
 Measured on Blueprint Studio's MCP server, 28 Sep to 18 Oct 2026.
 
-- About one session in six read the account and ended with no image tried (16%, 3 to 16 Oct). A short welcome with three starters is what this file is for.
+- About one session in six read the account and ended with no image tried (16%, 3 to 16 Oct). Offering three starters in the same turn fixes that.
 - A first image takes about 20 seconds once started: median 20 s, 90th percentile 41 s.
 - Three in four sessions start by reading the account. That one call has everything a welcome needs.
 
