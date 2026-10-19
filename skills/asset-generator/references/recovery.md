@@ -16,12 +16,13 @@ No `brandId` means the personal library, and the last brand used isn't remembere
 
 - A fresh UUID `requestId` for each image you mean to make, variations included.
 - `generate_asset` answers at once with a `jobId`. That is a job, not an image.
-- If the start's answer is lost and you have no `jobId`, resend the same `requestId` with identical arguments. Never edit a request under an old `requestId` or mint a new one to recover. A conflict means the first request needs reconciling, not bypassing.
+- A set of images (`images`) needs one `requestId` for the call; a set without one is refused.
+- If the start's answer is lost or timed out and you have no `jobId`, resend the same `requestId` with identical arguments. For a set, that returns the jobs already started, even while the first call is still running. Never edit a request under an old `requestId` or mint a new one to recover. A conflict means the first request needs reconciling, not bypassing.
 - An error can still carry a `jobId` (for example `ADMISSION_OUTCOME_UNKNOWN`). Check it.
 
 ## Checking
 
-- `get_generation_status` with the `jobId` and `waitSeconds: 20`. It answers as soon as the job finishes. Honour `retryAfterSeconds` when it's there.
+- `get_generation_status` with the `jobId` (or all of a set's `jobIds` in one call) and `waitSeconds: 20`. It answers as soon as the jobs finish. Honour `retryAfterSeconds` when it's there.
 - Still running means check again the same way, not start another.
 - A timed-out request or check is never proof that the job failed or that credits came back. A new request starts a second image and charges again.
 

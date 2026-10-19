@@ -11,7 +11,7 @@ For a set made to a brief: an output folder, a credit budget, and a handoff some
 
 ## Resuming earlier jobs
 
-A brief can hand over job ids from an earlier session. Check them with `get_generation_status` (`jobIds`, `waitSeconds: 20`) in their original workspace before starting anything new. A job that timed out earlier may have finished.
+A brief can hand over job ids from an earlier session. Check them with `get_generation_status` (`jobIds`, `waitSeconds: 20`) in their original workspace before starting anything new. A job that timed out earlier may have finished. If all you have is a set's `requestId` and its exact arguments, sending that identical call again returns its jobs without charging again.
 
 ## Checking the work
 
@@ -24,4 +24,4 @@ Return, for the person or the next session:
 - each saved file path with its image's `webUrl`;
 - the `assetId` and `styleId` of every accepted image;
 - what you saw: strengths, weak items, anything that needs a human eye;
-- every unfinished job: its `jobId`, `brandId`, `requestId`, exact arguments, last status and the next check to make.
+- every unfinished job: its `jobId`, `brandId`, the set's `requestId`, exact arguments, last status and the next check to make.
