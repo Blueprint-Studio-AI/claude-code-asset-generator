@@ -1,0 +1,26 @@
+{
+  "skill_name": "start",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "positive",
+      "prompt": "I just connected Blueprint Studio. What can it do?",
+      "expected_output": "Reads the account once, says in two lines what Asset Generator does and the real balance from get_workspace_context, offers exactly three starters plus 'describe yours', and makes the pick with no further questions.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "kind": "indirect",
+      "prompt": "What kind of images could you make for my app?",
+      "expected_output": "Same welcome: real numbers, three starters naming the product from the README, one pick, then a first image saved and linked.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "kind": "negative",
+      "prompt": "Write a tagline for my coffee shop.",
+      "expected_output": "Answers with text. No Blueprint Studio call.",
+      "files": []
+    }
+  ]
+}

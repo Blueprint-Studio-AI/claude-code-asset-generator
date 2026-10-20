@@ -1,0 +1,26 @@
+{
+  "skill_name": "asset-sets",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "positive",
+      "prompt": "Use Blueprint Studio to make a set of 8 matching line icons for my app's tab bar: home, search, inbox, profile, settings, cart, saved, help.",
+      "expected_output": "Prices the set and waits for a yes, then one generate_asset call with 8 items sharing one styleId, then one get_generation_status with all 8 jobIds and waitSeconds 20. If it starts the icons one call at a time, the skill didn't fire.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "kind": "indirect",
+      "prompt": "I need one product shot for each of these five flavours, same backdrop.",
+      "expected_output": "One batch of five items in one look, checked together, saved with names that sort together.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "kind": "negative",
+      "prompt": "Make me one app icon.",
+      "expected_output": "A single image with the asset-generator steps. No batch planning.",
+      "files": []
+    }
+  ]
+}

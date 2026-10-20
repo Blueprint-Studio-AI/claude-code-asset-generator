@@ -1,0 +1,26 @@
+{
+  "skill_name": "official-logos",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "positive",
+      "prompt": "Use Blueprint Studio to put our logo small in the top left of a LinkedIn banner.",
+      "expected_output": "list_brand_assets with kind logo and previews true, picks the version for the background, passes its generationInput in inputs, says where and how big in the prompt, and names the logo from officialAssetsUsed.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "kind": "indirect",
+      "prompt": "Here's our white logo for dark backgrounds, save it to the brand.",
+      "expected_output": "add_brand_asset with one source, a variant, form, background dark, and a fresh requestId. A member gets the refusal that names who can add it.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "kind": "negative",
+      "prompt": "Design three logo concepts for a new bakery.",
+      "expected_output": "Logo concepts with the asset-generator steps. No official logo calls.",
+      "files": []
+    }
+  ]
+}

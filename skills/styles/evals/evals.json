@@ -1,0 +1,26 @@
+{
+  "skill_name": "styles",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "positive",
+      "prompt": "Use Blueprint Studio to turn these three illustrations into a Style we can reuse for blog headers.",
+      "expected_output": "Reads list_styles, drafts a candidate with create_style, tests it on three different briefs in one batch, changes one thing per round, sets a thumbnail and reports the styleId.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "kind": "indirect",
+      "prompt": "Our blog images all look different. Can we fix that?",
+      "expected_output": "Proposes a Style built and tested on three briefs, not a one-off image.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "kind": "negative",
+      "prompt": "Make one blog header in our existing Style.",
+      "expected_output": "Uses the saved styleId with the asset-generator steps. No new Style.",
+      "files": []
+    }
+  ]
+}

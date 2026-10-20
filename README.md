@@ -2,7 +2,7 @@
 
 Blueprint Studio is a design and development studio. This plugin connects Claude Code and Codex to Blueprint Studio Asset Generator, so anyone can create on-brand images and visual assets with their own brand's Styles and logos. Studio clients also get the brand workspace our team maintains for them (official logos, brand guides and Styles) right inside their coding agent.
 
-Your brand's Styles, official logos and guides, and asset library live in one place, shared with your team. Your agent uses them to make on-brand icons, social graphics, hero images and slides that match, and saves them to your project and your Asset Generator library. Workflow skills and agents are optional; tools can be used directly.
+Your brand's Styles, official logos and guides, and asset library live in one place, shared with your team. Your agent uses them to make on-brand icons, social graphics, hero images and slides that match, and saves them to your project and your Asset Generator library. The skills are optional; the tools work on their own.
 
 Using Claude on the web, desktop or mobile, ChatGPT, Cursor or VS Code instead? See [Connect your AI](https://tools.blueprintstudio.ai/mcp-setup).
 
@@ -46,7 +46,7 @@ Your browser opens so you can click Connect in the Blueprint Studio window. Then
 
 ## Update
 
-The tools come from the hosted service, so they're always current. The skills and agents update with the plugin. When a newer plugin is out, `get_workspace_context` says so once per session (`pluginUpdate`), and your agent tells you how to update.
+The tools come from the hosted service, so they're always current. The skills update with the plugin. When a newer plugin is out, `get_workspace_context` says so once per session (`pluginUpdate`), and your agent tells you how to update.
 
 Claude Code: run `/plugin`, open **Installed**, select `blueprint-studio` and choose **Update now**, then run `/reload-plugins`. From a terminal:
 
@@ -82,29 +82,22 @@ Using another AI app? Connect it to `https://tools.blueprintstudio.ai/api/mcp` w
 
 Sign in when your app asks. One connection covers your personal library and every brand you belong to. Start with `get_workspace_context`: it returns your plan, credits left, what a default image costs, your brands with their guides and what your role allows and, for new accounts, a getting-started plan. No brand is needed; leave `brandId` out to work in your personal library. If you have exactly one brand, the agent works in it unless you ask for your personal library; with several, it passes the `brandId` of the one you name on every call. Installing the plugin doesn't add you to a brand, so accept your brand invitation first. If an older connection sees only one brand, disconnect it in Settings and connect again. API keys are only for scripts and automations and are on Pro and Max (sign-in works on every plan), you don't need an OpenAI or Google key, and keys never go in project files.
 
-## Tool contract
+## Skills
 
-`generate_asset` already returns a durable `jobId` immediately. Use a fresh UUID `requestId` for each intended generation; reuse the same ID with identical arguments only for transport retries. Poll `get_generation_status` in the same `brandId` until `completed` or `failed`; pass `waitSeconds` (up to 25) so one call waits for the image. With no `styleId` a new image gets no Style, and with no `imageSize` it is 2K where the plan or brand includes it (1K otherwise). Unknown outcomes and polling timeouts never establish failed generation or refunded credits. Preserve returned asset, receipt, and Style IDs. See [the MCP contract](skills/asset-generator/references/mcp-contract.md) for recovery and handoff details.
+Each skill is built on one rule, with numbers measured on our own service, the failures we've already seen, and its limits. `start` routes to the others.
 
-| Core tools | Context and references |
-| --- | --- |
-| Account OAuth and per-call workspace selection | `get_workspace_context` and published guide discovery |
-| Styles, categories, generated examples, Style thumbnails | `list_models` capability and cost catalog |
-| Generation and status (including transparent backgrounds), background removal, asset reads, downloads and share links | `list_brand_assets` with version-pinned `generationInput` for ordered `inputs`, and `add_brand_asset` to add official logos |
-| Upload links for files attached in a chat or saved locally (`create_upload_link`) | Uploads as generation `inputs` (`{kind: "upload", uploadId}`) |
-| Brand/member administration within permissions | Exact `parentAssetId` edits and `get_generation_details` |
-| Starter prompts (see First image) | `get_guide`: the skills and agents below as how-to guides, for hosts without this plugin (also listed as MCP resources) |
+| Skill | What it's for | The rule |
+| --- | --- | --- |
+| `start` | First run: what Asset Generator does, your real balance, three starters, a first image | One question at most, then make something |
+| `asset-generator` | One image made, checked and saved into your project; edits of a saved image | An edit is the saved image plus one change, never a new prompt |
+| `asset-sets` | Many matching images in one batch: icon sets, series, one campaign in several sizes | N images is one wait, not N waits |
+| `brand-setup` | Your brand saved from your website or a few images, with a Style and your logo | Save only what you approved |
+| `official-logos` | Find, add, label and place your official logos | A logo is used as supplied, never redrawn |
+| `styles` | Build, test and keep reusable Styles | Keep a Style only after it works on three different briefs |
 
-The plugin doesn't include Style editing from reference images, client project tasks or approvals, or access to private repositories. Brand setup reads your website once when you ask; it doesn't keep your brand in sync with the site.
+Each skill folder has a short `SKILL.md`, `references/` for depth, and `evals/evals.json` with try-it prompts and the behaviour to expect. Apps without the plugin get the same text from the server: `get_guide` with `topic` `start`, `assets` (`asset-generator`), `asset_set` (`asset-sets`), `brand` (`brand-setup`), `logos` (`official-logos`), `styles`, or `contract` (jobs and recovery). With the plugin installed you already have it.
 
-## Optional skills and agents
-
-- `start`: guided first run; three starters, then a first image saved into the project.
-- `asset-generator`: browse, generate, inspect, refine, and deliver assets.
-- `brand-manager`: requested workspace and Style administration.
-- `style-gym`: optional repeatable Style experiments on diverse briefs.
-
-Claude Code also discovers two agents from `agents/`: `blueprint-studio:asset-creator` for a bounded production brief and `blueprint-studio:style-evaluator` for requested Style comparisons. They inherit host tools and permissions, use the same `asset-generator` MCP connection, and add no mandatory routing. Other hosts can use the skills directly; agent auto-discovery is host-specific. Hosts without the plugin get the same text from the server: `get_guide` with `topic` `start`, `assets` (`asset-generator`), `brand` (`brand-manager`), `styles` (`style-gym`, its placement reference and `style-evaluator`), `contract` (the MCP contract) or `asset_set` (`asset-creator` with `asset-generator`). With the plugin installed you already have it. See the [Claude Code plugin agent format](https://code.claude.com/docs/en/plugins-reference#agents).
+Before 2.11.0 the plugin shipped `brand-manager` and `style-gym` skills and two Claude Code agents, `asset-creator` and `style-evaluator`. Their content now lives in `brand-setup`, `styles` and `asset-sets` and their references.
 
 Suggested handoff to an existing project agent:
 

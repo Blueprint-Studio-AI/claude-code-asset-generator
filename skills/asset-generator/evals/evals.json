@@ -1,0 +1,26 @@
+{
+  "skill_name": "asset-generator",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "positive",
+      "prompt": "Use Blueprint Studio to make a 16:9 hero image for my landing page: a sunrise over a quiet harbour, room on the left for a headline.",
+      "expected_output": "One generate_asset with aspectRatio 16:9 and no modelId or imageSize, one get_generation_status with waitSeconds 20, looks at the preview, saves it into the project and gives the path, webUrl and credits used.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "kind": "indirect",
+      "prompt": "Make the background of that last image navy instead.",
+      "expected_output": "An edit: generate_asset with parentAssetId of the exact image and a prompt naming only the change. If it just writes a new full prompt with no parentAssetId, the skill didn't fire.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "kind": "negative",
+      "prompt": "Draw a simple chevron icon as inline SVG.",
+      "expected_output": "Writes the SVG in code. No image generation.",
+      "files": []
+    }
+  ]
+}
