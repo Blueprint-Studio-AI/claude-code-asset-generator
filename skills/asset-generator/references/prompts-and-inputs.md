@@ -23,7 +23,7 @@ How to brief one image well. The tool schemas list every field; this page says w
 
 An edit keeps its parent's size unless you pass one. `get_workspace_context` returns `defaultImage` (what a default image costs where you'll work) and `list_models` returns every model's price by size and quality. Quote those numbers; never assume one credit per image. Logos, references and the image being edited add no credits.
 
-Measured, 28 Sep to 18 Oct 2026: 1:1 was 32% of images and 16:9 16%. Since 15 Oct, 32% were 2K at 5 credits and 53% were 1K at 3 credits.
+Measured, 28 Sep to 18 Oct 2026: 1:1 was 32% of images and 16:9 16%. Since 15 Oct, 32% were 2K and 53% were 1K drafts.
 
 ## Models
 

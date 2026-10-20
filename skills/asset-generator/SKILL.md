@@ -18,7 +18,7 @@ Measured on Blueprint Studio's MCP server, 28 Sep to 18 Oct 2026.
 - 16% of finished images were edits of a saved image, and 34% of new images used reference inputs.
 - An image takes a median 20 s from start to saved (90th percentile 41 s). At 2K: median 24 s. At 4K: median 31 s.
 - With `waitSeconds: 20` on every check, a job needed 1.13 checks on average (at most 3). With no wait it needed 1.68, and up to 22 (28 Sep to 16 Oct).
-- Since 15 Oct, 32% of images were the default (2K, 5 credits) and 53% were 1K drafts at 3 credits. 2K at high quality cost a median 13 credits.
+- Since 15 Oct, 32% of images were the default size (2K) and 53% were 1K drafts. Prices change, so quote `defaultImage` and `list_models` rather than a number from here.
 - 0.6% of image attempts failed, and half of those were the image model's safety filter.
 
 ## Steps
