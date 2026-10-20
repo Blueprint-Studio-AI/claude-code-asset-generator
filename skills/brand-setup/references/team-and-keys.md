@@ -22,7 +22,7 @@ Inviting people to a brand, changing roles, and API keys for scripts. Do these o
 
 ## API keys
 
-- API keys are for scripts and automations. They need Pro or Max, or Pro access from extra credits or the brand. Signing in to the MCP works on every plan. On Free, `create_api_key` answers `PLAN_REQUIRED`: show its `nextStep` and `checkoutUrl` (or `plansUrl`).
+- API keys are for scripts and automations. They need Pro or Max, or Pro access from extra credits or the brand. Signing in to the MCP works on every plan. On Free, `create_api_key` answers `PLAN_REQUIRED`: show its `nextStep` and `plansUrl`.
 - `create_api_key` binds the key to that call's `brandId` (personal when left out). A key works only in its own workspace and can't create keys for another.
 - A key made here stops working when the AI app that made it is disconnected. For a key that lasts, the user creates one under API Keys in Settings.
 - `list_api_keys` and `revoke_api_key` manage them.

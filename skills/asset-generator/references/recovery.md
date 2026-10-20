@@ -32,10 +32,10 @@ A failed job's credits are refunded automatically, and `nextStep` says how to re
 
 ## Limits and plans
 
-- **Credit limit** (`GENERATION_LIMIT`, `MODEL_NOT_ENTITLED`, or `canAffordImage` false): show `nextStep`. When the answer has `checkoutUrl`, hand it to the person: a one-step checkout for Pro on their own account, valid 7 days, no sign-in. Show `plansUrl` to compare plans, or alone when there's no `checkoutUrl`. In a terminal, offer to open it in their browser and open it only if they say yes. Then pause until they say the plan or credits changed, and check with `get_asset_generator_usage`. Don't retry.
+- **Credit limit** (`GENERATION_LIMIT`, `MODEL_NOT_ENTITLED`, or `canAffordImage` false): show `nextStep` and hand the person `plansUrl`: people compare plans before paying, and the plans page is where they buy. If an answer ever carries `checkoutUrl` (a one-step checkout for Pro, valid 7 days), mention it after `plansUrl`, not instead of it. In a terminal, offer to open the link in their browser and open it only if they say yes. Then pause until they say the plan or credits changed, and check with `get_asset_generator_usage`. Don't retry.
 - **Daily request limit** (`API_REQUEST_LIMIT`): wait until its `resetAt`. Don't retry before then.
 - **Free credits don't reset.** Free gives 50 one-time welcome credits to use within 30 days. More come from a plan.
-- **`PLAN_REQUIRED`:** API keys and the REST API are on Pro and Max. Signing in to the MCP works on every plan. Show `nextStep` and `checkoutUrl` (or `plansUrl`), and don't retry with the key.
+- **`PLAN_REQUIRED`:** API keys and the REST API are on Pro and Max. Signing in to the MCP works on every plan. Show `nextStep` and `plansUrl`, and don't retry with the key.
 - Treat `checkoutUrl` like a share link: never write it into files, commits or logs.
 
 ## When the session must stop

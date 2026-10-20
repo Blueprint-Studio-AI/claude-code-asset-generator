@@ -35,7 +35,7 @@ For a brief with an output folder and a budget, or a set someone else will pick 
 - **One check per job.** Pass every `jobId` in one check.
 - **One bad entry.** A set starts all or nothing: if one image can't start (a bad link, a setting the model can't take, a missing Style), none start, nothing is charged, and the error names `images[n]`. Fix that entry and send the set again with a fresh `requestId`.
 - **`IDEMPOTENCY_CONFLICT`.** That `requestId` already started images. Send the original call again, unchanged, to get their `jobIds`, then start only what's missing under a new `requestId`. Resending everything under a new key charges twice.
-- **Short of credits.** Nothing starts. Show `nextStep` and hand the person `checkoutUrl` (or `plansUrl`), or offer a smaller set. Don't resend the same set.
+- **Short of credits.** Nothing starts. Show `nextStep` and hand the person `plansUrl`, or offer a smaller set. Don't resend the same set.
 - **Over `maxCredits`** (`MAX_CREDITS_EXCEEDED`). Nothing starts. Tell the person the total, then send fewer or cheaper images, or the same set with a higher `maxCredits` if they agree.
 - **An image that didn't start, or failed later.** The others are running and paid for. If its entry carries a `jobId`, check that first. Otherwise remake only that image, with a new `requestId`; a failed job's credits come back on their own.
 - **A timed-out or lost start.** Send the identical call again with the same `requestId`. It returns the jobs the first call started, even if that call is still running, and charges nothing again. A new `requestId` starts and charges every image a second time.

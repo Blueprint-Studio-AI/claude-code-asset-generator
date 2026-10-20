@@ -41,7 +41,7 @@ If the user asks for Blueprint Studio or Asset Generator by name, use it for tha
 ## Known failures
 
 - **Reading and leaving.** The account call alone isn't a welcome. Offer the starters in the same turn.
-- **Can't afford a first image.** When `gettingStarted.nextStep` or `canAffordImage` says so, show `nextStep` and hand the person `checkoutUrl` (or `plansUrl` when there's no `checkoutUrl`). Offer to open it in their browser and open it only if they say yes. Then stop. Don't retry.
+- **Can't afford a first image.** When `gettingStarted.nextStep` or `canAffordImage` says so, show `nextStep` and hand the person `plansUrl`, where they can compare plans and pay. Offer to open it in their browser and open it only if they say yes. Then stop. Don't retry.
 - **A timed-out check.** It doesn't mean the image failed. Call `get_generation_status` again with the same `jobId`. Never start another generation because a request or a check timed out: that charges twice.
 - **A newer plugin.** If the answer has `pluginUpdate`, tell the user once, in one sentence, with its `nextStep`, then carry on.
 

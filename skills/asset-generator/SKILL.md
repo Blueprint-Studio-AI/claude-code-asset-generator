@@ -48,7 +48,7 @@ With opening and sharing: [Delivery in detail](references/delivery.md).
 - **Downloading to look, or asking for base64.** On Claude.ai, 62 of 76 `download_asset` calls asked for base64 (28 Sep to 16 Oct), and agents downloaded images they had just made to look at them. Look with the check's preview; hand over the file as `downloadUrl` or `saveCommand`. Ask for base64 only when the image must be embedded in code.
 - **Bad reference links** were the most common external error: `INVALID_REFERENCE_IMAGE` and `REFERENCE_URL_UNREACHABLE`. Links must be public https PNG, JPEG or WebP. Upload anything else.
 - **Safety filter refusals.** The job fails and is refunded; `nextStep` says how to reword. Retry with a new `requestId`.
-- **The credit limit.** On `GENERATION_LIMIT` or `canAffordImage` false, show `nextStep` and hand the person `checkoutUrl` (or `plansUrl`). Don't retry; pause until they say the plan or credits changed.
+- **The credit limit.** On `GENERATION_LIMIT` or `canAffordImage` false, show `nextStep` and hand the person `plansUrl`. Don't retry; pause until they say the plan or credits changed.
 - **A re-roll is not a fix.** Running the same prompt again rarely moves the defect. Name it in an edit.
 
 More on jobs, retries, sign-in and limits: [Jobs and recovery](references/recovery.md).
