@@ -23,7 +23,7 @@ Measured on Blueprint Studio's MCP server, 28 Sep to 18 Oct 2026.
 
 ## Steps
 
-1. **Read the account once.** `get_workspace_context`, at the start of the session. Pass `pluginVersion: "2.11.0"` (this plugin's release) so it can say when a newer plugin is out. If `library.defaultBrandId` is set (their only brand), work in it unless they ask for their personal library. With several brands, use the one they name. Pass that `brandId` on every call, checks included.
+1. **Read the account once.** `get_workspace_context`, at the start of the session. Pass `pluginVersion: "2.11.1"` (this plugin's release) so it can say when a newer plugin is out. If `library.defaultBrandId` is set (their only brand), work in it unless they ask for their personal library. With several brands, use the one they name. Pass that `brandId` on every call, checks included.
 2. **Pick the look.** In a brand, call `list_styles` and pass the `styleId` that fits. With no `styleId` an image gets no Style; writing the Style's name in the prompt doesn't apply it.
 3. **Write the prompt.** Subject, composition, and where any text or logo goes. Set `aspectRatio` from the slot. Leave `imageSize` out for 2K; 4K for heroes and print, 1K or `quality: "low"` for drafts. Leave `modelId` out unless the user names one.
 4. **Add inputs.** Official logos come from the `official-logos` skill. A public image link is `{kind: "url", url}`. A file in the chat or on disk goes through one `create_upload_link`, then `{kind: "upload", uploadId}`. Never base64. Depth: [Prompts and inputs](references/prompts-and-inputs.md).
