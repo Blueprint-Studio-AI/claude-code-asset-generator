@@ -40,6 +40,10 @@ Measured on Blueprint Studio's MCP server, 28 Sep to 18 Oct 2026.
 
 With opening and sharing: [Delivery in detail](references/delivery.md).
 
+## The Library
+
+Their saved images, uploads and folders, as the web app shows them. Work in it like a file system when they ask: `list_library` (one folder by path, like `References/Screens`; `tree` lists every folder), `create_library_folder`, `move_library_items`, `rename_library_item` and `delete_library_items`. `save_to_library` keeps an image from this machine or a link as a named item. Delete only what they asked you to: deleted images and uploads can't be brought back.
+
 ## Known failures
 
 - **Polling at zero wait:** one image in 13 calls. Pass `waitSeconds: 20` on every check.
