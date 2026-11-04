@@ -17,6 +17,10 @@ Measured on Blueprint Studio's MCP server.
 - After setup, images land in the brand only when the call says so: 1.3% of generations passed a `brandId` and 0.7% a saved Style (28 Sep to 16 Oct 2026).
 - The previews come from the account's free setup previews and use no credits.
 
+## In the browser first
+
+When `get_workspace_context` returns `gettingStarted.brandSetupInBrowser`, offer that first: Blueprint sets up their brand in their browser in about 7 minutes. It researches their site, builds a brand page, tunes Styles with them and makes their first images. Give its `url` as a link and offer to open it; open it only if they say yes. It opens in the account their browser is signed in to, so they should use the one connected here. What it saves shows up here too: call `get_workspace_context` again when they're back. Follow the steps below when they'd rather set it up in the chat, or when there's no link.
+
 ## Steps
 
 1. **Start it.** `setup_brand` with `website` (or 1 to 5 `imageUrls` of work in the look they want), plus `brandName` and `description` if they gave them, and a fresh UUID `requestId`. It answers at once with a `setupId`.
