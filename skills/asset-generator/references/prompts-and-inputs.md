@@ -34,6 +34,7 @@ Leave `modelId` out: the default suits most images. Agents sent `modelId` on 96%
 - **An animated loop** (a sticker, a reaction, a product turning): `outputFormat: "gif"`. Frames are 512 px on the long side; `frameCount` (2 to 16, default 9) and `frameDurationMs` (default 200) set its length and speed. It can animate a reference input, or a saved image with `parentAssetId`.
 - **A logo mark, icon or flat illustration to scale or edit:** `outputFormat: "svg"`. It's drawn from the prompt alone: no inputs and no edits, though a Style's words still apply. Its `downloadUrl` is the `.svg`, and `imageUrl` a PNG drawn from it.
 - Only GPT Image 2.6 makes these. Leave `modelId` out and Flare 2.6 makes them; `list_models` gives their price.
+- On GPT Image 2.6, `complexity: "low"` makes a small, focused edit quicker; leave it out for dense text or a busy layout. It costs nothing, and other models ignore it.
 
 ## Transparent backgrounds
 
