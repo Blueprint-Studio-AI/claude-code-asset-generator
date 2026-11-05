@@ -29,6 +29,13 @@ Measured, 28 Sep to 18 Oct 2026: 1:1 was 32% of images and 16:9 16%. Since 15 Oc
 
 Leave `modelId` out: the default suits most images. Agents sent `modelId` on 96% of calls, and 87% of those named the default anyway (28 Sep to 16 Oct 2026). Pick another model only when the user asks, or when `list_models` says one does something the default can't.
 
+## Animated GIFs and SVGs
+
+- **An animated loop** (a sticker, a reaction, a product turning): `outputFormat: "gif"`. Frames are 512 px on the long side; `frameCount` (2 to 16, default 9) and `frameDurationMs` (default 200) set its length and speed. It can animate a reference input, or a saved image with `parentAssetId`.
+- **A logo mark, icon or flat illustration to scale or edit:** `outputFormat: "svg"`. It's drawn from the prompt alone: no inputs and no edits, though a Style's words still apply. Its `downloadUrl` is the `.svg`, and `imageUrl` a PNG drawn from it.
+- Only GPT Image 2.6 makes these. Leave `modelId` out and Flare 2.6 makes them; `list_models` gives their price.
+- On GPT Image 2.6, `complexity: "low"` makes a small, focused edit quicker; leave it out for dense text or a busy layout. It costs nothing, and other models ignore it.
+
 ## Transparent backgrounds
 
 For sprites, icons, stickers and product cut-outs, pass `background: "transparent"`. The result's `background` field says how it was made. To cut out an image already in the library, call `remove_background` with its `assetId` and a fresh UUID `operationId`; reuse that `operationId` only to retry or check the same removal. `ALREADY_TRANSPARENT` and `NOTHING_TO_REMOVE` mean use the image as it is. `NO_SUBJECT_FOUND` means try an image with one clear subject, or generate one with `background: "transparent"`; the credit comes back.
