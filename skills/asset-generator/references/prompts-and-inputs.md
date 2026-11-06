@@ -59,6 +59,12 @@ Uploads:
 
 A reference makes a new image that borrows from it. An edit (`parentAssetId`) continues that exact image. Pick the one the user means.
 
+## Marked-up edits
+
+- **The user marked what to change** (a screenshot of the image with circles, arrows, scribbles or notes on it): edit the saved image with `parentAssetId` and pass their picture as `markup`, an upload or a url input. The prompt says what the marks ask for: "make the circled cap brushed gold". The result has no marks.
+- **To point at a spot yourself**, with a shell: draw the marks on a transparent PNG the size of the saved image and pass that as `markup`.
+- Every model takes it, and it counts as one image sent. It makes a still image, so not a GIF or SVG.
+
 ## Project preferences
 
 A `.blueprint.json` in the project can set an output folder and preferred settings. It grants no access, and the user's words win over it.
