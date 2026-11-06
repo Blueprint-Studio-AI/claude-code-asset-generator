@@ -23,11 +23,11 @@ Measured on Blueprint Studio's MCP server, 28 Sep to 18 Oct 2026.
 
 ## Steps
 
-1. **Read the account once.** `get_workspace_context`, at the start of the session. Pass `pluginVersion: "2.13.1"` (this plugin's release) so it can say when a newer plugin is out. If `library.defaultBrandId` is set (their only brand), work in it unless they ask for their personal library. With several brands, use the one they name. Pass that `brandId` on every call, checks included.
+1. **Read the account once.** `get_workspace_context`, at the start of the session. Pass `pluginVersion: "2.14.0"` (this plugin's release) so it can say when a newer plugin is out. If `library.defaultBrandId` is set (their only brand), work in it unless they ask for their personal library. With several brands, use the one they name. Pass that `brandId` on every call, checks included.
 2. **Pick the look.** In a brand, call `list_styles` and pass the `styleId` that fits. With sub-brands, pick one whose `subBrand` is the one you're working on; unmarked ones are the primary brand's. With no `styleId` an image gets no Style; writing the Style's name in the prompt doesn't apply it.
 3. **Write the prompt.** Subject, composition, and where any text or logo goes. Set `aspectRatio` from the slot. Leave `imageSize` out for 2K; 4K for heroes and print, 1K or `quality: "low"` for drafts. Leave `modelId` out unless the user names one. For an animated loop pass `outputFormat: "gif"`; for a logo mark or icon to scale, `outputFormat: "svg"`, which takes no inputs.
 4. **Add inputs.** Official logos come from the `official-logos` skill. A public image link is `{kind: "url", url}`. A file in the chat or on disk goes through one `create_upload_link`, then `{kind: "upload", uploadId}`. Never base64. Depth: [Prompts and inputs](references/prompts-and-inputs.md).
-5. **Start it.** `generate_asset` with a fresh UUID `requestId` returns a `jobId` at once. For an edit, add `parentAssetId`.
+5. **Start it.** `generate_asset` with a fresh UUID `requestId` returns a `jobId` at once. For an edit, add `parentAssetId`; when the user marked up the image to show what to change, pass their picture as `markup`.
 6. **Wait for it.** `get_generation_status` with the `jobId` and `waitSeconds: 20`, again the same way until `completed` or `failed`.
 7. **Look before you deliver.** View the preview the finished check returned (for a saved image you haven't seen, `download_asset` with `preview: true`). Check lettering, the logo, cropping and the space it has to fit. If one thing is wrong, make one edit that names it.
 8. **Deliver.** See Delivery below.
