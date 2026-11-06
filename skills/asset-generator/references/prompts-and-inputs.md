@@ -25,9 +25,13 @@ An edit keeps its parent's size unless you pass one. `get_workspace_context` ret
 
 Measured, 28 Sep to 18 Oct 2026: 1:1 was 32% of images and 16:9 16%. Since 15 Oct, 32% were 2K and 53% were 1K drafts.
 
-## Models
+## Models and presets
 
-Leave `modelId` out: the default suits most images. Agents sent `modelId` on 96% of calls, and 87% of those named the default anyway (28 Sep to 16 Oct 2026). Pick another model only when the user asks, or when `list_models` says one does something the default can't.
+Leave `modelId` out: the user's preset picks the model and quality. Everyone starts on **balanced** (Sunburst 2.6 at medium, about 28 seconds); **fast** is Flare 2.6 at low (10 to 17 seconds) and **best** Sunburst 2.6 at high (about 45 seconds). `defaultImage` in `get_workspace_context` says which is theirs and what each costs.
+
+- **Speed or detail matters to them:** ask once which preset they want and save it with `set_image_preset`. It applies to their next images here and in the Blueprint Studio app.
+- **One image needs something else:** pass `modelId` and `quality` for it; their preset stays.
+- Agents sent `modelId` on 96% of calls, and 87% of those named the default anyway (28 Sep to 16 Oct 2026). Pick a model only when the user asks, or when `list_models` says one does something the preset's can't.
 
 ## Animated GIFs and SVGs
 
