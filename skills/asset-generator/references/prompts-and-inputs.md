@@ -25,9 +25,13 @@ An edit keeps its parent's size unless you pass one. `get_workspace_context` ret
 
 Measured, 28 Sep to 18 Oct 2026: 1:1 was 32% of images and 16:9 16%. Since 15 Oct, 32% were 2K and 53% were 1K drafts.
 
-## Models
+## Models and presets
 
-Leave `modelId` out: the default suits most images. Agents sent `modelId` on 96% of calls, and 87% of those named the default anyway (28 Sep to 16 Oct 2026). Pick another model only when the user asks, or when `list_models` says one does something the default can't.
+Leave `modelId` out: the user's preset picks the model, quality and size. Everyone starts on **balanced** (Sunburst 2.6 at medium, about 28 seconds); **fast** is Flare 2.6 at low (10 to 17 seconds) and **best** Sunburst 2.6 at high quality and 4K (about 55 seconds). `defaultImage` in `get_workspace_context` says which is theirs and what each costs.
+
+- **Speed or detail matters to them:** ask once which preset they want and save it with `set_image_preset`. It applies to their next images here and in the Blueprint Studio app.
+- **One image needs something else:** pass `modelId` and `quality` for it; their preset stays.
+- Agents sent `modelId` on 96% of calls, and 87% of those named the default anyway (28 Sep to 16 Oct 2026). Pick a model only when the user asks, or when `list_models` says one does something the preset's can't.
 
 ## Animated GIFs and SVGs
 
@@ -58,6 +62,12 @@ Uploads:
 - Uploads work for 24 hours, in the workspace the link was made for.
 
 A reference makes a new image that borrows from it. An edit (`parentAssetId`) continues that exact image. Pick the one the user means.
+
+## Marked-up edits
+
+- **The user marked what to change** (a screenshot of the image with circles, arrows, scribbles or notes on it): edit the saved image with `parentAssetId` and pass their picture as `markup`, an upload or a url input. The prompt says what the marks ask for: "make the circled cap brushed gold". The result has no marks.
+- **To point at a spot yourself**, with a shell: draw the marks on a transparent PNG the size of the saved image and pass that as `markup`.
+- Every model takes it, and it counts as one image sent. It makes a still image, so not a GIF or SVG.
 
 ## Project preferences
 
