@@ -21,7 +21,7 @@ How to brief one image well. The tool schemas list every field; this page says w
 | A website hero or slide | `aspectRatio: "16:9"` |
 | A story or phone screen | `aspectRatio: "9:16"` |
 
-An edit keeps its parent's size unless you pass one. `get_workspace_context` returns `defaultImage` (what a default image costs where you'll work) and `list_models` returns every model's price by size and quality. Quote those numbers; never assume one credit per image. On the GPT models, the default included, each image sent adds 1 credit: references, logos, the image being edited and the Style's reference images. Gemini models add none, and generate_asset returns the exact credits charged.
+An edit keeps its parent's size unless you pass one. `get_workspace_context` returns `defaultImage` (what a default image costs where you'll work) and `list_models` returns every model's price by size and quality. Quote those numbers; never assume one credit per image. On the GPT models, the default included, each image sent adds the model's `inputImageCredits` from `list_models`: references, logos, the image being edited and the Style's reference images. Gemini models add none, and generate_asset returns the exact credits charged.
 
 Measured, 28 Sep to 18 Oct 2026: 1:1 was 32% of images and 16:9 16%. Since 15 Oct, 32% were 2K and 53% were 1K drafts.
 
