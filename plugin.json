@@ -8,7 +8,7 @@
     "email": "blueprint.dao@gmail.com",
     "url": "https://blueprintstudio.ai"
   },
-  "homepage": "https://blueprintstudio.ai",
+  "homepage": "https://tools.blueprintstudio.ai/asset-generator",
   "repository": "https://github.com/Blueprint-Studio-AI/claude-code-asset-generator",
   "license": "MIT",
   "keywords": [
@@ -37,7 +37,7 @@
           "Set up my brand from my website in Asset Generator",
           "Show my brand's Styles and logos in Asset Generator"
         ],
-        "websiteURL": "https://blueprintstudio.ai",
+        "websiteURL": "https://tools.blueprintstudio.ai/asset-generator",
         "privacyPolicyURL": "https://tools.blueprintstudio.ai/privacy",
         "termsOfServiceURL": "https://blueprintstudio.ai/terms"
       }

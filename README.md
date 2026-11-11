@@ -6,6 +6,8 @@ Your brand's Styles, official logos and guides, and asset library live in one pl
 
 Using Claude on the web, desktop or mobile, ChatGPT, Cursor or VS Code instead? See [Connect your AI](https://tools.blueprintstudio.ai/mcp-setup).
 
+More about [Blueprint Studio Asset Generator](https://tools.blueprintstudio.ai/asset-generator), or the studio at [blueprintstudio.ai](https://blueprintstudio.ai).
+
 Install it from the [Blueprint marketplace](https://github.com/Blueprint-Studio-AI/claude-code-marketplace) below. This repository keeps the name `claude-code-asset-generator` so existing installs keep working.
 
 ## Install

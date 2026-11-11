@@ -8,7 +8,7 @@
     "url": "https://github.com/Blueprint-Studio-AI/claude-code-asset-generator",
     "source": "github"
   },
-  "websiteUrl": "https://blueprintstudio.ai",
+  "websiteUrl": "https://tools.blueprintstudio.ai/asset-generator",
   "remotes": [
     {
       "type": "streamable-http",
