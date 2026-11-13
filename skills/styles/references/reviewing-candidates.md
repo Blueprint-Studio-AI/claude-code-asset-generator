@@ -28,7 +28,7 @@ For judging drafts, Styles or a trial someone already ran, or running a small co
 
 - Use the workspace the user named, and pass its `brandId` on every call.
 - Make the candidates drafts in one trial (`start_style_trial`, or by hand where it isn't offered), not edits to a shared Style. Every prompt runs with the same settings; let each draft differ from the first in one thing.
-- Say the credit total from `estimateOnly: true` and wait for a yes before anything runs, even within a budget the user set. Run with `maxCredits` set to that total.
+- Say the credit total (from `estimateOnly: true`, or added up by hand where the trial tools aren't offered) and wait for a yes before anything runs, even within a budget the user set. Run with `maxCredits` set to that total.
 - A review doesn't permit finishing the trial, writing into a shared Style (`update_base`) or publishing anything. Leave the drafts in Drafts unless the user says otherwise.
 
 ## Report

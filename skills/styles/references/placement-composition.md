@@ -22,8 +22,8 @@ Start with a small comparison that answers the current question, and keep a base
 
 Put the candidate behind the real copy at its real size. Judge desktop and mobile separately. Look for bright lights, rooflines or window bars crossing text; missing faces or hands; subjects that only work at one crop; overlays that hide the image. Fix layout in code and the scene in the image. A local scrim keeps both text and light; darkening the whole picture usually loses its point.
 
-If a wide image can't keep its subject and copy area on mobile, make a portrait companion from the chosen image: an edit (`parentAssetId`) when you mean the same picture, a new image with it as a reference when an adaptation is fine. Serve the right one per screen size, and check the portrait actually loads.
+If a wide image can't keep its subject and copy area on mobile, make a portrait companion from the chosen image: an edit (`parentAssetId`) when you mean the same picture, a new image with it as a reference when an adaptation is fine. Say what it costs and wait for a yes first. Serve the right one per screen size, and check the portrait actually loads.
 
 ## Before calling it done
 
-Test the treatment on a different subject. Write down what failed. Hand over the originals, sized files with real dimensions, crop or focal notes for desktop and mobile, the overlay treatment in code, each image's `assetId`, the exact prompts and references, and why you recommend the one you chose.
+Test the treatment on a different subject, as another trial prompt where you can, priced and agreed first. Write down what failed. Hand over the originals, sized files with real dimensions, crop or focal notes for desktop and mobile, the overlay treatment in code, each image's `assetId`, the exact prompts and references, and why you recommend the one you chose.
