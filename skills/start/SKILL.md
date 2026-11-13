@@ -1,6 +1,6 @@
 ---
 name: start
-description: Router and guided first run for Blueprint Studio Asset Generator. Use right after install or connecting, when the user runs start, asks what Blueprint Studio can do or how to get started, asks what images you can make, or wants a first image and has none yet. Routes other jobs to asset-generator, asset-sets, brand-setup, official-logos or styles.
+description: Router and guided first run for Blueprint Studio Asset Generator. Use right after install or connecting, when the user runs start, asks what Blueprint Studio can do or how to get started, asks what images you can make, or wants a first image and has none yet. Routes other jobs to asset-generator, asset-sets, brand-setup, official-logos, styles or find-references.
 ---
 
 # Start
@@ -26,6 +26,7 @@ Measured on Blueprint Studio's MCP server, 28 Sep to 18 Oct 2026.
 | Their brand saved from their website or a few images | the `brand-setup` skill |
 | Their logo in an image, or logos added or labelled | the `official-logos` skill |
 | A look they can reuse across many images | the `styles` skill |
+| References or a moodboard for a new look, from their own finds and open sources | the `find-references` skill |
 
 If the user asks for Blueprint Studio or Asset Generator by name, use it for that request. Don't silently swap in another tool.
 
