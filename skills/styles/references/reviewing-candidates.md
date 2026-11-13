@@ -4,7 +4,7 @@ For judging drafts, Styles or a trial someone already ran, or running a small co
 
 ## Judge what's there
 
-- Review the images you were given, or a trial's grid: `get_style_trial` with the `trialId` they give you returns the `contactSheet`, every cell, and each draft's references and text in full. Run more prompts only if the user asked for them.
+- Review the images you were given, or a trial's grid: `get_style_trial` with the `trialId` they give you returns the `contactSheet`, every cell, and each draft's references and text in full. Run more prompts only if the user asked for them, and say what they cost and wait for a yes first.
 - Keep the treatment separate from the subject and the placement when you judge. A strong layout can hide a weak Style.
 - Base every finding on images you actually viewed.
 
@@ -27,8 +27,8 @@ For judging drafts, Styles or a trial someone already ran, or running a small co
 ## Running a comparison
 
 - Use the workspace the user named, and pass its `brandId` on every call.
-- Make the candidates drafts in one trial (`start_style_trial`), not edits to a shared Style. Every prompt runs with the trial's settings; let each draft differ from the first in one thing.
-- Say the credit total from `estimateOnly: true` before anything runs, keep it within the budget the user set, and run with `maxCredits` set to that total.
+- Make the candidates drafts in one trial (`start_style_trial`, or by hand where it isn't offered), not edits to a shared Style. Every prompt runs with the same settings; let each draft differ from the first in one thing.
+- Say the credit total from `estimateOnly: true` and wait for a yes before anything runs, even within a budget the user set. Run with `maxCredits` set to that total.
 - A review doesn't permit finishing the trial, writing into a shared Style (`update_base`) or publishing anything. Leave the drafts in Drafts unless the user says otherwise.
 
 ## Report

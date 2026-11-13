@@ -5,14 +5,14 @@
       "id": 1,
       "kind": "positive",
       "prompt": "Use Blueprint Studio to turn these three illustrations into a Style we can reuse for blog headers.",
-      "expected_output": "Reads list_styles, plans two to four drafts that differ in one thing (all three illustrations in inputs, images only; a subset of them in inputs; the three with a short stylePrompt) and three prompts with placement in the prompts. Calls start_style_trial with estimateOnly true and aspectRatio 16:9, says the credit total and waits for a yes, then sends the same call with the same requestId and maxCredits. Polls get_style_trial with waitSeconds 20, shows each row's images labelled like P1·A and asks which they like in each row, records each pick with pick_style_trial_image, finishes with finish_style_trial as new_style with a name after asking what to do with the others, and reports the styleId and the tally.",
+      "expected_output": "Reads list_styles, plans two to four drafts that differ in one thing (all three illustrations in inputs, images only; a subset of them in inputs; the three with a short stylePrompt) and three prompts with placement in the prompts. Calls start_style_trial with estimateOnly true and aspectRatio 16:9, says the credit total and waits for a yes, then sends the same call with the same requestId and maxCredits. Polls get_style_trial with waitSeconds 20, shows each row's images labelled like P1·A and asks which they like in each row, and records each pick with pick_style_trial_image. On a tie or a lead of one, offers one to three more prompts, priced, and waits for a yes before run_style_trial_prompts. Finishes with finish_style_trial as new_style with a name after asking what to do with the others, and reports the styleId and the tally.",
       "files": []
     },
     {
       "id": 2,
       "kind": "positive",
       "prompt": "Our Field Notes Style has gotten muddy. Try it with fewer references and without its text, and keep whichever works better.",
-      "expected_output": "Never calls update_style on Field Notes to experiment. Starts a trial with baseStyleId set to it and three drafts from it with fromStyleId: an unchanged copy, one with keepReferences, one with imagesOnly true. Estimates first and says the total. Finishes with as update_base only after the person agrees that the shared Style should change. If the unchanged copy wins, says Field Notes already does best and doesn't rewrite it.",
+      "expected_output": "Never calls update_style on Field Notes to experiment. Starts a trial with baseStyleId set to it and three drafts from it with fromStyleId: an unchanged copy, one with keepReferences, one with imagesOnly true. Estimates first, says the total and waits for a yes. Asks before finishing with as update_base, naming Field Notes and saying images made with it will change. If the unchanged copy wins, says Field Notes already does best and doesn't rewrite it.",
       "files": []
     },
     {
