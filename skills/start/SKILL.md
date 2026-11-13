@@ -26,6 +26,7 @@ Measured on Blueprint Studio's MCP server, 28 Sep to 18 Oct 2026.
 | Their brand saved from their website or a few images | the `brand-setup` skill |
 | Their logo in an image, or logos added or labelled | the `official-logos` skill |
 | A look they can reuse across many images | the `styles` skill |
+| References or a moodboard for a new look, from their own finds and open sources | the `find-references` skill |
 
 If the user asks for Blueprint Studio or Asset Generator by name, use it for that request. Don't silently swap in another tool.
 

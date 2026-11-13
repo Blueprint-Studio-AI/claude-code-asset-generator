@@ -44,5 +44,5 @@ When `get_workspace_context` returns `gettingStarted.brandSetupInBrowser`, offer
 
 - It reads the website once, when asked. It doesn't keep the brand in sync with the site.
 - Up to 2 setups running at once and 10 started per day. A draft expires after 7 days.
-- One Style per setup. More Styles for the same brand: the `styles` skill.
+- One Style per setup. More Styles for the same brand: the `styles` skill, with references for a new look from the `find-references` skill.
 - Teammates, roles and API keys: [Team and keys](references/team-and-keys.md).

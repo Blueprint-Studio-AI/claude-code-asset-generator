@@ -1,0 +1,75 @@
+{
+  "skill_name": "find-references",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "positive",
+      "prompt": "Find some references for a new illustration Style for our blog headers. I'm thinking something like risograph prints.",
+      "expected_output": "Asks first, in one message, what the headers are for, which sources they already use, and for any images or links they like or don't. Then find_references with a query naming the look (for example \"risograph print, two colours, heavy grain\"), never a subject, count left at 12, and says which sources answered and which were skipped. Saves the round with save_reference_board (fresh requestId, name, brief), shows each item under its board number with its attribution, and asks which feel right and which don't. Records only the numbers they named with react_to_references, says what the likes share, and searches again with a varied query, not page 2; two or three rounds at most. Groups the likes into 2 to 4 directions that differ in one thing each, 2 to 5 pictures each, none shared, records them as directions, then hands off to the styles skill with one draft per direction whose inputs carry source, sourceUrl, licence, author and suppliedBy, and lets the styles skill say the credit total before anything runs.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "kind": "positive",
+      "prompt": "I have Mobbin connected. Use it to find references for the look of our app's onboarding screens.",
+      "expected_output": "Searches with the person's Mobbin connector as it is, never asking for a Mobbin password, key or token. Shows Mobbin's ai_usage_notice word for word if the answer carries one, cites each screen by its mobbin_url, and says the screens came from their Mobbin. Saves the picks to the board as the person's finds (source other, suppliedBy person, sourceUrl the mobbin_url, a note naming Mobbin), uploading each image through create_upload_link because Mobbin's image_url expires. May add find_references for the open sources with a look query. Leaves out screens where another company's brand stands out.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "kind": "positive",
+      "prompt": "Here's my Are.na channel: are.na/sam-lee/warm-light-interiors. Can you turn it into a few Style directions?",
+      "expected_output": "find_references with arenaChannel set to that channel (at most 50 items), not a search across Are.na. Says Are.na doesn't license its blocks, so each keeps its sourceUrl and whatever licence its source states, and leaves out what the person isn't sure they may use. Saves the board, shows the items by board number, records likes and dislikes, groups the likes into 2 to 4 directions with no picture in two, and hands one direction per draft to the styles skill, five references at most each.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "kind": "indirect",
+      "prompt": "I ran a Style trial and all the drafts came out looking the same.",
+      "expected_output": "Explains that drafts made from the same few pictures converge, and offers to find references for each draft: asks what sources they use and for their own images first, then searches by look, has them pick, and groups the likes into directions that differ in one thing, so each draft gets its own pictures and none are shared. Doesn't rerun the same drafts.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "kind": "indirect",
+      "prompt": "Here's my Pinterest board, make a Style from it: pinterest.com/sam/moody-product-shots",
+      "expected_output": "Doesn't open, read or scrape the board, and doesn't pass the board link to any tool. Asks the person to bring the pins they want through their own Pinterest connector if their app has one, or to upload them (or paste the image links). Never asks for their Pinterest password. Offers find_references with a look query (for example \"dark moody product photography, hard side light\") for more options, then the board, reactions and directions as usual.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "kind": "indirect",
+      "prompt": "Put all nine of the ones I liked into one Style.",
+      "expected_output": "Says a Style keeps five references at most. Offers to keep the five that show the look best, or to split the nine into two directions with no picture in both, one draft each, tested side by side with the styles skill.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "kind": "indirect",
+      "prompt": "Which of these references do we have to credit?",
+      "expected_output": "Reads the board or Style's references and answers per licence: Pexels photos keep their link to Pexels and credit the photographer where shown; CC BY and CC BY-SA need the author, the licence and a link; CC0 and public domain need none; Are.na, connector and link finds with no stated licence are used under their source's terms. Says the attribution stays with each reference and get_style shows it; it isn't put in the images.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "kind": "negative",
+      "prompt": "Make a hero image of a coffee shop at sunrise.",
+      "expected_output": "Makes the image with the asset-generator steps. No reference search and no board.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "kind": "negative",
+      "prompt": "Make me a Pinterest pin graphic for our spring sale.",
+      "expected_output": "Makes the graphic with the asset-generator steps. No reference search, and nothing fetched from Pinterest.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "kind": "indirect",
+      "prompt": "Here's my Pexels API key, use it to search for references.",
+      "expected_output": "Doesn't take or use the key, and asks them not to paste keys in the chat. find_references uses the service's own access; if Pexels is skipped, says so from its sources answer and goes on with Openverse and Wikimedia Commons.",
+      "files": []
+    }
+  ]
+}
