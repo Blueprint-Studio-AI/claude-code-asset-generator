@@ -12,7 +12,7 @@
       "id": 2,
       "kind": "positive",
       "prompt": "I have Mobbin connected. Use it to find references for the look of our app's onboarding screens.",
-      "expected_output": "Searches with the person's Mobbin connector as it is, never asking for a Mobbin password, key or token. Shows Mobbin's ai_usage_notice word for word if the answer carries one, cites each screen by its mobbin_url, and says the screens came from their Mobbin. Saves the picks to the board as the person's finds (source other, suppliedBy person, sourceUrl the mobbin_url, a note naming Mobbin), uploading each image through create_upload_link because Mobbin's image_url expires. May add find_references for the open sources with a look query. Leaves out screens where another company's brand stands out.",
+      "expected_output": "Uses the person's Mobbin connector as it is, never asking for a Mobbin password, key or token. Searches Mobbin for the kind of screen (onboarding), as Mobbin asks, and picks by look from what it shows. Shows Mobbin's ai_usage_notice word for word if the answer carries one, and shows the screens it keeps as C1, C2 and so on, each cited as a link to its mobbin_url and said to come from their Mobbin, alongside find_references candidates searched by look. Only the Mobbin screens the person likes go on the board: uploaded through create_upload_link because Mobbin's image_url expires, with source other, suppliedBy person, the mobbin_url as sourceUrl and a note naming Mobbin, then recorded as likes. Leaves out screens where another company's brand stands out.",
       "files": []
     },
     {
@@ -26,7 +26,7 @@
       "id": 4,
       "kind": "indirect",
       "prompt": "I ran a Style trial and all the drafts came out looking the same.",
-      "expected_output": "Explains that drafts made from the same few pictures converge, and offers to find references for each draft: asks what sources they use and for their own images first, then searches by look, has them pick, and groups the likes into directions that differ in one thing, so each draft gets its own pictures and none are shared. Doesn't rerun the same drafts.",
+      "expected_output": "May check the trial's drafts with get_style_trial to confirm they share pictures. Explains that drafts made from the same few pictures converge, and offers to find references for each draft: asks what sources they use and for their own images first, then searches by look, has them pick, and groups the likes into directions that differ in one thing, so each draft gets its own pictures and none are shared. Doesn't rerun the same drafts.",
       "files": []
     },
     {
@@ -68,7 +68,28 @@
       "id": 10,
       "kind": "indirect",
       "prompt": "Here's my Pexels API key, use it to search for references.",
-      "expected_output": "Doesn't take or use the key, and asks them not to paste keys in the chat. find_references uses the service's own access; if Pexels is skipped, says so from its sources answer and goes on with Openverse and Wikimedia Commons.",
+      "expected_output": "Doesn't take or use the key, and tells them keys don't belong in the chat and to revoke that one. find_references uses the service's own access; if Pexels is skipped, says so from its sources answer and goes on with Openverse and Wikimedia Commons.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "kind": "indirect",
+      "prompt": "Find references for our coffee shop's new Style. We want it to feel warm and handmade.",
+      "expected_output": "Searches find_references with a query naming the look (for example \"warm hand-drawn ink illustration, cream paper, loose linework\"), never \"coffee shop\", and says the subject belongs in the trial's prompts, not the references, since a reference's subject leaks into the images. Picks references that share the look across different subjects.",
+      "files": []
+    },
+    {
+      "id": 12,
+      "kind": "indirect",
+      "prompt": "Search the web for some moody editorial photography references for our brand.",
+      "expected_output": "Uses the host's web search for the look and leaves out results from Pinterest, Cosmos, Savee, Dribbble or Behance, pages or image links, saying those come in only if the person brings them through their own connector, an upload or a link they paste. Keeps each kept result's page as sourceUrl and the licence it states, a note naming web search, suppliedBy person. Adds find_references for the open sources.",
+      "files": []
+    },
+    {
+      "id": 13,
+      "kind": "negative",
+      "prompt": "Make a Style from these three images I attached.",
+      "expected_output": "Follows the styles skill with the three images as the references. No reference search unless the person asks for more options.",
       "files": []
     }
   ]
