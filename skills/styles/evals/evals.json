@@ -5,21 +5,35 @@
       "id": 1,
       "kind": "positive",
       "prompt": "Use Blueprint Studio to turn these three illustrations into a Style we can reuse for blog headers.",
-      "expected_output": "Reads list_styles, drafts a candidate with create_style, tests it on three different briefs in one batch, changes one thing per round, sets a thumbnail and reports the styleId.",
+      "expected_output": "Reads list_styles, plans two to four drafts that differ in one thing (all three illustrations in inputs, images only; a subset of them in inputs; the three with a short stylePrompt) and three prompts with placement in the prompts. Calls start_style_trial with estimateOnly true and aspectRatio 16:9, says the credit total and waits for a yes, then sends the same call with the same requestId and maxCredits. Polls get_style_trial with waitSeconds 20, shows each row's images labelled like P1·A and asks which they like in each row, records each pick with pick_style_trial_image, finishes with finish_style_trial as new_style with a name after asking what to do with the others, and reports the styleId and the tally.",
       "files": []
     },
     {
       "id": 2,
-      "kind": "indirect",
-      "prompt": "Our blog images all look different. Can we fix that?",
-      "expected_output": "Proposes a Style built and tested on three briefs, not a one-off image.",
+      "kind": "positive",
+      "prompt": "Our Field Notes Style has gotten muddy. Try it with fewer references and without its text, and keep whichever works better.",
+      "expected_output": "Never calls update_style on Field Notes to experiment. Starts a trial with baseStyleId set to it and three drafts from it with fromStyleId: an unchanged copy, one with keepReferences, one with imagesOnly true. Estimates first and says the total. Finishes with as update_base only after the person agrees that the shared Style should change. If the unchanged copy wins, says Field Notes already does best and doesn't rewrite it.",
       "files": []
     },
     {
       "id": 3,
+      "kind": "indirect",
+      "prompt": "Our blog images all look different. Can we fix that?",
+      "expected_output": "Proposes a Style chosen in a trial of a few drafts on three different prompts, with the credit total said before anything runs, not a one-off image.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "kind": "indirect",
+      "prompt": "Bring back the style draft I threw away yesterday.",
+      "expected_output": "Finds it with list_styles archived true and calls restore_style. Says it is still a draft, listed with list_styles drafts true, and saved as a Style with update_style draft false if they want it. No new trial and no images.",
+      "files": []
+    },
+    {
+      "id": 5,
       "kind": "negative",
       "prompt": "Make one blog header in our existing Style.",
-      "expected_output": "Uses the saved styleId with the asset-generator steps. No new Style.",
+      "expected_output": "Uses the saved styleId with the asset-generator steps. No trial, no drafts.",
       "files": []
     }
   ]

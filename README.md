@@ -95,7 +95,7 @@ Each skill is built on one rule, with numbers measured on our own service, the f
 | `asset-sets` | Many matching images in one batch: icon sets, series, one campaign in several sizes | N images is one wait, not N waits |
 | `brand-setup` | Your brand saved from your website or a few images, with a Style and your logo | Save only what you approved |
 | `official-logos` | Find, add, label and place your official logos | A logo is used as supplied, never redrawn |
-| `styles` | Build, test and keep reusable Styles | Keep a Style only after it works on three different briefs |
+| `styles` | Build reusable Styles by testing drafts side by side, and keep the winner | Keep the draft the person picks most, side by side on three different prompts |
 
 Each skill folder has a short `SKILL.md`, `references/` for depth, and `evals/evals.json` with try-it prompts and the behaviour to expect. Apps without the plugin get the same text from the server: `get_guide` with `topic` `start`, `assets` (`asset-generator`), `asset_set` (`asset-sets`), `brand` (`brand-setup`), `logos` (`official-logos`), `styles`, or `contract` (jobs and recovery). With the plugin installed you already have it.
 
