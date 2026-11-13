@@ -27,7 +27,7 @@ Measured, 28 Sep to 18 Oct 2026: 1:1 was 32% of images and 16:9 16%. Since 15 Oc
 
 ## Models and presets
 
-Leave `modelId` out: the user's preset picks the model, quality and size. Everyone starts on **balanced** (Sunburst 2.6 at medium, about 28 seconds); **fast** is Flare 2.6 at low (10 to 17 seconds) and **best** Sunburst 2.6 at high quality and 4K (about 55 seconds). `defaultImage` in `get_workspace_context` says which is theirs and what each costs.
+Leave `modelId` out: the user's preset picks the model, quality and size. Everyone starts on **balanced** (Sunburst 2.5 at medium, about 23 seconds); **fast** is Flare 2.6 at low (10 to 17 seconds) and **best** Sunburst 2.6 at high quality and 4K (about 55 seconds). `defaultImage` in `get_workspace_context` says which is theirs and what each costs.
 
 - **Speed or detail matters to them:** ask once which preset they want and save it with `set_image_preset`. It applies to their next images here and in the Blueprint Studio app.
 - **One image needs something else:** pass `modelId` and `quality` for it; their preset stays.
