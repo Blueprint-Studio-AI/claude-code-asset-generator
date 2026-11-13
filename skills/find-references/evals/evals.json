@@ -5,7 +5,7 @@
       "id": 1,
       "kind": "positive",
       "prompt": "Find some references for a new illustration Style for our blog headers. I'm thinking something like risograph prints.",
-      "expected_output": "Asks first, in one message, what the headers are for, which sources they already use, and for any images or links they like or don't. Then find_references with a query naming the look (for example \"risograph print, two colours, heavy grain\"), never a subject, count left at 12, and says which sources answered and which were skipped. Saves the round with save_reference_board (fresh requestId, name, brief), shows each item under its board number with its attribution, and asks which feel right and which don't. Records only the numbers they named with react_to_references, says what the likes share, and searches again with a varied query, not page 2; two or three rounds at most. Groups the likes into 2 to 4 directions that differ in one thing each, 2 to 5 pictures each, none shared, records them as directions, then hands off to the styles skill with one draft per direction whose inputs carry source, sourceUrl, licence, author and suppliedBy, and lets the styles skill say the credit total before anything runs.",
+      "expected_output": "Asks first, in one message, what the headers are for, which sources they already use, and for any images or links they like or don't. Then find_references with a query naming the look (for example \"risograph print, two colors, heavy grain\"), never a subject, count left at 12, and says which sources answered and which were skipped. Saves the round with save_reference_board (fresh requestId, name, brief), shows each item under its board number with its attribution, and asks which feel right and which don't. Records only the numbers they named with react_to_references, says what the likes share, and searches again with a varied query, not page 2; two or three rounds at most. Groups the likes into 2 to 4 directions that differ in one thing each, 2 to 5 pictures each, none shared, records them as directions, then hands off to the styles skill with one draft per direction whose inputs carry source, sourceUrl, licence, author and suppliedBy, and lets the styles skill say the credit total before anything runs.",
       "files": []
     },
     {
@@ -82,7 +82,7 @@
       "id": 12,
       "kind": "indirect",
       "prompt": "Search the web for some moody editorial photography references for our brand.",
-      "expected_output": "Uses the host's web search for the look and leaves out results from Pinterest, Cosmos, Savee, Dribbble or Behance, pages or image links, saying those come in only if the person brings them through their own connector, an upload or a link they paste. Keeps each kept result's page as sourceUrl and the licence it states, a note naming web search, suppliedBy person. Adds find_references for the open sources.",
+      "expected_output": "Uses the host's web search for the look and leaves out results from Pinterest, Cosmos, Savee, Dribbble, Behance or Mobbin, pages or image links, saying those come in only if the person brings them through their own connector, an upload or a link they paste. Keeps each kept result's page as sourceUrl and the licence it states, a note naming web search, suppliedBy person. Adds find_references for the open sources.",
       "files": []
     },
     {
@@ -102,8 +102,8 @@
     {
       "id": 15,
       "kind": "indirect",
-      "prompt": "I only liked three of everything you showed me. Can we just make the Style now?",
-      "expected_output": "After three rounds, doesn't run a fourth unasked. Groups what there is: one direction is one draft (three references), and the styles skill plans the other drafts (with text, or from an existing Style), priced before anything runs. Or asks for their own images to make a second direction.",
+      "prompt": "We've done three rounds and I only liked three of everything you showed me. Can we just make the Style now?",
+      "expected_output": "Doesn't run a fourth round unasked. Goes on as they ask: one direction is one draft (three references), and the styles skill plans the other drafts (with text, or from an existing Style), priced before anything runs. May offer their own images for a second direction, without insisting.",
       "files": []
     },
     {
@@ -117,7 +117,7 @@
       "id": 17,
       "kind": "indirect",
       "prompt": "My AI app doesn't have find_references. Can you still help me collect references for a new Style?",
-      "expected_output": "Searches for find_references first where tools load on demand. Without it, asks for their own images, links and connectors, keeps a numbered board in the chat with each picture's link, source, licence and reaction, groups the likes into directions with none shared and five at most each, hands one direction per draft to the styles skill with each input's source fields, and puts the sources and licences in the report. Doesn't search Pinterest, Cosmos, Savee, Dribbble or Behance itself.",
+      "expected_output": "Searches for find_references first where tools load on demand. Without it, asks for their own images, links and connectors, keeps a numbered board in the chat with each picture's link, source, licence and reaction, groups the likes into directions with none shared and five at most each, hands one direction per draft to the styles skill with each input's source fields, and puts the sources and licences in the report. Doesn't search Pinterest, Cosmos, Savee, Dribbble, Behance or Mobbin itself.",
       "files": []
     }
   ]

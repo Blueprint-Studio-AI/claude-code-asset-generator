@@ -8,7 +8,7 @@ Taking a picture into a Style is still use under its source's terms; "only a ref
 
 ### Pexels (`source: "pexels"`)
 
-- **Good for:** photography. Light, colour grading, materials, interiors, places, product and lifestyle looks. Little illustration.
+- **Good for:** photography. Light, color grading, materials, interiors, places, product and lifestyle looks. Little illustration.
 - **Licence:** the Pexels License. Free to use and to modify, and attribution isn't required. Not allowed: identifiable people shown in a bad light or offensively, unaltered copies sold (as posters, prints or products), implying that people or brands in a photo endorse a product, redistributing the photos on other stock or wallpaper sites, and using them as part of a trademark, design mark, trade name, business name or service mark.
 - **Attribution:** Pexels' API guidelines ask for a prominent link to Pexels wherever its results are shown, and credit to the photographer when possible. Show each Pexels candidate with its `attribution` ("Photo by {author} on Pexels", linked to its `sourceUrl`), and keep `sourceUrl` with the reference.
 - **Limits:** the service's key allows 200 requests an hour and 20,000 a month, shared by everyone, so results are cached for 10 minutes. Without a key on the service, Pexels is skipped and `sources` says so.
@@ -16,7 +16,7 @@ Taking a picture into a Style is still use under its source's terms; "only a ref
 ### Openverse (`source: "openverse"`)
 
 - **Good for:** illustration, prints, paintings, posters, graphic design and photography gathered from many collections (Flickr, museums, Wikimedia and others).
-- **Licence:** per item, Creative Commons or public domain. The finder asks only for licences that allow commercial use and changes: CC0, the public domain mark, CC BY and CC BY-SA. Openverse says it can't vouch for the licence information and that each work's licence should be checked: open `sourceUrl` before anything that matters.
+- **Licence:** per item, Creative Commons or public domain. The finder asks only for licences that allow commercial use and changes, such as CC0, the public domain mark, CC BY and CC BY-SA; check each candidate's `licence`. Openverse says it can't vouch for the licence information and that each work's licence should be checked: open `sourceUrl` before anything that matters.
 - **Attribution:** CC BY and CC BY-SA ask for the author, a link to the source and the licence, and the title where the work has one; the candidate's `attribution` has them, and goes on the board as its `note`. CC BY-SA also asks that changed versions be shared under the same licence: tell the person when they pick one. CC0 and public domain ask for none; keep the credit anyway.
 - **Limits:** anonymous use, with low rate limits. Quality varies more than on Pexels: look at the sheet before showing it.
 
