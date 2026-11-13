@@ -12,7 +12,7 @@
       "id": 2,
       "kind": "positive",
       "prompt": "I have Mobbin connected. Find references for a Style for the illustrations in our app's onboarding screens.",
-      "expected_output": "Uses the person's Mobbin connector as it is, never asking for a Mobbin password, key or token. Searches Mobbin for the kind of screen (onboarding), as Mobbin asks, and picks by the illustrations' look from what it shows. Shows Mobbin's ai_usage_notice word for word if the answer carries one, and follows it. Shows the screens it keeps as C1, C2 and so on, each cited as a link to its mobbin_url and said to come from their Mobbin, alongside find_references candidates searched by look under the board's numbers. Only the Mobbin screens the person likes go on the board: uploaded through create_upload_link because Mobbin's image_url expires, with source other, suppliedBy person, the mobbin_url as sourceUrl and a note naming Mobbin, then recorded as likes. Leaves out screens where another company's brand stands out.",
+      "expected_output": "Uses the person's Mobbin connector as it is, never asking for a Mobbin password, key or token. Uses Mobbin, since the illustrations sit in an interface: searches it for the kind of screen (onboarding), as Mobbin asks, and picks by the illustrations' look from what it shows. Shows Mobbin's ai_usage_notice word for word if the answer carries one, and follows it. Shows the screens it keeps as C1, C2 and so on, each cited as a link to its mobbin_url and said to come from their Mobbin, alongside find_references candidates searched by look under the board's numbers. Only the Mobbin screens the person likes go on the board: uploaded through create_upload_link because Mobbin's image_url expires, with source other, suppliedBy person, the mobbin_url as sourceUrl and a note naming Mobbin, then recorded as likes. Leaves out screens where another company's brand stands out.",
       "files": []
     },
     {
@@ -33,7 +33,7 @@
       "id": 5,
       "kind": "indirect",
       "prompt": "Here's my Pinterest board, make a Style from it: pinterest.com/sam/moody-product-shots",
-      "expected_output": "Doesn't open, read or scrape the board, and doesn't pass the board link to any tool. Asks the person to bring the pins they want through their own Pinterest connector if their app has one, to upload them, or to paste each image's own link, and keeps the pin's page as sourceUrl for each. Never asks for their Pinterest password. Offers find_references with a look query (for example \"low-key studio photography, hard side light\") for more options, then the board, reactions and directions as usual.",
+      "expected_output": "Doesn't open, read or scrape the board, and doesn't pass its link as a url, query or arenaChannel (it may be a find's recorded sourceUrl). Asks the person to bring the pins they want through their own Pinterest connector if their app has one, to upload them, or to paste each image's own link, and keeps the pin's page as sourceUrl for each. Never asks for their Pinterest password. Offers find_references with a look query (for example \"low-key studio photography, hard side light\") for more options, then the board, reactions and directions as usual.",
       "files": []
     },
     {
