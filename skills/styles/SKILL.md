@@ -30,7 +30,7 @@ No `start_style_trial` among your tools (search for it first if tools load on de
 3. **Plan 2 to 6 drafts that differ from the first in one thing each.** Each is a `variants` entry with a short `label` and one of:
    - `inputs`: reference images (images only), plus `stylePrompt` to add text;
    - `stylePrompt` alone: a Style from a description;
-   - `fromStyleId`: a copy of a Style's references and text. `keepReferences` keeps some of them, by `get_style`'s `position` + 1 (position 0 is 1), or `inputs` replaces them all (in a trial, not both). `stylePrompt` replaces the text, or `imagesOnly: true` drops it (not both);
+   - `fromStyleId`: a copy of a Style's references and text. `keepReferences` keeps some of them, by the `number` `get_style` gives each reference (its `position` + 1), or `inputs` replaces them all (in a trial, not both). `stylePrompt` replaces the text, or `imagesOnly: true` drops it (not both);
    - `styleId`: a draft already made.
 
    To improve a Style, pass it as `baseStyleId` and make the first draft an unchanged copy (`fromStyleId` alone), so the others have something to beat.
@@ -90,5 +90,5 @@ Run the same loop by hand, with the `asset-sets` skill's batch steps and failure
 - A Style or draft keeps up to 5 reference images. One with no references needs text.
 - A draft can't be a default; save it first. Changing a brand's default Style is for owners and admins.
 - Members with create access can make drafts, run trials and pick in a brand; view-only members can only read them. A trial's drafts live where the trial does.
-- Subjects, Templates, Mockups and the other kinds aren't trialled. A Style with a type (`list_context_types`) can be a draft's source, but `update_base` replaces its text, which takes its type off: say so first. Change a typed Style's `fields` or `notes` with `expectedUpdatedAt` from `get_style`; on a conflict, read it again and retry once.
+- Subjects, Templates, Mockups and the other kinds aren't trialled. A Style with a type (`list_context_types`) can be a draft's source: a copy keeps the type, and `imagesOnly` is refused on it. A draft with its own `stylePrompt` has no type, so writing that one back with `update_base` takes the base's type off: say so first. Change a typed Style's `fields` or `notes` with `expectedUpdatedAt` from `get_style`; on a conflict, read it again and retry once.
 - Making the full matching set is the `asset-sets` skill.
