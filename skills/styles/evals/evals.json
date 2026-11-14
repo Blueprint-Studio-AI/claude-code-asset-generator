@@ -5,21 +5,77 @@
       "id": 1,
       "kind": "positive",
       "prompt": "Use Blueprint Studio to turn these three illustrations into a Style we can reuse for blog headers.",
-      "expected_output": "Reads list_styles, drafts a candidate with create_style, tests it on three different briefs in one batch, changes one thing per round, sets a thumbnail and reports the styleId.",
+      "expected_output": "Reads list_styles, plans two to four drafts that differ in one thing (all three illustrations in inputs, images only; a subset of them in inputs; the three with a short stylePrompt) and three prompts with placement in the prompts. Calls start_style_trial with estimateOnly true and aspectRatio 16:9, says the credit total and waits for a yes, then sends the same call with the same requestId and maxCredits. Polls get_style_trial with waitSeconds 20, shows each row's images labelled like P1·A and asks which they like in each row, and records each pick with pick_style_trial_image. On a tie or a lead of one, offers one to three more prompts, priced, and waits for a yes before run_style_trial_prompts. Asks which draft to keep, suggesting the leader, and finishes with finish_style_trial as new_style with a name after asking what to do with the others, and reports the styleId and the tally as picks out of prompts.",
       "files": []
     },
     {
       "id": 2,
-      "kind": "indirect",
-      "prompt": "Our blog images all look different. Can we fix that?",
-      "expected_output": "Proposes a Style built and tested on three briefs, not a one-off image.",
+      "kind": "positive",
+      "prompt": "Our Field Notes Style has gotten muddy. Try it with fewer references and without its text, and keep whichever works better.",
+      "expected_output": "Never calls update_style on Field Notes to experiment. Starts a trial with baseStyleId set to it and three drafts from it with fromStyleId: an unchanged copy, one with keepReferences, one with imagesOnly true. Estimates first, says the total and waits for a yes. They haven't said whether to change Field Notes itself, so it asks before finishing with as update_base, naming Field Notes and saying images made with it will change, and on UPDATE_BASE_NEEDS_CONFIRMATION tells them who else uses it and asks again before confirmUpdateBase true. If the unchanged copy wins, says Field Notes already does best and doesn't rewrite it.",
       "files": []
     },
     {
       "id": 3,
+      "kind": "indirect",
+      "prompt": "Our blog images all look different. Can we fix that?",
+      "expected_output": "Proposes a Style chosen in a trial of a few drafts on three different prompts, with the credit total said before anything runs, not a one-off image.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "kind": "indirect",
+      "prompt": "Bring back the style draft I threw away yesterday.",
+      "expected_output": "Finds it with list_styles archived true and calls restore_style. Says it is still a draft, listed with list_styles drafts true, and saved as a Style with update_style draft false if they want it. No new trial and no images.",
+      "files": []
+    },
+    {
+      "id": 5,
       "kind": "negative",
       "prompt": "Make one blog header in our existing Style.",
-      "expected_output": "Uses the saved styleId with the asset-generator steps. No new Style.",
+      "expected_output": "Uses the saved styleId with the asset-generator steps. No trial, no drafts.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "kind": "positive",
+      "prompt": "We're two prompts into the Style trial and A and B are tied. Can you also try one with just the two darker references?",
+      "expected_output": "Adds it to the open trial rather than starting a new one: add_style_trial_draft with the trialId, a fresh requestId and one variant (fromStyleId with keepReferences for the two darker references, or them as inputs) with rerunPrompts true and estimateOnly true first. Says credits.total for the two earlier prompts, and that without the rerun the draft joins from the next prompt and costs nothing now, and waits for their choice. If they choose the rerun, the same call with the same requestId, no estimateOnly, and maxCredits set to that total; then polls get_style_trial with waitSeconds 20, shows the new letter's image in each earlier row and asks whether it changes the pick. Without it, a fresh requestId and no rerunPrompts. Gives the tally as picks out of prompts (for example C 1 of 2), and quotes the next round from a fresh get_style_trial's perPrompt before running it. If the trial already has six drafts, asks which to drop, as the refusal's nextStep says, instead of adding a seventh.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "kind": "positive",
+      "prompt": "Draft B won the Product Shots trial. Update our team's Product Shots Style with it.",
+      "expected_output": "Checks that the trial's baseStyleId is Product Shots. They chose to change it, so after asking what happens to the other drafts it calls finish_style_trial with keep set to B's variantId, as update_base, no name and the others they chose, without confirmUpdateBase. On UPDATE_BASE_NEEDS_CONFIRMATION, tells the person what its error says (who else makes images with Product Shots, or that it's a default) and that every later image made with it changes for everyone who uses it, and waits. Only after a yes sends the same finish with confirmUpdateBase true; on a no, offers to keep B as a new Style instead. Never passes confirmUpdateBase true before that yes.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "kind": "positive",
+      "prompt": "Write draft A into my Sketchbook Style; I'm the only one who uses it.",
+      "expected_output": "Checks that the trial's baseStyleId is Sketchbook. They chose to change it, so it asks only what happens to the other drafts, then one finish_style_trial with as update_base and no confirmUpdateBase. When it succeeds, no second ask. If it's refused with UPDATE_BASE_NEEDS_CONFIRMATION anyway (it's a default, or someone else has used it), tells them what the error says and waits for a yes before confirmUpdateBase true.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "kind": "indirect",
+      "prompt": "My AI app doesn't show the Style trial tools. Can we still compare two looks for our blog headers?",
+      "expected_output": "Searches for start_style_trial first where tools load on demand. Without it, runs the loop by hand: two drafts (create_style with draft true where it's offered, otherwise copies named \"(draft)\"), the same 1K medium 16:9 settings for every image, the credit total added up and said before a yes, every prompt for both drafts in one generate_asset call with maxCredits set to that total, one get_generation_status check, a pick per prompt kept as picks out of prompts, and the winner kept as its own Style (update_style with draft false and a name, or renamed). Doesn't claim a trial was run.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "kind": "positive",
+      "prompt": "Keep draft C and put it into our Brand Hero Style.",
+      "expected_output": "The trial has no baseStyleId, or its base isn't Brand Hero, so it doesn't send update_base (or gets TRIAL_NO_BASE). Doesn't silently save C as a new Style: says which Style the trial started from, and offers keeping C as a new Style with a name, or writing it into Brand Hero by hand with update_style after saying, naming Brand Hero, that every later image made with it changes for everyone who uses it, and waits for a yes.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "kind": "indirect",
+      "prompt": "The finish timed out. Did Field Notes get updated?",
+      "expected_output": "Sends the identical finish_style_trial again rather than a different one, with confirmUpdateBase only if the call that timed out had it. Reads TRIAL_FINISHED naming Field Notes as kept as the first finish having worked, not a failure, and an UPDATE_BASE_NEEDS_CONFIRMATION as a question for the person, not something to confirm itself.",
       "files": []
     }
   ]
