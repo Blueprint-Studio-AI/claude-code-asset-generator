@@ -278,6 +278,7 @@ class SkillTests(unittest.TestCase):
             "brand-setup": ["set up their brand", "website", "colors, fonts"],
             "official-logos": ["their logo", "logo file", "primary", "dark backgrounds"],
             "styles": ["consistent look", "Style library", "compare Style candidates"],
+            "find-references": ["inspiration", "references", "moodboard", "drafts all look alike"],
         }
         self.assertEqual(set(expected), {path.parent.name for path in (ROOT / "skills").glob("*/SKILL.md")})
         for name, phrases in expected.items():
