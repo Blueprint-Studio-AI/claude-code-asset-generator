@@ -10,15 +10,15 @@ Taking a picture into a Style is still use under its source's terms; "only a ref
 
 - **Good for:** photography. Light, color grading, materials, interiors, places, product and lifestyle looks. Little illustration.
 - **Licence:** the Pexels License. Free to use and to modify, and attribution isn't required. Not allowed: identifiable people shown in a bad light or offensively, unaltered copies sold (as posters, prints or products), implying that people or brands in a photo endorse a product, redistributing the photos on other stock or wallpaper sites, and using them as part of a trademark, design mark, trade name, business name or service mark.
-- **Attribution:** Pexels' API guidelines ask for a prominent link to Pexels wherever its results are shown, and credit to the photographer when possible. Show each Pexels candidate with its `attribution` ("Photo by {author} on Pexels", linked to its `sourceUrl`), and keep `sourceUrl` with the reference.
-- **Limits:** the service's key allows 200 requests an hour and 20,000 a month, shared by everyone, so results are cached for 10 minutes. Without a key on the service, Pexels is skipped and `sources` says so.
+- **Attribution:** Pexels' API guidelines ask for a prominent link to Pexels wherever its results are shown, and credit to the photographer when possible. Show each Pexels candidate with its `attribution` ("Photo by {author} on Pexels: {sourceUrl}") and the answer's `credits` line ("Photos provided by Pexels") once with them, and keep `sourceUrl` with the reference.
+- **Limits:** the service's key allows 200 requests an hour and 20,000 a month, shared by everyone, so results are cached for 10 minutes and each person gets a share. Without a key on the service, Pexels is skipped (`sources.skipped`, `not_configured`) and the others still answer: say so and go on. Never ask the person for a Pexels key.
 
 ### Openverse (`source: "openverse"`)
 
 - **Good for:** illustration, prints, paintings, posters, graphic design and photography gathered from many collections (Flickr, museums, Wikimedia and others).
-- **Licence:** per item, Creative Commons or public domain. The finder asks only for licences that allow commercial use and changes, such as CC0, the public domain mark, CC BY and CC BY-SA; check each candidate's `licence`. Openverse says it can't vouch for the licence information and that each work's licence should be checked: open `sourceUrl` before anything that matters.
-- **Attribution:** CC BY and CC BY-SA ask for the author, a link to the source and the licence, and the title where the work has one; the candidate's `attribution` has them, and goes on the board as its `note`. CC BY-SA also asks that changed versions be shared under the same licence: tell the person when they pick one. CC0 and public domain ask for none; keep the credit anyway.
-- **Limits:** anonymous use, with low rate limits. Quality varies more than on Pexels: look at the sheet before showing it.
+- **Licence:** per item, Creative Commons or public domain. The finder asks only for the four that allow commercial use and changes: CC0, the Public Domain Mark, CC BY and CC BY-SA; check each candidate's `licence`. Openverse says it can't vouch for the licence information and that each work's licence should be checked: open `sourceUrl` before anything that matters.
+- **Attribution:** CC BY and CC BY-SA ask for the author, a link to the source and the licence, and the title where the work has one; the candidate's `attribution` has them (500 characters at most): show it with the candidate. It isn't sent to the board or put in a `note`: the board and the Style keep `author`, `licence` and `sourceUrl`, and `get_style` makes the credit from them. CC BY-SA also asks that changed versions be shared under the same licence: tell the person when they pick one. CC0 and public domain ask for none; keep the credit anyway.
+- **Limits:** anonymous use, with low limits (a few hundred searches a day for the whole service, and a share for each person). When it answers with a bot check or reaches a limit, it rests (about 10 minutes, or until the limit resets): `sources.skipped` gives its note with when it's back, and the other sources answer. Say so in a line and go on with them, since Wikimedia Commons covers much of the same ground (prints, paintings, posters); don't call again just for Openverse before then. Quality varies more than on Pexels: look at the sheet before showing it.
 
 ### Wikimedia Commons (`source: "commons"`)
 
@@ -30,18 +30,18 @@ Taking a picture into a Style is still use under its source's terms; "only a ref
 ### Are.na (`source: "arena"`, through `arenaChannel`)
 
 - **Good for:** a channel the person, or someone whose taste they trust, has collected. The closest thing to their own moodboard.
-- **Licence:** Are.na doesn't license what's on it; each block belongs to whoever made it. `licence` is what the block's source says, often nothing. Tell the person, keep `sourceUrl`, and leave out what they aren't sure they may use.
-- **Limits:** only a channel the person pastes (its link or slug), at most 50 items, 12 at a time with `page`. Never a bulk pull, which its terms bar, and no search across Are.na: we read only what the person points at.
+- **Licence:** Are.na doesn't license what's on it; each block belongs to whoever made it. So `licence` says "Not stated (saved on Are.na; rights stay with the original creator)", `author` is whoever saved the block (not always who made it), and the `attribution` names the block's page and, where Are.na kept it, the page it was first found on. Tell the person, keep `sourceUrl`, and leave out what they aren't sure they may use.
+- **Limits:** only a channel the person pastes (its link or slug), its first 50 items, 12 at a time with `page`. Only image blocks: links, text, anything Are.na marks not safe for work, and blocks re-hosted from Pinterest or Unsplash are left out, so a page can hold fewer. Never a bulk pull, which its terms bar, and no search across Are.na: we read only what the person points at.
 
 ## The person's own
 
 - **Uploads** (`source: "upload"`) and **public image links** (`source: "link"`): always welcome, as theirs, except Pinterest's and Unsplash's images (Refused as references, below). The person answers for having the right to use them.
 - **Their library** (`source: "library"`): images they made or saved earlier. A saved image's `imageUrl` is a link input.
-- **Connectors in their AI app** (`source: "other"`, `suppliedBy: "person"`, the connector named in `note`). The agent uses them with the person's own sign-in and never asks for or handles a password, key or token.
+- **Connectors in their AI app** (`source: "other"`, `suppliedBy: "agent"` since you found it through them, the connector named in `note`). The agent uses them with the person's own sign-in and never asks for or handles a password, key or token.
   - **Mobbin's MCP:** screens of real apps and websites, reached only through this connector, never by a web fetch, a browser or our own web search. Good for the look of an interface and what sits in it (onboarding illustrations, empty states, icons); little use for print, photography or campaign looks. Search for the kind of screen ("onboarding", "pricing page"), as Mobbin asks, and pick by look from what it shows. Keep each screen's `mobbin_url` as `sourceUrl` and cite it as a link. Its `image_url` expires after 30 days, so with a shell download it and upload it (`create_upload_link`); without one, the person saves it and drops it on the upload page. When an answer carries an `ai_usage_notice`, show its text word for word and follow it: if it limits AI use of the screens, keep them off the board and out of Styles. Screens carry other companies' names and logos, which can leak into images: leave out those where the brand is what stands out.
   - **A Pinterest connector:** pins the person saved, which say a lot about their taste. They can't be references (see Refused as references): name what the pins they point at share, and find that in the open sources or their own photos.
   - **Anything behind their login:** the person saves it and uploads it. Never fetch it with their session or cookies.
-  - **Web search:** images from anywhere. Keep the page as `sourceUrl` and the licence it states. Leave out results from Mobbin, Unsplash and the sites below.
+  - **Web search:** images from anywhere, as `source: "other"` with "web search" in `note`. Keep the page as `sourceUrl` and the licence it states. Leave out results from Mobbin, Unsplash and the sites below.
 
 ## Not searched or browsed by us
 
@@ -54,13 +54,13 @@ The finder never reaches these, and the agent never opens, searches or scrapes t
 
 ## Refused as references
 
-Pinterest's and Unsplash's terms don't let us store their images, so the service refuses their image hosts as references on every path and every redirect hop, with `REFERENCE_URL_BLOCKED` and "Pinterest's terms don't let us store its images; upload your own copy instead" (Unsplash's the same). No Style, draft, board, image or brand asset keeps a copy of one.
+Pinterest's and Unsplash's terms don't let us store their images, so the service refuses their image hosts as references on every path, every redirect hop and through an image proxy that names one, with `REFERENCE_URL_BLOCKED`: "Input 1 (i.pinimg.com): Pinterest's terms don't let us keep its images, so this one can't be a reference." (Unsplash's the same; on a board "Item 1", and nothing in that save is saved). Its next step: use a picture the person made or owns, or one from a site whose terms allow it (Pexels, Openverse, Wikimedia Commons), and don't download this image and upload it. The finder leaves out Are.na blocks re-hosted from them. No Style, draft, board, image or brand asset keeps a copy of one.
 
 | Service | Image hosts refused |
 |---|---|
 | Pinterest | `*.pinimg.com` |
 | Unsplash | `images.unsplash.com`, `plus.unsplash.com` |
 
-"Your own copy" means pictures the person made or owns, never a saved copy of the pin or photo: don't download one and upload it to get round the refusal. A picture from there can still say what they like: name it, and find it in the open sources or their own photos.
+A picture the person made or owns is never a saved copy of the pin or photo: don't download one and upload it to get round the refusal. A picture from there can still say what they like: name it, and find it in the open sources or their own photos.
 
 Not in the finder yet: Brave image search, which waits for written confirmation that AI use is allowed.

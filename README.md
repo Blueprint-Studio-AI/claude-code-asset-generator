@@ -98,7 +98,7 @@ Each skill is built on one rule, with numbers measured on our own service, the f
 | `styles` | Build reusable Styles by testing drafts side by side, and keep the winner | Try drafts side by side on three different prompts, and keep the one the person chooses |
 | `find-references` | References for a new look from your own finds, your connected apps and open image libraries, picked by you and grouped into one direction per Style draft | Every draft gets references of its own, and you pick them |
 
-Each skill folder has a short `SKILL.md`, `references/` for depth, and `evals/evals.json` with try-it prompts and the behaviour to expect. Apps without the plugin get the same text from the server: `get_guide` with `topic` `start`, `assets` (`asset-generator`), `asset_set` (`asset-sets`), `brand` (`brand-setup`), `logos` (`official-logos`), `styles`, or `contract` (jobs and recovery). With the plugin installed you already have it.
+Each skill folder has a short `SKILL.md`, `references/` for depth, and `evals/evals.json` with try-it prompts and the behaviour to expect. Apps without the plugin get the same text from the server: `get_guide` with `topic` `start`, `assets` (`asset-generator`), `asset_set` (`asset-sets`), `brand` (`brand-setup`), `logos` (`official-logos`), `styles`, `references` (`find-references`), or `contract` (jobs and recovery). With the plugin installed you already have it.
 
 Before 2.11.0 the plugin shipped `brand-manager` and `style-gym` skills and two Claude Code agents, `asset-creator` and `style-evaluator`. Their content now lives in `brand-setup`, `styles` and `asset-sets` and their references.
 

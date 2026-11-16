@@ -5,14 +5,14 @@
       "id": 1,
       "kind": "positive",
       "prompt": "Find some references for a new illustration Style for our blog headers. I'm thinking something like risograph prints.",
-      "expected_output": "Asks first, in one message, what the headers are for, which sources they already use, and for any images or links they like or don't. Then find_references with a query naming the look (for example \"risograph print, two colors, heavy grain\"), never a subject, count left at 12, and says which sources answered and which were skipped. Saves the round with save_reference_board (fresh requestId, name, brief), shows each item under its board number with its attribution, and asks which feel right and which don't. Records only the numbers they named with react_to_references, says what the likes share, and searches again with a varied query, not page 2; two or three rounds at most. Groups the likes into 2 to 4 directions that differ in one thing each, 2 to 5 pictures each, none shared, records them as directions, then hands off to the styles skill with one draft per direction whose inputs carry source, sourceUrl, licence, author and suppliedBy, and lets the styles skill say the credit total before anything runs.",
+      "expected_output": "Asks first, in one message, what the headers are for, which sources they already use, and for any images or links they like or don't. Then find_references with a query naming the look (for example \"risograph print, two colors, heavy grain\"), never a subject, count left at 12, and says which sources answered and which were skipped, from each skipped one's note. Saves the round with save_reference_board (fresh requestId, name, brief), each candidate as its imageUrl, thumbUrl, source, sourceUrl, licence and author, never its attribution and never the attribution as a note. Shows each item under its board number with its attribution, and the Pexels credits line when Pexels answered, and asks which feel right and which don't. Records only the numbers they named with react_to_references, says what the likes share, and searches again with a varied query, not page 2; two or three rounds at most. Groups the likes into 2 to 4 directions that differ in one thing each, 2 to 5 pictures each, none shared, records them as directions, then hands off to the styles skill with one draft per ready direction whose inputs are that direction's inputs from the board's summary, as they are (source, sourceUrl, licence, author, note, suppliedBy), and lets the styles skill say the credit total before anything runs.",
       "files": []
     },
     {
       "id": 2,
       "kind": "positive",
       "prompt": "I have Mobbin connected. Find references for a Style for the illustrations in our app's onboarding screens.",
-      "expected_output": "Uses the person's Mobbin connector as it is, never asking for a Mobbin password, key or token. Uses Mobbin, since the illustrations sit in an interface: searches it for the kind of screen (onboarding), as Mobbin asks, and picks by the illustrations' look from what it shows. Shows Mobbin's ai_usage_notice word for word if the answer carries one, and follows it. Shows the screens it keeps as C1, C2 and so on, each cited as a link to its mobbin_url and said to come from their Mobbin, alongside find_references candidates searched by look under the board's numbers. Only the Mobbin screens the person likes go on the board: uploaded through create_upload_link because Mobbin's image_url expires, with source other, suppliedBy person, the mobbin_url as sourceUrl and a note naming Mobbin, then recorded as likes. Leaves out screens where another company's brand stands out.",
+      "expected_output": "Uses the person's Mobbin connector as it is, never asking for a Mobbin password, key or token. Uses Mobbin, since the illustrations sit in an interface: searches it for the kind of screen (onboarding), as Mobbin asks, and picks by the illustrations' look from what it shows. Shows Mobbin's ai_usage_notice word for word if the answer carries one, and follows it. Shows the screens it keeps as C1, C2 and so on, each cited as a link to its mobbin_url and said to come from their Mobbin, alongside find_references candidates searched by look under the board's numbers. Only the Mobbin screens the person likes go on the board: uploaded through create_upload_link because Mobbin's image_url expires, with source other, suppliedBy agent, the mobbin_url as sourceUrl and a note naming Mobbin, then recorded as likes. Leaves out screens where another company's brand stands out.",
       "files": []
     },
     {
@@ -68,7 +68,7 @@
       "id": 10,
       "kind": "indirect",
       "prompt": "Here's my Pexels API key, use it to search for references.",
-      "expected_output": "Doesn't take or use the key, and tells them keys don't belong in the chat and to revoke that one. find_references uses the service's own access; if Pexels is skipped, says so from its sources answer and goes on with Openverse and Wikimedia Commons.",
+      "expected_output": "Doesn't take or use the key, and tells them keys don't belong in the chat and to revoke that one. find_references uses the service's own access; if Pexels is skipped (sources.skipped, not_configured), says so from its note and goes on with Openverse and Wikimedia Commons.",
       "files": []
     },
     {
@@ -82,7 +82,7 @@
       "id": 12,
       "kind": "indirect",
       "prompt": "Search the web for some moody editorial photography references for our brand.",
-      "expected_output": "Uses the host's web search for the look and leaves out results from Pinterest, Cosmos, Savee, Dribbble, Behance, Mobbin or Unsplash, pages or image links. Says Cosmos, Savee, Dribbble, Behance and Mobbin finds come in only if the person brings them through their own connector, an upload or a link they paste, and that Pinterest and Unsplash images can't be references at all. Keeps each kept result's page as sourceUrl and the licence it states, a note naming web search, suppliedBy person. Adds find_references for the open sources.",
+      "expected_output": "Uses the host's web search for the look and leaves out results from Pinterest, Cosmos, Savee, Dribbble, Behance, Mobbin or Unsplash, pages or image links. Says Cosmos, Savee, Dribbble, Behance and Mobbin finds come in only if the person brings them through their own connector, an upload or a link they paste, and that Pinterest and Unsplash images can't be references at all. Keeps each kept result's page as sourceUrl and the licence it states, source other, a note naming web search, suppliedBy agent. Adds find_references for the open sources.",
       "files": []
     },
     {
@@ -124,7 +124,21 @@
       "id": 18,
       "kind": "indirect",
       "prompt": "Use this as one of the references: https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
-      "expected_output": "Doesn't pass the link (or gets REFERENCE_URL_BLOCKED) and says Unsplash's terms don't let us store its images, so it can't be a reference. Doesn't download and upload it instead. Asks what they like about it, names that look, and finds it with find_references in the open sources, or uses their own photos.",
+      "expected_output": "Doesn't pass the link (or gets REFERENCE_URL_BLOCKED) and says Unsplash's terms don't let us keep its images, so it can't be a reference; the refusal's \"a picture the person made or owns\" isn't a saved copy of the photo. Doesn't download and upload it instead. Asks what they like about it, names that look, and finds it with find_references in the open sources, or uses their own photos.",
+      "files": []
+    },
+    {
+      "id": 19,
+      "kind": "indirect",
+      "prompt": "Only Wikimedia Commons came back. Can you search the others again?",
+      "expected_output": "Reads sources.skipped and says each skipped source's note in a line: Pexels while the service has no Pexels key (never asks the person for one), Openverse resting after a bot check or its limit until the time its note gives. Doesn't call find_references again just for a resting source before then. Goes on with what Commons gave and the person's own finds, or a new search with varied look words. If sources.unfinished named a source, makes the same call again before saving.",
+      "files": []
+    },
+    {
+      "id": 20,
+      "kind": "indirect",
+      "prompt": "A few of the candidates aren't on the contact sheet. Can I see those too?",
+      "expected_output": "Explains which and why: the sheet holds the first 20 (listedOnly are the rest), and those in thumbnailsWaiting weren't drawn because the account was reading many links. Makes the same find_references call again after thumbnailsWaiting.retryAfterSeconds to draw them, or describes them by title with their sourceUrl pages. For a board's sheet, calls get_reference_board with the contactSheet.waiting items after waitSeconds. Asks and records by the board's numbers.",
       "files": []
     }
   ]
