@@ -33,7 +33,7 @@
       "id": 5,
       "kind": "indirect",
       "prompt": "Here's my Pinterest board, make a Style from it: pinterest.com/sam/moody-product-shots",
-      "expected_output": "Doesn't open, read or scrape the board, and doesn't pass its link as a url, query or arenaChannel (it may be a find's recorded sourceUrl). Asks the person to bring the pins they want through their own Pinterest connector if their app has one, to upload them, or to paste each image's own link, and keeps the pin's page as sourceUrl for each. Never asks for their Pinterest password. Offers find_references with a look query (for example \"low-key studio photography, hard side light\") for more options, then the board, reactions and directions as usual.",
+      "expected_output": "Doesn't open, read or scrape the board, and doesn't pass its link as a url, query or arenaChannel. Says Pinterest's terms don't let us store its images, so the pins can't be references, and never downloads and uploads a pin to get round that. Asks what they like about the pins (or, with their Pinterest connector, names what the pins share), then searches find_references for that look (for example \"low-key studio photography, hard side light\") or uses their own photos, then the board, reactions and directions as usual. Never asks for their Pinterest password.",
       "files": []
     },
     {
@@ -82,7 +82,7 @@
       "id": 12,
       "kind": "indirect",
       "prompt": "Search the web for some moody editorial photography references for our brand.",
-      "expected_output": "Uses the host's web search for the look and leaves out results from Pinterest, Cosmos, Savee, Dribbble, Behance or Mobbin, pages or image links, saying those come in only if the person brings them through their own connector, an upload or a link they paste. Keeps each kept result's page as sourceUrl and the licence it states, a note naming web search, suppliedBy person. Adds find_references for the open sources.",
+      "expected_output": "Uses the host's web search for the look and leaves out results from Pinterest, Cosmos, Savee, Dribbble, Behance, Mobbin or Unsplash, pages or image links, saying those come in only if the person brings them through their own connector, an upload or a link they paste. Keeps each kept result's page as sourceUrl and the licence it states, a note naming web search, suppliedBy person. Adds find_references for the open sources.",
       "files": []
     },
     {
@@ -118,6 +118,13 @@
       "kind": "indirect",
       "prompt": "My AI app doesn't have find_references. Can you still help me collect references for a new Style?",
       "expected_output": "Searches for find_references first where tools load on demand. Without it, asks for their own images, links and connectors, keeps a numbered board in the chat with each picture's link, source, licence and reaction, groups the likes into directions with none shared and five at most each, hands one direction per draft to the styles skill with each input's source fields, and puts the sources and licences in the report. Doesn't search Pinterest, Cosmos, Savee, Dribbble, Behance or Mobbin itself.",
+      "files": []
+    },
+    {
+      "id": 18,
+      "kind": "indirect",
+      "prompt": "Use this as one of the references: https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
+      "expected_output": "Doesn't pass the link (or gets REFERENCE_URL_BLOCKED) and says Unsplash's terms don't let us store its images, so it can't be a reference. Doesn't download and upload it instead. Asks what they like about it, names that look, and finds it with find_references in the open sources, or uses their own photos.",
       "files": []
     }
   ]

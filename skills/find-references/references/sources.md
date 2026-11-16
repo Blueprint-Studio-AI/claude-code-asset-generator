@@ -39,17 +39,28 @@ Taking a picture into a Style is still use under its source's terms; "only a ref
 - **Their library** (`source: "library"`): images they made or saved earlier. A saved image's `imageUrl` is a link input.
 - **Connectors in their AI app** (`source: "other"`, `suppliedBy: "person"`, the connector named in `note`). The agent uses them with the person's own sign-in and never asks for or handles a password, key or token.
   - **Mobbin's MCP:** screens of real apps and websites, reached only through this connector, never by a web fetch, a browser or our own web search. Good for the look of an interface and what sits in it (onboarding illustrations, empty states, icons); little use for print, photography or campaign looks. Search for the kind of screen ("onboarding", "pricing page"), as Mobbin asks, and pick by look from what it shows. Keep each screen's `mobbin_url` as `sourceUrl` and cite it as a link. Its `image_url` expires after 30 days, so with a shell download it and upload it (`create_upload_link`); without one, the person saves it and drops it on the upload page. When an answer carries an `ai_usage_notice`, show its text word for word and follow it: if it limits AI use of the screens, keep them off the board and out of Styles. Screens carry other companies' names and logos, which can leak into images: leave out those where the brand is what stands out.
-  - **A Pinterest connector:** pins the person saved or searched with their own account. What they pick from it is their choice, under Pinterest's terms, like an upload. Keep the pin's page as `sourceUrl`.
+  - **A Pinterest connector:** pins the person saved, which say a lot about their taste. They can't be references (see Refused as references): name what the pins they point at share, and find that in the open sources or their own photos.
   - **Anything behind their login:** the person saves it and uploads it. Never fetch it with their session or cookies.
-  - **Web search:** images from anywhere. Keep the page as `sourceUrl` and the licence it states. Leave out results from Mobbin and from the sites below.
+  - **Web search:** images from anywhere. Keep the page as `sourceUrl` and the licence it states. Leave out results from Mobbin, Unsplash and the sites below.
 
 ## Not searched or browsed by us
 
-The finder never reaches these, and the agent never opens, searches or scrapes them (a web fetch, a browser, its own web search) or passes a page or image from them that it found as a `url`, `query` or `arenaChannel`. In web search results their image hosts count as them too, such as `i.pinimg.com` and `cdn.dribbble.com`. What the person brings from them, through their own connector, an upload or an image link they paste, is their choice under that site's terms, like anything else they bring: the service fetches a pasted or connector link as their input, and the page can be its `sourceUrl`, which is only recorded.
+The finder never reaches these, and the agent never opens, searches or scrapes them (a web fetch, a browser, its own web search) or passes a page or image from them that it found as a `url`, `query` or `arenaChannel`. In web search results their image hosts count as them too, such as `i.pinimg.com` and `cdn.dribbble.com`. What the person brings from Cosmos, Savee, Dribbble or Behance, through their own connector, an upload or an image link they paste, is their choice under that site's terms, like anything else they bring: the service fetches a pasted or connector link as their input, and the page can be its `sourceUrl`, which is only recorded. Pinterest's images are refused outright (below).
 
 | Site | Why |
 |---|---|
-| Pinterest | Its developer guidelines bar scraping and data extraction, using Pinterest content to train or improve AI, and storing information accessed through its API. |
+| Pinterest | Its developer guidelines bar scraping and data extraction, using Pinterest content to train or improve AI, and storing information accessed through its API. Its image hosts (`*.pinimg.com`) are refused server-side as references. |
 | Cosmos, Savee, Dribbble, Behance | No public API, or their terms bar programmatic access. |
 
-Not in the finder yet: Unsplash and Brave image search, which wait for written confirmation that AI use is allowed.
+## Refused as references
+
+Pinterest's and Unsplash's terms don't let us store their images, so the service refuses their image hosts as references on every path and every redirect hop, with `REFERENCE_URL_BLOCKED` and "Pinterest's terms don't let us store its images; upload your own copy instead" (Unsplash's the same). No Style, draft, board, image or brand asset keeps a copy of one.
+
+| Service | Image hosts refused |
+|---|---|
+| Pinterest | `*.pinimg.com` |
+| Unsplash | `images.unsplash.com`, `plus.unsplash.com` |
+
+"Your own copy" means pictures the person made or owns, never a saved copy of the pin or photo: don't download one and upload it to get round the refusal. A picture from there can still say what they like: name it, and find it in the open sources or their own photos.
+
+Not in the finder yet: Brave image search, which waits for written confirmation that AI use is allowed.
