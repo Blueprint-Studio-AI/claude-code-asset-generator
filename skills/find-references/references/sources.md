@@ -1,6 +1,6 @@
 # Sources
 
-Where references come from: what each source is good for, what its licence and attribution ask, and its limits. `find_references` reaches the first four. The person brings the rest, through their own uploads, links and connectors.
+Where references come from: what each source is good for, what its licence and attribution ask, and its limits. `find_references` reaches the first four. The person brings the rest, through their own uploads, links and connectors, except what's refused (Refused as references, below).
 
 Taking a picture into a Style is still use under its source's terms; "only a reference" doesn't change that. So every reference keeps its `source`, `sourceUrl`, `licence` and `author`. `get_style` returns them, and the service can find every Style holding a source if its owner asks for it to be taken out.
 
@@ -35,7 +35,7 @@ Taking a picture into a Style is still use under its source's terms; "only a ref
 
 ## The person's own
 
-- **Uploads** (`source: "upload"`) and **public image links** (`source: "link"`): always welcome, as theirs. The person answers for having the right to use them.
+- **Uploads** (`source: "upload"`) and **public image links** (`source: "link"`): always welcome, as theirs, except Pinterest's and Unsplash's images (Refused as references, below). The person answers for having the right to use them.
 - **Their library** (`source: "library"`): images they made or saved earlier. A saved image's `imageUrl` is a link input.
 - **Connectors in their AI app** (`source: "other"`, `suppliedBy: "person"`, the connector named in `note`). The agent uses them with the person's own sign-in and never asks for or handles a password, key or token.
   - **Mobbin's MCP:** screens of real apps and websites, reached only through this connector, never by a web fetch, a browser or our own web search. Good for the look of an interface and what sits in it (onboarding illustrations, empty states, icons); little use for print, photography or campaign looks. Search for the kind of screen ("onboarding", "pricing page"), as Mobbin asks, and pick by look from what it shows. Keep each screen's `mobbin_url` as `sourceUrl` and cite it as a link. Its `image_url` expires after 30 days, so with a shell download it and upload it (`create_upload_link`); without one, the person saves it and drops it on the upload page. When an answer carries an `ai_usage_notice`, show its text word for word and follow it: if it limits AI use of the screens, keep them off the board and out of Styles. Screens carry other companies' names and logos, which can leak into images: leave out those where the brand is what stands out.

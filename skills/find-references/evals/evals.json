@@ -82,7 +82,7 @@
       "id": 12,
       "kind": "indirect",
       "prompt": "Search the web for some moody editorial photography references for our brand.",
-      "expected_output": "Uses the host's web search for the look and leaves out results from Pinterest, Cosmos, Savee, Dribbble, Behance, Mobbin or Unsplash, pages or image links, saying those come in only if the person brings them through their own connector, an upload or a link they paste. Keeps each kept result's page as sourceUrl and the licence it states, a note naming web search, suppliedBy person. Adds find_references for the open sources.",
+      "expected_output": "Uses the host's web search for the look and leaves out results from Pinterest, Cosmos, Savee, Dribbble, Behance, Mobbin or Unsplash, pages or image links. Says Cosmos, Savee, Dribbble, Behance and Mobbin finds come in only if the person brings them through their own connector, an upload or a link they paste, and that Pinterest and Unsplash images can't be references at all. Keeps each kept result's page as sourceUrl and the licence it states, a note naming web search, suppliedBy person. Adds find_references for the open sources.",
       "files": []
     },
     {
