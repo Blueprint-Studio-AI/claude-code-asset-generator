@@ -39,12 +39,13 @@ Measured in Blueprint Studio, October 2026.
 
 A brand needs both. Blueprint Studio shows the main lockup (`primary`, a `lockup` or `wordmark`) in wide places, such as the brand page, and the icon (`form: "mark"`, about square) in square ones: the brand's menu, the brand list, invites and its public page's favicon. Without an icon, those show a squeezed lockup or the brand's initial, which looks unfinished.
 
-When a brand has only one, find or make the other with the user:
+When a brand has only one, find the other with the user. A brand that exists already has its marks: they're found or cut from its own files, never drawn.
 
-- **The real file first.** Their brand guide or logo folder, or the site's apple-touch-icon or favicon, which is often the mark when it's big enough to stay sharp.
+- **The real file first.** Their brand guide or logo folder, or the icon their site, shop or app already uses (an apple-touch-icon or favicon), which is often the mark when it's big enough to stay sharp.
 - **Cut from the lockup.** When the symbol stands apart from the name, crop the lockup file to the symbol, centre it on a transparent square and add it with `form: "mark"`. It's their file cut down, not a redraw.
-- **Otherwise, a simple one to offer.** An icon in the brand's look (its initial or symbol, in its colours and type), made as the `asset-generator` skill says; or, for a brand with only an icon, its name set beside it in its typeface. Show it, and add it only once the user says yes.
-- **Say it once.** If none of that works, tell the user plainly what's missing and where it shows, and leave it there.
+- **Say where it came from, once.** A mark that isn't their main logo (their shop's icon, a cut) goes in with a line saying where it's from, so they can say no.
+- **Nothing of theirs: leave the gap.** The brand's initial stands in. Tell the user plainly, once, that a square file of their mark would replace it, and leave it there. A brand that's new is different: its mark is a logo concept, made as the `asset-generator` skill says.
+- **A sharper mark they ask for is a proposal.** Make it as the `asset-generator` skill says and add it as a new file once they say yes, never over theirs with `replaceAssetId`.
 
 ## Known failures
 
@@ -57,6 +58,6 @@ When a brand has only one, find or make the other with the user:
 
 ## Limits
 
-- It doesn't design logos, beyond offering a simple icon for a brand that has none. A new logo concept is the `asset-generator` skill.
+- It doesn't design logos, and never draws a mark for a brand that has one unless they ask: an icon comes from the brand's own files. A new brand's logo concept is the `asset-generator` skill.
 - Brand guide pages and official files are separate. Adding a logo doesn't update a guide.
 - One logo per image unless the user asks for more.
