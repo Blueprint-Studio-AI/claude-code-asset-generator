@@ -26,15 +26,15 @@ When `get_workspace_context` returns `gettingStarted.brandSetupInBrowser`, offer
 1. **Start it.** `setup_brand` with `website` (or 1 to 5 `imageUrls` of work in the look they want), plus `brandName` and `description` if they gave them, and a fresh UUID `requestId`. It answers at once with a `setupId`.
 2. **Wait for the draft.** `get_brand_setup` with the `setupId` and `waitSeconds: 20`, again until `ready` or `failed`.
 3. **Show it and ask.** The name, the logo found on the site, the palette with where each color came from, the fonts, the descriptors and the previews. Ask one question: what should change?
-4. **Save what they approved.** `save_brand_setup` with the `setupId` and only the edits they asked for: `brandName`, `styleName`, `palette`, `fonts`, `descriptors`, `referenceIndexes`. Pass `logo: false` if the logo it found is wrong. Saving again returns the first save.
+4. **Save what they approved.** `save_brand_setup` with the `setupId` and only the edits they asked for: `brandName`, `styleName`, `palette`, `fonts`, `descriptors`, `referenceIndexes`. Pass `logo: false` only if the logo it found isn't theirs. Saving again returns the first save.
 5. **Use it.** Every later image passes the returned `brandId` and `styleId`. Offer one image in the new Style straight away.
-6. **Offer the rest of the logos.** Setup saves the logo it found on the site (a brand that already has logos keeps them). White versions, wordmarks and marks go in with the `official-logos` skill, or on the web.
+6. **Offer the rest of the logos.** Setup saves the logo it found on the site (a brand that already has logos keeps them). White versions, wordmarks and marks go in with the `official-logos` skill, or on the web. A brand needs both a main lockup and an icon (Blueprint Studio shows the icon in its menus and brand list), so when it has only one, find the other in their own files with the `official-logos` skill, never a new one.
 
 ## Known failures
 
 - **Social pages can't be read.** Instagram, Facebook, TikTok and Linktree pages fail. Ask for 2 or 3 images of their posts, products or logo and pass them as `imageUrls`.
 - **Saving before the person looked.** When it's their only brand, a saved brand is where their images go by default. Show the previews first.
-- **The wrong logo from the site** (a favicon, a share image, a partner's logo). Save with `logo: false` and add the right file with the `official-logos` skill.
+- **The wrong logo from the site** (a favicon, a share image, a partner's logo). Save with `logo: false` and add the right file with the `official-logos` skill. A favicon that is their mark can still go in as their icon, and their own logo dressed for a season or a campaign is still theirs.
 - **Forgetting the brand afterwards.** Without `brandId` and `styleId`, the next image goes to the personal library with no Style.
 - **Another setup while two are running** returns `SETUP_IN_PROGRESS`. Check the running one with `get_brand_setup` instead of starting over.
 - **A failed setup.** Show its `nextStep`. A website that blocks readers often works as 2 or 3 images instead.

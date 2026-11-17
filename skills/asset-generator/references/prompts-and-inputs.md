@@ -1,6 +1,6 @@
 # Prompts and inputs
 
-How to brief one image well. The tool schemas list every field; this page says which ones matter and when.
+How to brief one image well. The tool schemas list every field; this page says which ones matter and when. What to write in the prompt itself (copy and real facts, empty space, logos, sets, app icons) is get_guide topic "prompting".
 
 ## The prompt
 
