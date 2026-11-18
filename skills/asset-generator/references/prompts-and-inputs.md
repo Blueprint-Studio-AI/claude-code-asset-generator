@@ -42,7 +42,7 @@ Leave `modelId` out: the user's preset picks the model, quality and size. Everyo
 
 ## Transparent backgrounds
 
-For sprites, icons, stickers and product cut-outs, pass `background: "transparent"`. The result's `background` field says how it was made. To cut out an image already in the library (it costs credits: the `remove_background` tool description has the price, so quote that), call `remove_background` with its `assetId` and a fresh UUID `operationId`; reuse that `operationId` only to retry or check the same removal. `ALREADY_TRANSPARENT` and `NOTHING_TO_REMOVE` mean use the image as it is. `NO_SUBJECT_FOUND` means try an image with one clear subject, or generate one with `background: "transparent"`; the credit comes back.
+For sprites, icons, stickers and product cut-outs, pass `background: "transparent"`. The result's `background` field says how it was made. To cut out an image already in the library (it costs credits: the `remove_background` tool description has the price, so quote that), call `remove_background` with its `assetId` and a fresh UUID `operationId`; reuse that `operationId` only to retry or check the same removal. `ALREADY_TRANSPARENT` and `NOTHING_TO_REMOVE` mean use the image as it is. `NO_SUBJECT_FOUND` means try an image with one clear subject, or generate one with `background: "transparent"`; its credits come back.
 
 ## Inputs
 
